@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public class RaidManager : NetworkBehaviour
 {
+    public static RaidManager Instance;
+    
     [Header("Raid Configuration")]
     public int baseEnemyCount = 5;
     public float raidDuration = 300f;
@@ -29,6 +31,18 @@ public class RaidManager : NetworkBehaviour
     
     private List<GameObject> spawnedEnemies = new List<GameObject>();
     
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else if (Instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+    
     void Start()
     {
         if (isServer)
@@ -49,7 +63,7 @@ public class RaidManager : NetworkBehaviour
     }
     
     [Server]
-    void StartRaid()
+    public void StartRaid()
     {
         raidStarted = true;
         

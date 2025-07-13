@@ -79,3 +79,5 @@ crashlytics-build.properties
 
 # VS Config
 .vsconfig
+build_windows.log
+setup.log

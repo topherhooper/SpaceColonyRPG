@@ -55,8 +55,8 @@ public class PrefabGenerator : EditorWindow
         player.layer = LayerMask.NameToLayer("Player");
 
         // Add components
-        player.AddComponent<NetworkIdentity>().localPlayerAuthority = true;
-        player.AddComponent<NetworkTransform>();
+        player.AddComponent<NetworkIdentity>();
+        player.AddComponent<NetworkTransformReliable>();
         player.AddComponent<NetworkAnimator>();
         
         CharacterController controller = player.AddComponent<CharacterController>();
@@ -103,7 +103,7 @@ public class PrefabGenerator : EditorWindow
 
         // Add components
         enemy.AddComponent<NetworkIdentity>();
-        enemy.AddComponent<NetworkTransform>();
+        enemy.AddComponent<NetworkTransformReliable>();
         
         CapsuleCollider collider = enemy.GetComponent<CapsuleCollider>();
         collider.height = 2f;
@@ -153,12 +153,12 @@ public class PrefabGenerator : EditorWindow
 
         // Add components
         projectile.AddComponent<NetworkIdentity>();
-        projectile.AddComponent<NetworkTransform>();
+        projectile.AddComponent<NetworkTransformUnreliable>();
         
         Rigidbody rb = projectile.AddComponent<Rigidbody>();
         rb.mass = 0.1f;
-        rb.drag = 0f;
-        rb.angularDrag = 0f;
+        rb.linearDamping = 0f;
+        rb.angularDamping = 0f;
         rb.useGravity = false;
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         
@@ -295,7 +295,7 @@ public class PrefabGenerator : EditorWindow
 
         // Add components
         loot.AddComponent<NetworkIdentity>();
-        loot.AddComponent<NetworkTransform>();
+        loot.AddComponent<NetworkTransformReliable>();
         
         SphereCollider collider = loot.AddComponent<SphereCollider>();
         collider.isTrigger = true;
@@ -303,7 +303,7 @@ public class PrefabGenerator : EditorWindow
         
         Rigidbody rb = loot.AddComponent<Rigidbody>();
         rb.mass = 0.5f;
-        rb.drag = 2f;
+        rb.linearDamping = 2f;
         
         loot.AddComponent<LootPickup>();
         

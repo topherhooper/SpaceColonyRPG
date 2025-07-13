@@ -13,6 +13,10 @@ public class UIManager : MonoBehaviour
     public GameObject raidPrepPanel;
     public GameObject gameOverPanel;
     public GameObject buildingTooltip;
+    public GameObject joinRaidPanel;
+    public GameObject settingsPanel;
+    public GameObject victoryDefeatPanel;
+    public GameObject buildingPanel;
     
     [Header("Colony UI")]
     public Text metalText;
@@ -42,6 +46,7 @@ public class UIManager : MonoBehaviour
     public GameObject upgradeButtonPrefab;
     public Text joinCodeText;
     public InputField ipAddressInput;
+    public InputField ipInputField;
     
     void Awake()
     {
@@ -329,5 +334,55 @@ public class UIManager : MonoBehaviour
             // Fallback if we can't get IP
         }
         return "localhost";
+    }
+    
+    // Menu navigation methods
+    public void StartSoloColony()
+    {
+        GameNetworkManager.Instance?.StartSoloColony();
+    }
+    
+    public void ShowJoinRaidPanel()
+    {
+        if (joinRaidPanel != null) joinRaidPanel.SetActive(true);
+        if (mainMenuPanel != null) mainMenuPanel.SetActive(false);
+    }
+    
+    public void HideJoinRaidPanel()
+    {
+        if (joinRaidPanel != null) joinRaidPanel.SetActive(false);
+        if (mainMenuPanel != null) mainMenuPanel.SetActive(true);
+    }
+    
+    public void HostRaid()
+    {
+        GameNetworkManager.Instance?.HostRaid();
+    }
+    
+    public void ConnectToHost()
+    {
+        string ipAddress = ipInputField != null ? ipInputField.text : "localhost";
+        GameNetworkManager.Instance?.JoinRaid(ipAddress);
+    }
+    
+    public void ShowSettingsPanel()
+    {
+        if (settingsPanel != null) settingsPanel.SetActive(true);
+        if (mainMenuPanel != null) mainMenuPanel.SetActive(false);
+    }
+    
+    public void HideSettingsPanel()
+    {
+        if (settingsPanel != null) settingsPanel.SetActive(false);
+        if (mainMenuPanel != null) mainMenuPanel.SetActive(true);
+    }
+    
+    public void QuitGame()
+    {
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #else
+        Application.Quit();
+        #endif
     }
 }

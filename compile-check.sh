@@ -9,7 +9,7 @@ echo "========================================"
 
 # Unity path (using WSL mount)
 # Update this to match your Unity installation
-UNITY_PATH="/mnt/c/Program Files/Unity/Hub/Editor/2022.3.4f1/Editor/Unity.exe"
+UNITY_PATH="/mnt/c/Program Files/Unity/Hub/Editor/6000.1.11f1/Editor/Unity.exe"
 
 # Check if Unity exists
 if [ ! -f "$UNITY_PATH" ]; then
