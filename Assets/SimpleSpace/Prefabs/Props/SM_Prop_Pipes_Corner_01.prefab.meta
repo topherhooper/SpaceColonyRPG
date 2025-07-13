@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b0232d6d697568144a17d10c38ec00ee
+timeCreated: 1486425560
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 82496
+  packageName: Simple Space - Cartoon Assets
+  packageVersion: 1.0
+  assetPath: Assets/SimpleSpace/Prefabs/Props/SM_Prop_Pipes_Corner_01.prefab
+  uploadId: 160948

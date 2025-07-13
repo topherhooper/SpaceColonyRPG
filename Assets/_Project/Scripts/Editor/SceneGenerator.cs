@@ -6,7 +6,9 @@ using UnityEngine.SceneManagement;
 using System.IO;
 using UnityEngine.UI;
 using Mirror;
+using kcp2k;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.Rendering.Universal;
 
 public class SceneGenerator : EditorWindow
@@ -93,9 +95,7 @@ public class SceneGenerator : EditorWindow
         mainCamera.backgroundColor = new Color(0f, 0.063f, 0.188f); // Dark space blue #001030
         
         // Create EventSystem first
-        GameObject eventSystem = new GameObject("EventSystem");
-        eventSystem.AddComponent<EventSystem>();
-        eventSystem.AddComponent<StandaloneInputModule>();
+        CreateEventSystem();
         
         // Create Canvas with proper settings
         GameObject canvasObj = new GameObject("Canvas");
@@ -214,8 +214,11 @@ public class SceneGenerator : EditorWindow
         
         // Network Manager
         GameObject networkManagerObj = new GameObject("NetworkManager");
+        // Add Transport first (required by NetworkManager)
+        KcpTransport transport = networkManagerObj.AddComponent<KcpTransport>();
         GameNetworkManager networkManager = networkManagerObj.AddComponent<GameNetworkManager>();
         NetworkManager mirrorNetManager = networkManagerObj.GetComponent<NetworkManager>();
+        mirrorNetManager.transport = transport;
         mirrorNetManager.networkAddress = "localhost";
         mirrorNetManager.maxConnections = 6;
         
@@ -260,6 +263,9 @@ public class SceneGenerator : EditorWindow
         mainCamera.transform.position = new Vector3(0, 20, -10);
         mainCamera.transform.rotation = Quaternion.Euler(45, 0, 0);
         mainCamera.fieldOfView = 60;
+        
+        // Create EventSystem for UI
+        CreateEventSystem();
         
         // Colony Manager container
         GameObject colonyManager = new GameObject("Colony Manager");
@@ -386,6 +392,19 @@ public class SceneGenerator : EditorWindow
     [MenuItem("SpaceColony/Scenes/Generate Raid Scene")]
     public static void GenerateRaidScene()
     {
+        // Check if scene already exists
+        if (File.Exists("Assets/_Project/Scenes/RaidScene.unity"))
+        {
+            if (!EditorUtility.DisplayDialog("Scene Generation Warning",
+                "RaidScene.unity already exists. This will OVERWRITE it!\n\n" +
+                "Are you sure you want to regenerate the Raid scene?",
+                "Yes, Regenerate", "Cancel"))
+            {
+                Debug.Log("Raid scene generation cancelled by user.");
+                return;
+            }
+        }
+        
         Scene scene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
         
         // Configure lighting for combat atmosphere
@@ -400,10 +419,15 @@ public class SceneGenerator : EditorWindow
         
         // Network Manager
         GameObject networkManagerObj = new GameObject("Network Manager");
+        // Add Transport first (required by NetworkManager)
+        KcpTransport transport = networkManagerObj.AddComponent<KcpTransport>();
         GameNetworkManager networkManager = networkManagerObj.AddComponent<GameNetworkManager>();
+        NetworkManager mirrorNetManager = networkManagerObj.GetComponent<NetworkManager>();
+        mirrorNetManager.transport = transport;
         
         // Raid Manager
         GameObject raidManagerObj = new GameObject("Raid Manager");
+        NetworkIdentity raidNetIdentity = raidManagerObj.AddComponent<NetworkIdentity>();
         RaidManager raidManager = raidManagerObj.AddComponent<RaidManager>();
         
         // Wave Spawner (child of Raid Manager)
@@ -605,6 +629,9 @@ public class SceneGenerator : EditorWindow
         CreateButton(resultPanel.transform, "ContinueButton", "Return to Colony",
             new Vector2(0, -100), new Vector2(250, 60));
         
+        // Create EventSystem for UI (before creating UI)
+        CreateEventSystem();
+        
         // Audio Manager
         GameObject audioManager = new GameObject("Audio Manager");
         audioManager.AddComponent<AudioManager>();
@@ -645,13 +672,23 @@ public class SceneGenerator : EditorWindow
     {
         GameObject button = CreateButton(parent, name, text, position, new Vector2(250, 50));
         button.GetComponent<Button>().onClick.AddListener(() => {
-            if (UIManager.Instance != null)
+            Debug.Log($"[Button] {name} clicked, attempting to call {methodName}");
+            
+            if (UIManager.Instance == null)
             {
-                System.Reflection.MethodInfo method = typeof(UIManager).GetMethod(methodName);
-                if (method != null)
-                {
-                    method.Invoke(UIManager.Instance, null);
-                }
+                Debug.LogError($"[Button] UIManager.Instance is null!");
+                return;
+            }
+            
+            System.Reflection.MethodInfo method = typeof(UIManager).GetMethod(methodName);
+            if (method != null)
+            {
+                Debug.Log($"[Button] Found method {methodName}, invoking...");
+                method.Invoke(UIManager.Instance, null);
+            }
+            else
+            {
+                Debug.LogError($"[Button] Method '{methodName}' not found on UIManager!");
             }
         });
         return button;
@@ -723,16 +760,42 @@ public class SceneGenerator : EditorWindow
         rect.sizeDelta = size;
         
         Image img = button.AddComponent<Image>();
-        img.color = new Color(0.3f, 0.3f, 0.3f);
+        img.color = new Color(0.2f, 0.3f, 0.4f, 1f);  // Match normal color
+        
+        // Add outline for better visibility
+        Outline outline = button.AddComponent<Outline>();
+        outline.effectColor = new Color(0.1f, 0.15f, 0.2f, 1f);
+        outline.effectDistance = new Vector2(2, -2);
         
         Button btn = button.AddComponent<Button>();
+        
+        // Enhanced color transitions for better visual feedback
         ColorBlock colors = btn.colors;
-        colors.normalColor = new Color(0.3f, 0.3f, 0.3f);
-        colors.highlightedColor = new Color(0.4f, 0.4f, 0.4f);
-        colors.pressedColor = new Color(0.2f, 0.2f, 0.2f);
+        colors.normalColor = new Color(0.2f, 0.3f, 0.4f, 1f);       // Dark blue
+        colors.highlightedColor = new Color(0.3f, 0.5f, 0.7f, 1f);  // Lighter blue (hover)
+        colors.pressedColor = new Color(0.1f, 0.2f, 0.3f, 1f);      // Darker blue (click)
+        colors.selectedColor = new Color(0.3f, 0.5f, 0.7f, 1f);     // Same as highlighted
+        colors.disabledColor = new Color(0.15f, 0.15f, 0.15f, 0.5f);// Grayed out
+        colors.colorMultiplier = 1f;
+        colors.fadeDuration = 0.1f;  // Quick transition
         btn.colors = colors;
         
-        GameObject textObj = CreateText(button.transform, "Text", text, 18, Vector2.zero, size);
+        // Set transition mode to color tint
+        btn.transition = Selectable.Transition.ColorTint;
+        btn.targetGraphic = img;
+        
+        GameObject textObj = CreateText(button.transform, "Text", text, 20, Vector2.zero, size);
+        
+        // Make text more visible
+        Text textComponent = textObj.GetComponent<Text>();
+        if (textComponent != null)
+        {
+            textComponent.fontStyle = FontStyle.Bold;
+            // Add shadow for better readability
+            Shadow shadow = textObj.AddComponent<Shadow>();
+            shadow.effectColor = new Color(0, 0, 0, 0.8f);
+            shadow.effectDistance = new Vector2(1, -1);
+        }
         
         return button;
     }
@@ -808,6 +871,14 @@ public class SceneGenerator : EditorWindow
         return slider;
     }
 
+    private static GameObject CreateEventSystem()
+    {
+        GameObject eventSystem = new GameObject("EventSystem");
+        eventSystem.AddComponent<EventSystem>();
+        eventSystem.AddComponent<InputSystemUIInputModule>();
+        return eventSystem;
+    }
+    
     private static void AddScenesToBuildSettings()
     {
         EditorBuildSettingsScene[] scenes = new EditorBuildSettingsScene[]

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e02e16e434ee7334d9fe0188f4c0c9f2
+timeCreated: 1485828310
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 82496
+  packageName: Simple Space - Cartoon Assets
+  packageVersion: 1.0
+  assetPath: Assets/SimpleSpace/Prefabs/Props/SM_Prop_Beacon_01.prefab
+  uploadId: 160948

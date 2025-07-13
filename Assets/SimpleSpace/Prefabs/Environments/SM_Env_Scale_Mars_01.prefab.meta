@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ed9b91748a0545e41b0be2bab5f02a7b
+timeCreated: 1485828313
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 82496
+  packageName: Simple Space - Cartoon Assets
+  packageVersion: 1.0
+  assetPath: Assets/SimpleSpace/Prefabs/Environments/SM_Env_Scale_Mars_01.prefab
+  uploadId: 160948

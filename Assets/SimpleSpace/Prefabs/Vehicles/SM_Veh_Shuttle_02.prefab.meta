@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b1afd82820687ad47b8c88eafe46578c
+timeCreated: 1485836062
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 82496
+  packageName: Simple Space - Cartoon Assets
+  packageVersion: 1.0
+  assetPath: Assets/SimpleSpace/Prefabs/Vehicles/SM_Veh_Shuttle_02.prefab
+  uploadId: 160948

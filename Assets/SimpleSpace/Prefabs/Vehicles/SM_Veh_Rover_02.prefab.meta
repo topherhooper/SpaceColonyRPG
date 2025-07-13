@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a29b21fd03062114f80d3dd3f7ed0e23
+timeCreated: 1485828313
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 82496
+  packageName: Simple Space - Cartoon Assets
+  packageVersion: 1.0
+  assetPath: Assets/SimpleSpace/Prefabs/Vehicles/SM_Veh_Rover_02.prefab
+  uploadId: 160948

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7b64ed17ccf128748b9af2960d1dad68
+timeCreated: 1485828314
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 82496
+  packageName: Simple Space - Cartoon Assets
+  packageVersion: 1.0
+  assetPath: Assets/SimpleSpace/Prefabs/Props/SM_Prop_Tether_03.prefab
+  uploadId: 160948

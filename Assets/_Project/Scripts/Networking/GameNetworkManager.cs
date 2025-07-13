@@ -106,16 +106,46 @@ public class GameNetworkManager : NetworkManager
     
     public void StartSoloColony()
     {
-        Debug.Log("Starting solo colony...");
+        Debug.Log($"[GameNetworkManager] StartSoloColony called. Scene to load: {colonySceneName}");
         
         // Make sure we're not connected
         if (NetworkClient.active || NetworkServer.active)
         {
+            Debug.Log("[GameNetworkManager] Stopping network connections before loading colony...");
             StopHost();
         }
         
+        // Check if scene exists in build settings
+        bool sceneFound = false;
+        for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+        {
+            string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
+            string sceneName = System.IO.Path.GetFileNameWithoutExtension(scenePath);
+            Debug.Log($"[GameNetworkManager] Build scene {i}: {sceneName} (path: {scenePath})");
+            if (sceneName == colonySceneName)
+            {
+                sceneFound = true;
+                break;
+            }
+        }
+        
+        if (!sceneFound)
+        {
+            Debug.LogError($"[GameNetworkManager] Scene '{colonySceneName}' not found in build settings!");
+            return;
+        }
+        
         // Load colony scene
-        SceneManager.LoadScene(colonySceneName);
+        Debug.Log($"[GameNetworkManager] Loading scene: {colonySceneName}");
+        try
+        {
+            SceneManager.LoadScene(colonySceneName);
+            Debug.Log("[GameNetworkManager] LoadScene called successfully");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"[GameNetworkManager] Failed to load scene: {e.Message}");
+        }
     }
     
     public void HostRaid()

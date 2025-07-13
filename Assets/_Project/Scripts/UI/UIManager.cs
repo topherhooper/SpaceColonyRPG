@@ -55,7 +55,18 @@ public class UIManager : MonoBehaviour
     
     void Start()
     {
-        ShowPanel(GameStateManager.Instance?.currentState ?? GameStateManager.GameState.MainMenu);
+        // In main menu scene, we don't need GameStateManager
+        string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        
+        if (currentScene == "MainMenu")
+        {
+            // Main menu is already set up in the scene
+            Debug.Log("UIManager: MainMenu scene loaded");
+        }
+        else if (GameStateManager.Instance != null)
+        {
+            ShowPanel(GameStateManager.Instance.currentState);
+        }
     }
     
     public void ShowPanel(GameStateManager.GameState state)
@@ -339,11 +350,20 @@ public class UIManager : MonoBehaviour
     // Menu navigation methods
     public void StartSoloColony()
     {
-        GameNetworkManager.Instance?.StartSoloColony();
+        Debug.Log("StartSoloColony button clicked");
+        if (GameNetworkManager.Instance != null)
+        {
+            GameNetworkManager.Instance.StartSoloColony();
+        }
+        else
+        {
+            Debug.LogError("GameNetworkManager.Instance is null!");
+        }
     }
     
     public void ShowJoinRaidPanel()
     {
+        Debug.Log("ShowJoinRaidPanel button clicked");
         if (joinRaidPanel != null) joinRaidPanel.SetActive(true);
         if (mainMenuPanel != null) mainMenuPanel.SetActive(false);
     }
@@ -356,13 +376,31 @@ public class UIManager : MonoBehaviour
     
     public void HostRaid()
     {
-        GameNetworkManager.Instance?.HostRaid();
+        Debug.Log("HostRaid button clicked");
+        if (GameNetworkManager.Instance != null)
+        {
+            GameNetworkManager.Instance.HostRaid();
+        }
+        else
+        {
+            Debug.LogError("GameNetworkManager.Instance is null!");
+        }
     }
     
     public void ConnectToHost()
     {
+        Debug.Log("ConnectToHost button clicked");
         string ipAddress = ipInputField != null ? ipInputField.text : "localhost";
-        GameNetworkManager.Instance?.JoinRaid(ipAddress);
+        Debug.Log($"Attempting to connect to: {ipAddress}");
+        
+        if (GameNetworkManager.Instance != null)
+        {
+            GameNetworkManager.Instance.JoinRaid(ipAddress);
+        }
+        else
+        {
+            Debug.LogError("GameNetworkManager.Instance is null!");
+        }
     }
     
     public void ShowSettingsPanel()
@@ -379,6 +417,7 @@ public class UIManager : MonoBehaviour
     
     public void QuitGame()
     {
+        Debug.Log("QuitGame button clicked");
         #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
         #else

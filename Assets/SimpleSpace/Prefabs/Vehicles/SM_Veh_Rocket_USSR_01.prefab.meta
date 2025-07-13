@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 849b4414265a3fa4cadb6689e547b4d9
+timeCreated: 1485828311
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 82496
+  packageName: Simple Space - Cartoon Assets
+  packageVersion: 1.0
+  assetPath: Assets/SimpleSpace/Prefabs/Vehicles/SM_Veh_Rocket_USSR_01.prefab
+  uploadId: 160948

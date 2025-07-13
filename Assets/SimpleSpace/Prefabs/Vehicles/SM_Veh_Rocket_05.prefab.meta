@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 60ce5b77578657f4bab6612cc0cf4b81
+timeCreated: 1486439062
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 82496
+  packageName: Simple Space - Cartoon Assets
+  packageVersion: 1.0
+  assetPath: Assets/SimpleSpace/Prefabs/Vehicles/SM_Veh_Rocket_05.prefab
+  uploadId: 160948

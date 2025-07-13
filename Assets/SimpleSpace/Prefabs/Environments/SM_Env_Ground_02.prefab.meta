@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d8ec9dbec8ec1674685f2e1342773be0
+timeCreated: 1485828602
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 82496
+  packageName: Simple Space - Cartoon Assets
+  packageVersion: 1.0
+  assetPath: Assets/SimpleSpace/Prefabs/Environments/SM_Env_Ground_02.prefab
+  uploadId: 160948

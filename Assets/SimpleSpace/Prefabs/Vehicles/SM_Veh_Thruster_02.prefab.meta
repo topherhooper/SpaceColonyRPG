@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7b753244fc8698a4eaf90156e13e0084
+timeCreated: 1485828310
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 82496
+  packageName: Simple Space - Cartoon Assets
+  packageVersion: 1.0
+  assetPath: Assets/SimpleSpace/Prefabs/Vehicles/SM_Veh_Thruster_02.prefab
+  uploadId: 160948
