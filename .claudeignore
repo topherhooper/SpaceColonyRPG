@@ -1,0 +1,43 @@
+# Unity Generated (HUGE folders)
+Library/
+Temp/
+Obj/
+Build/
+Builds/
+UserSettings/
+Logs/
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.csproj
+*.sln
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large Assets (describe in context instead)
+Assets/ThirdParty/
+Assets/TextMesh*/
+Assets/Plugins/
+*.fbx
+*.wav
+*.mp3
+*.png
+*.jpg
+*.psd
+
+# Third-party packages
+Assets/Mirror/
+Assets/PolygonStarter/
+Assets/SimpleLowPolyNature/
+Assets/Samples/
+Assets/ExampleAssets/
+
+# But INCLUDE these
+!Assets/_Project/**/*.cs
+!Assets/_Project/**/*.md
+!.ai/
+!.ai-templates/
