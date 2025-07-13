@@ -1,0 +1,76 @@
+// Template: Singleton Pattern
+// Usage: "Create GameManager using Singleton template"
+// Replace: [CLASSNAME]
+
+using UnityEngine;
+
+namespace SpaceColony.Core
+{
+    /// <summary>
+    /// Singleton implementation for [CLASSNAME]
+    /// </summary>
+    public class [CLASSNAME] : MonoBehaviour
+    {
+        #region Singleton
+        private static [CLASSNAME] _instance;
+        
+        public static [CLASSNAME] Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = FindObjectOfType<[CLASSNAME]>();
+                    
+                    if (_instance == null)
+                    {
+                        GameObject go = new GameObject("[CLASSNAME]");
+                        _instance = go.AddComponent<[CLASSNAME]>();
+                        DontDestroyOnLoad(go);
+                    }
+                }
+                return _instance;
+            }
+        }
+        
+        private void Awake()
+        {
+            if (_instance == null)
+            {
+                _instance = this;
+                DontDestroyOnLoad(gameObject);
+                Initialize();
+            }
+            else if (_instance != this)
+            {
+                Debug.LogWarning($"[{GetType().Name}] Duplicate instance found, destroying...");
+                Destroy(gameObject);
+            }
+        }
+        #endregion
+
+        #region Private Fields
+        // Add your fields here
+        #endregion
+
+        #region Public Properties
+        // Add your properties here
+        #endregion
+
+        #region Initialization
+        private void Initialize()
+        {
+            Debug.Log($"[{GetType().Name}] Initialized");
+            // Add initialization logic here
+        }
+        #endregion
+
+        #region Public Methods
+        // Add your public methods here
+        #endregion
+
+        #region Private Methods
+        // Add your private methods here
+        #endregion
+    }
+}

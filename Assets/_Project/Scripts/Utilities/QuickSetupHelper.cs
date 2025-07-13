@@ -51,7 +51,7 @@ public class QuickSetupHelper : EditorWindow
         }
     }
     
-    void CreateBasicMaterials()
+    public static void CreateBasicMaterials()
     {
         string materialsPath = "Assets/_Project/Materials";
         if (!Directory.Exists(materialsPath))
@@ -82,7 +82,7 @@ public class QuickSetupHelper : EditorWindow
         AssetDatabase.Refresh();
     }
     
-    Material CreateMaterial(string path, Color color, float metallic, float smoothness)
+    static Material CreateMaterial(string path, Color color, float metallic, float smoothness)
     {
         Material mat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
         mat.SetColor("_BaseColor", color);
@@ -92,7 +92,7 @@ public class QuickSetupHelper : EditorWindow
         return mat;
     }
     
-    void SetTransparent(Material mat)
+    static void SetTransparent(Material mat)
     {
         mat.SetFloat("_Surface", 1); // Transparent
         mat.SetFloat("_Blend", 0); // Alpha
@@ -103,7 +103,7 @@ public class QuickSetupHelper : EditorWindow
         mat.EnableKeyword("_ALPHAPREMULTIPLY_ON");
     }
     
-    void SetupLayersAndTags()
+    public static void SetupLayersAndTags()
     {
         // Add layers
         AddLayer("Ground", 8);
@@ -123,7 +123,7 @@ public class QuickSetupHelper : EditorWindow
         Debug.Log("Layers and tags configured!");
     }
     
-    void AddLayer(string layerName, int layerNumber)
+    static void AddLayer(string layerName, int layerNumber)
     {
         SerializedObject tagManager = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);
         SerializedProperty layers = tagManager.FindProperty("layers");
@@ -135,7 +135,7 @@ public class QuickSetupHelper : EditorWindow
         }
     }
     
-    void AddTag(string tagName)
+    static void AddTag(string tagName)
     {
         SerializedObject tagManager = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);
         SerializedProperty tagsProp = tagManager.FindProperty("tags");

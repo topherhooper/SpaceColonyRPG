@@ -41,3 +41,12 @@ Assets/ExampleAssets/
 !Assets/_Project/**/*.md
 !.ai/
 !.ai-templates/
+
+# ALWAYS include Git context for AI memory
+!.git/HEAD              # Current branch
+!.git/config            # Repository config
+!.git/logs/HEAD         # Recent commits (last 50)
+!.git/COMMIT_EDITMSG    # Last commit message
+!.git/hooks/pre-commit  # Automation hooks
+!.git/hooks/post-commit
+!.gitmessage           # Commit template
