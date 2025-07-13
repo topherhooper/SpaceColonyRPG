@@ -2,14 +2,21 @@
 
 ## Morning Session (4 hours): Core Testing
 
-### Hour 1: Unity Setup
-1. Open Unity project
-2. Run **SpaceColony > Quick Setup Helper**
-   - Click "Create Basic Materials"
-   - Click "Setup Layers and Tags"
-   - Click "Create Basic Prefabs"
-3. Create the 3 required scenes
-4. Import any missing packages (Mirror, TextMeshPro)
+### Hour 1: Unity Setup (WSL Command Line)
+1. Open WSL terminal in project directory
+2. Run initial compile check:
+   ```bash
+   ./compile-check.sh
+   ```
+3. If no errors, run full setup:
+   ```bash
+   ./build-wsl.sh setup
+   ```
+4. This automatically:
+   - Creates all materials
+   - Sets up layers and tags
+   - Generates all 3 scenes with UI
+   - Creates all prefabs with components
 
 ### Hour 2: Prefab Assembly
 Using the templates created:

@@ -2,10 +2,22 @@
 
 ## Current Testing Approach
 
-### 1. Compilation Testing
-- Created `CompilationTest.cs` to verify all scripts compile successfully
-- Fixed multiple compilation errors related to Unity version compatibility
-- Ensured proper namespace usage and dependencies
+### 1. Compilation Testing (WSL Command Line)
+
+#### Quick Compile Check
+```bash
+# Run from project root in WSL
+./compile-check.sh
+
+# Or directly:
+/mnt/c/Program\ Files/Unity/Hub/Editor/6000.1.11f1/Editor/Unity.exe -batchmode -quit -projectPath . -executeMethod UnityEditor.AssetDatabase.Refresh -logFile /dev/stdout | grep -i "error"
+```
+
+#### Benefits:
+- No need to open Unity Editor
+- Instant feedback on compilation errors
+- Can be run in CI/CD pipeline
+- Shows errors directly in terminal
 
 ### 2. Manual Testing Checklist (Day 7)
 As outlined in the 7-day hackathon plan:
@@ -151,6 +163,60 @@ public class CombatTests
 - ParrelSync for multiplayer testing
 - Debug.Log statements for state verification
 - Visual Studio debugger for breakpoints
+
+## WSL Development Workflow
+
+### 1. Add Unity Alias (One-time setup)
+```bash
+# Add to ~/.bashrc
+echo "alias unity='/mnt/c/Program\ Files/Unity/Hub/Editor/6000.1.11f1/Editor/Unity.exe'" >> ~/.bashrc
+source ~/.bashrc
+```
+
+### 2. Development Cycle
+```bash
+# 1. Make code changes in VS Code
+code .
+
+# 2. Quick compile check
+./compile-check.sh
+
+# 3. If errors, check details
+unity -batchmode -quit -projectPath . -executeMethod UnityEditor.AssetDatabase.Refresh -logFile /dev/stdout 2>&1 | less
+
+# 4. Build when ready
+./build-wsl.sh build
+
+# 5. Check build log for errors
+grep -i "error\|exception" build_windows.log
+```
+
+### 3. Common WSL Commands
+```bash
+# Full project setup (scenes, prefabs, materials)
+./build-wsl.sh setup
+
+# Quick validation test
+./build-wsl.sh test
+
+# Clean build artifacts
+./build-wsl.sh clean
+
+# Watch for file changes and auto-compile
+while true; do 
+    inotifywait -r -e modify Assets/_Project/Scripts/
+    ./compile-check.sh
+done
+```
+
+### 4. Error Detection Patterns
+```bash
+# Find specific error types
+unity -batchmode -quit -projectPath . -executeMethod UnityEditor.AssetDatabase.Refresh -logFile /dev/stdout 2>&1 | grep -E "(CS[0-9]{4}|missing|null reference|Mirror|Network)"
+
+# Count errors by type
+unity -batchmode -quit -projectPath . -buildWindows64Player test.exe -logFile - | grep -oE "CS[0-9]{4}" | sort | uniq -c
+```
 
 ## Next Steps
 1. Implement automated unit tests for core systems
