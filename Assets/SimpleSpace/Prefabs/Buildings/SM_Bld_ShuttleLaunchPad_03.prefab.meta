@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: faca33599c968314283223c0d9d1efc7
+timeCreated: 1485828312
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 82496
+  packageName: Simple Space - Cartoon Assets
+  packageVersion: 1.0
+  assetPath: Assets/SimpleSpace/Prefabs/Buildings/SM_Bld_ShuttleLaunchPad_03.prefab
+  uploadId: 160948

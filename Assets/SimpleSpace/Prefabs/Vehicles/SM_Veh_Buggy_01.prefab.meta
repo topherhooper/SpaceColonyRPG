@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 346b7ae912fdf9246a385c627abe1d43
+timeCreated: 1485834783
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 82496
+  packageName: Simple Space - Cartoon Assets
+  packageVersion: 1.0
+  assetPath: Assets/SimpleSpace/Prefabs/Vehicles/SM_Veh_Buggy_01.prefab
+  uploadId: 160948

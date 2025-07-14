@@ -1223,6 +1223,18 @@ public class VictoryScreen : MonoBehaviour
 - [ ] Leaderboard system
 
 ### Build & Distribution
+
+#### Automated Build System
+```bash
+# Command Line Build (No Unity Editor Required!)
+./build.bat windows   # Windows build
+./build.sh mac       # Mac build  
+./build.sh linux     # Linux build
+
+# Build outputs to: Builds/{Platform}/SpaceColonyRPG
+```
+
+#### Manual Build Settings (If Using Unity Editor)
 ```bash
 # Build Settings
 - Platform: Windows/Mac/Linux Standalone
@@ -1235,6 +1247,13 @@ public class VictoryScreen : MonoBehaviour
 - How_To_Host_Multiplayer.txt
 - Known_Issues.txt
 ```
+
+#### Build Automation Features
+- Scene auto-generation if missing
+- Prefab creation from templates
+- Material assignment automation
+- Build validation before compile
+- Post-build packaging
 
 ## Post-Hackathon Next Steps
 

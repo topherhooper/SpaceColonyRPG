@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ac31606ab6bb10b428e198e0a6bf256e
+timeCreated: 1485828312
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 82496
+  packageName: Simple Space - Cartoon Assets
+  packageVersion: 1.0
+  assetPath: Assets/SimpleSpace/Prefabs/Buildings/SM_Bld_Observatory_01.prefab
+  uploadId: 160948

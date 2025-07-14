@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a5db47d41acb97046af5c144644ebdee
+timeCreated: 1485828312
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 82496
+  packageName: Simple Space - Cartoon Assets
+  packageVersion: 1.0
+  assetPath: Assets/SimpleSpace/Prefabs/Props/SM_Prop_SolarPanel_01.prefab
+  uploadId: 160948

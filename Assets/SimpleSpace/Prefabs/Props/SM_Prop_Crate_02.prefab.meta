@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6df54e1dcb130cb42a1a5e1a98c06457
+timeCreated: 1485828310
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 82496
+  packageName: Simple Space - Cartoon Assets
+  packageVersion: 1.0
+  assetPath: Assets/SimpleSpace/Prefabs/Props/SM_Prop_Crate_02.prefab
+  uploadId: 160948

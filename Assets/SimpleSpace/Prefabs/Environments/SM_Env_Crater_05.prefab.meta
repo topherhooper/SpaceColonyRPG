@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e901c19e766210242ae9ff5aa979c865
+timeCreated: 1485828313
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 82496
+  packageName: Simple Space - Cartoon Assets
+  packageVersion: 1.0
+  assetPath: Assets/SimpleSpace/Prefabs/Environments/SM_Env_Crater_05.prefab
+  uploadId: 160948

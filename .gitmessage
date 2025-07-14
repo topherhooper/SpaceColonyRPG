@@ -1,0 +1,27 @@
+# <type>(<scope>): <subject>
+
+# <body>
+
+# <footer>
+
+# Type: feat|fix|docs|style|refactor|perf|test|chore
+# Scope: networking|combat|colony|ui|core|player|enemy|build
+# Subject: imperative mood, max 50 chars
+# Body: what and why, not how (wrap at 72 chars)
+# Footer: breaking changes, issue refs
+
+# Examples:
+# feat(combat): add projectile pooling system
+# fix(networking): resolve player spawn synchronization  
+# perf(colony): optimize colonist pathfinding updates
+# docs(readme): update build instructions
+# refactor(player): extract movement logic to component
+# style(ui): adjust health bar colors for visibility
+# test(combat): add unit tests for damage calculation
+# chore(deps): update Mirror to version 89.0.0
+
+# Remember:
+# - Commits help Claude understand project evolution
+# - Clear messages = better AI assistance
+# - One logical change per commit
+# - Reference issue numbers when applicable

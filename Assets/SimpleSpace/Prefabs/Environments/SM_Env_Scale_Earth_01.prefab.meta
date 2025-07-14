@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 031ec8f8f6152db42a5cfb6e9c00d8a4
+timeCreated: 1485828313
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 82496
+  packageName: Simple Space - Cartoon Assets
+  packageVersion: 1.0
+  assetPath: Assets/SimpleSpace/Prefabs/Environments/SM_Env_Scale_Earth_01.prefab
+  uploadId: 160948

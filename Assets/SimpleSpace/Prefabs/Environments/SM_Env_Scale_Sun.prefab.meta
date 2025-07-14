@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4882e5f33ed35bc47bdee36117a55a92
+timeCreated: 1485828312
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 82496
+  packageName: Simple Space - Cartoon Assets
+  packageVersion: 1.0
+  assetPath: Assets/SimpleSpace/Prefabs/Environments/SM_Env_Scale_Sun.prefab
+  uploadId: 160948

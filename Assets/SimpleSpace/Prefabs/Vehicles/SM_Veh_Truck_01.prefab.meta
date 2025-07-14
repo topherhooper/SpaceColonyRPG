@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1f8440ab4a4ff2b4493b6320aedbc24b
+timeCreated: 1485899922
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 82496
+  packageName: Simple Space - Cartoon Assets
+  packageVersion: 1.0
+  assetPath: Assets/SimpleSpace/Prefabs/Vehicles/SM_Veh_Truck_01.prefab
+  uploadId: 160948

@@ -1,0 +1,217 @@
+// Template: Networked MonoBehaviour
+// Usage: "Create NetworkedEnemy using NetworkedClass template"
+// Replace: [FEATURE], [CLASSNAME], [DESCRIPTION]
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Mirror;
+
+namespace SpaceColony.[FEATURE]
+{
+    /// <summary>
+    /// [DESCRIPTION]
+    /// Networked: Yes
+    /// Authority: Server
+    /// </summary>
+    public class [CLASSNAME] : NetworkBehaviour
+    {
+        #region Constants
+        // Add constants here
+        #endregion
+
+        #region Private Fields
+        [Header("References")]
+        [SerializeField] private GameObject examplePrefab;
+        
+        [Header("Settings")]
+        [SerializeField] private float exampleValue = 1f;
+        
+        private bool _isInitialized = false;
+        #endregion
+
+        #region Public Properties
+        public bool IsReady => _isInitialized;
+        #endregion
+
+        #region Network Variables
+        [SyncVar(hook = nameof(OnStateChanged))]
+        private int _syncedState = 0;
+        
+        [SyncVar(hook = nameof(OnHealthChanged))]
+        private int _health = 100;
+        #endregion
+
+        #region Unity Lifecycle
+        private void Awake()
+        {
+            // Cache references here
+        }
+
+        private void Start()
+        {
+            if (isServer)
+            {
+                // Server-only initialization
+                Initialize();
+            }
+            
+            if (isLocalPlayer)
+            {
+                // Local player setup
+            }
+        }
+
+        private void Update()
+        {
+            if (!_isInitialized) return;
+            
+            if (isServer)
+            {
+                ServerUpdate();
+            }
+            
+            if (isLocalPlayer)
+            {
+                ClientUpdate();
+            }
+        }
+        #endregion
+
+        #region Initialization
+        [Server]
+        private void Initialize()
+        {
+            _isInitialized = true;
+            // Server setup logic
+        }
+        #endregion
+
+        #region Server Methods
+        [Server]
+        private void ServerUpdate()
+        {
+            // Server-only update logic
+        }
+        #endregion
+
+        #region Client Methods
+        [Client]
+        private void ClientUpdate()
+        {
+            // Client-only update logic
+        }
+        #endregion
+
+        #region Commands (Client to Server)
+        [Command]
+        private void CmdPerformAction(Vector3 parameter)
+        {
+            // Validate on server
+            if (!ValidateAction(parameter)) 
+            {
+                Debug.LogWarning($"[{GetType().Name}] Invalid action from {netId}");
+                return;
+            }
+            
+            // Execute on server
+            ExecuteAction(parameter);
+            
+            // Notify all clients
+            RpcActionPerformed(parameter);
+        }
+        #endregion
+
+        #region RPCs (Server to Clients)
+        [ClientRpc]
+        private void RpcActionPerformed(Vector3 parameter)
+        {
+            // Visual/audio feedback for all clients
+            ShowActionEffect(parameter);
+        }
+        
+        [TargetRpc]
+        private void TargetNotifyPlayer(NetworkConnection conn, string message)
+        {
+            // Send message to specific player
+            Debug.Log($"Server says: {message}");
+        }
+        #endregion
+
+        #region SyncVar Hooks
+        private void OnStateChanged(int oldValue, int newValue)
+        {
+            // React to state changes on all clients
+            Debug.Log($"[{GetType().Name}] State changed from {oldValue} to {newValue}");
+        }
+        
+        private void OnHealthChanged(int oldValue, int newValue)
+        {
+            // Update health display
+            if (newValue < oldValue)
+            {
+                ShowDamageEffect();
+            }
+        }
+        #endregion
+
+        #region Helper Methods
+        private bool ValidateAction(Vector3 parameter)
+        {
+            // Add validation logic
+            return true;
+        }
+        
+        private void ExecuteAction(Vector3 parameter)
+        {
+            // Implement action logic
+        }
+        
+        private void ShowActionEffect(Vector3 position)
+        {
+            // Visual effects (client-side only)
+        }
+        
+        private void ShowDamageEffect()
+        {
+            // Damage feedback
+        }
+        #endregion
+
+        #region Public Methods
+        [Server]
+        public void TakeDamage(int amount)
+        {
+            _health = Mathf.Max(0, _health - amount);
+            
+            if (_health <= 0)
+            {
+                Die();
+            }
+        }
+        
+        [Server]
+        private void Die()
+        {
+            // Handle death on server
+            RpcShowDeathEffect();
+            
+            // Cleanup after delay
+            StartCoroutine(DelayedCleanup());
+        }
+        
+        [ClientRpc]
+        private void RpcShowDeathEffect()
+        {
+            // Death effects for all clients
+        }
+        
+        private IEnumerator DelayedCleanup()
+        {
+            yield return new WaitForSeconds(2f);
+            NetworkServer.UnSpawn(gameObject);
+            Destroy(gameObject);
+        }
+        #endregion
+    }
+}

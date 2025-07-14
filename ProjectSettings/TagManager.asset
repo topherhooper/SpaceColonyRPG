@@ -4,6 +4,8 @@
 TagManager:
   serializedVersion: 3
   tags:
+  - SpawnPoint
+  - Player
   - player
   - Enemy
   - Building
@@ -24,9 +26,9 @@ TagManager:
   - Enemy
   - Player
   - Projectile
-  - 
-  - 
-  - 
+  - Environment
+  - UI
+  - PostProcessing
   - 
   - 
   - 
