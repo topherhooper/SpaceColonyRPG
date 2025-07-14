@@ -216,10 +216,10 @@ public class SceneGenerator : EditorWindow
         // Network Manager
         GameObject networkManagerObj = new GameObject("NetworkManager");
         // Add Transport first (required by NetworkManager)
-        KcpTransport transport = networkManagerObj.AddComponent<KcpTransport>();
+        // KcpTransport transport = networkManagerObj.AddComponent<KcpTransport>();
         GameNetworkManager networkManager = networkManagerObj.AddComponent<GameNetworkManager>();
         NetworkManager mirrorNetManager = networkManagerObj.GetComponent<NetworkManager>();
-        mirrorNetManager.transport = transport;
+        // mirrorNetManager.transport = transport;
         mirrorNetManager.networkAddress = "localhost";
         mirrorNetManager.maxConnections = 6;
         
@@ -421,10 +421,10 @@ public class SceneGenerator : EditorWindow
         // Network Manager
         GameObject networkManagerObj = new GameObject("Network Manager");
         // Add Transport first (required by NetworkManager)
-        KcpTransport transport = networkManagerObj.AddComponent<KcpTransport>();
+        // KcpTransport transport = networkManagerObj.AddComponent<KcpTransport>();
         GameNetworkManager networkManager = networkManagerObj.AddComponent<GameNetworkManager>();
         NetworkManager mirrorNetManager = networkManagerObj.GetComponent<NetworkManager>();
-        mirrorNetManager.transport = transport;
+        // mirrorNetManager.transport = transport;
         
         // Raid Manager
         GameObject raidManagerObj = new GameObject("Raid Manager");

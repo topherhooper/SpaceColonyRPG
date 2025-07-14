@@ -1,0 +1,795 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Channel LicenseClient-hoope doesn't exist
+[Licensing::Module] Successfully launched the LicensingClient (PId: 25168)
+Starting IPC server.
+Waiting for clients to connect on \\.\pipe\Unity-LicenseClient-hoope, press Ctrl-C to exit.
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-hoope" at "2025-07-14T02:00:32.078793Z"
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 25168, path: "C:/Program Files/Unity/Hub/Editor/6000.1.11f1/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.16.2+bdef8f5
+  Session Id:              35b1664b6f6d4dc2bcaf6cafbadf0a9d
+  Correlation Id:          c55eef5464da3c4da6ddbf26b7c5d976
+  External correlation Id: 156461377263859609
+  Machine Id:              CbG6pmkHx/rzF54kl34/BSxxqlQ=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-hoope" (connect: 0.57s, validation: 0.05s, handshake: 0.03s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-hoope-notifications" at "2025-07-14T02:00:32.1473773Z"
+[Licensing::Module] Connected to LicensingClient (PId: 25168, launch time: 0.00, total connection time: 0.64s)
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Serial number assigned to: "F4-BP59-ZQRV-BPPT-XGXX-XXXX"
+[Licensing::Module] Serial number assigned to: "20066251893327-UnityPersXXXX"
+[Licensing::Client] Successfully updated license, isAync: True, time: 1.06
+Built from '6000.1/staging' branch; Version is '6000.1.11f1 (9b156bbbd4df) revision 10163563'; Using compiler version '194234433'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26100) 64bit Professional' Language: 'en' Physical Memory: 32694 MB
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Serial number assigned to: "F4-BP59-ZQRV-BPPT-XGXX-XXXX"
+[Licensing::Module] Serial number assigned to: "20066251893327-UnityPersXXXX"
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 0
+Date: 2025-07-14T02:00:33Z
+
+COMMAND LINE ARGUMENTS:
+Unity.exe
+-batchmode
+-quit
+-projectPath
+.
+-runTests
+-testPlatform
+EditMode
+-testResults
+TestResults/editmode-results.xml
+-logFile
+TestResults/editmode-log.txt
+Successfully changed project path to: C:/Users/hoope/Projects/UnityProjects/SpaceColonyRPG
+C:/Users/hoope/Projects/UnityProjects/SpaceColonyRPG
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [29844]  Target information:
+
+Player connection [29844]  * "[IP] 192.168.86.67 [Port] 55504 [Flags] 2 [Guid] 2735498439 [EditorId] 2735498439 [Version] 1048832 [Id] WindowsEditor(7,topherhooper-windows) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [29844]  * "[IP] 172.17.80.1 [Port] 55504 [Flags] 2 [Guid] 2735498439 [EditorId] 2735498439 [Version] 1048832 [Id] WindowsEditor(7,topherhooper-windows) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [29844]  * "[IP] 172.30.80.1 [Port] 55504 [Flags] 2 [Guid] 2735498439 [EditorId] 2735498439 [Version] 1048832 [Id] WindowsEditor(7,topherhooper-windows) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [29844] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [29844] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-15316" after 0.2 seconds.
+Library Redirect Path: Library/
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 57 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.ai.navigation@2.0.8 (location: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\Library\PackageCache\com.unity.ai.navigation@eb5635ad590d)
+    com.unity.collab-proxy@2.8.2 (location: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\Library\PackageCache\com.unity.collab-proxy@c854d1f7d97f)
+    com.unity.ide.rider@3.0.36 (location: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\Library\PackageCache\com.unity.ide.rider@4d374c7eb6db)
+    com.unity.ide.visualstudio@2.0.23 (location: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\Library\PackageCache\com.unity.ide.visualstudio@198cdf337d13)
+    com.unity.inputsystem@1.14.0 (location: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\Library\PackageCache\com.unity.inputsystem@7fe8299111a7)
+    com.unity.nuget.newtonsoft-json@3.2.1 (location: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\Library\PackageCache\com.unity.nuget.newtonsoft-json@74deb55db2a0)
+    com.unity.timeline@1.8.7 (location: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\Library\PackageCache\com.unity.timeline@c58b4ee65782)
+    com.unity.visualscripting@1.9.7 (location: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\Library\PackageCache\com.unity.visualscripting@6279e2b7c485)
+    com.unity.searcher@4.9.3 (location: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\Library\PackageCache\com.unity.searcher@1e17ce91558d)
+    com.unity.burst@1.8.23 (location: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\Library\PackageCache\com.unity.burst@6aff1dd08a0c)
+    com.unity.mathematics@1.3.2 (location: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\Library\PackageCache\com.unity.mathematics@8017b507cc74)
+    com.unity.collections@2.5.1 (location: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\Library\PackageCache\com.unity.collections@56bff8827a7e)
+    com.unity.nuget.mono-cecil@1.11.4 (location: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\Library\PackageCache\com.unity.nuget.mono-cecil@d6f9955a5d5f)
+    com.unity.test-framework.performance@3.1.0 (location: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\Library\PackageCache\com.unity.test-framework.performance@92d1d09a72ed)
+  Built-in packages:
+    com.unity.multiplayer.center@1.0.0 (location: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\Library\PackageCache\com.unity.multiplayer.center@f3fb577b3546)
+    com.unity.render-pipelines.universal@17.1.0 (location: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\Library\PackageCache\com.unity.render-pipelines.universal@3f70d3ddca99)
+    com.unity.test-framework@1.5.1 (location: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\Library\PackageCache\com.unity.test-framework@7056e7f856e9)
+    com.unity.ugui@2.0.0 (location: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\Library\PackageCache\com.unity.ugui@57cef44123c7)
+    com.unity.modules.accessibility@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.accessibility)
+    com.unity.modules.ai@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.physics2d)
+    com.unity.modules.screencapture@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.terrainphysics)
+    com.unity.modules.tilemap@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.tilemap)
+    com.unity.modules.ui@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.umbra)
+    com.unity.modules.unityanalytics@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vehicles@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.video)
+    com.unity.modules.vr@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.vr)
+    com.unity.modules.wind@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.hierarchycore)
+    com.unity.ext.nunit@2.0.5 (location: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\Library\PackageCache\com.unity.ext.nunit@031a54704bff)
+    com.unity.render-pipelines.core@17.1.0 (location: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\Library\PackageCache\com.unity.render-pipelines.core@c8192b95703a)
+    com.unity.shadergraph@17.1.0 (location: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\Library\PackageCache\com.unity.shadergraph@8d13f365c663)
+    com.unity.render-pipelines.universal-config@17.0.3 (location: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\Library\PackageCache\com.unity.render-pipelines.universal-config@8dc1aab4af1d)
+    com.unity.rendering.light-transport@1.0.1 (location: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\Library\PackageCache\com.unity.rendering.light-transport@e647573c7d2a)
+Default GameObject Tag: Player already registered
+Default GameObject BitMask: UI already registered
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+[Subsystems] No new subsystems found in resolved package list.
+Package Manager log level set to [2]
+[Package Manager] Done registering packages in 0.08 seconds
+Refreshing native plugins compatible for Editor in 2.04 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.1.11f1 (9b156bbbd4df)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.1.11f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/hoope/Projects/UnityProjects/SpaceColonyRPG/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+Direct3D:
+    Version:         Direct3D 12 [level 12.1]
+    Renderer:        NVIDIA GeForce RTX 3070 (ID=0x2484)
+    Vendor:          NVIDIA
+    VRAM:            8018 MB
+    App VRAM Budget: 7250 MB
+    Driver:          32.0.15.6636
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Serial number assigned to: "F4-BP59-ZQRV-BPPT-XGXX-XXXX"
+[Licensing::Module] Serial number assigned to: "20066251893327-UnityPersXXXX"
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.1.11f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.1.11f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.1.11f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56316
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.1.11f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.1.11f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.1.11f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.002694 seconds.
+- Loaded All Assemblies, in  0.301 seconds
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.265 seconds
+Domain Reload Profiling: 564ms
+	BeginReloadAssembly (99ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (29ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (41ms)
+	LoadAllAssembliesAndSetupDomain (120ms)
+		LoadAssemblies (97ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (118ms)
+			TypeCache.Refresh (116ms)
+				TypeCache.ScanAssembly (106ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (266ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (237ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (47ms)
+			SetLoadedEditorAssemblies (3ms)
+			BeforeProcessingInitializeOnLoad (44ms)
+			ProcessInitializeOnLoadAttributes (99ms)
+			ProcessInitializeOnLoadMethodAttributes (44ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Serial number assigned to: "F4-BP59-ZQRV-BPPT-XGXX-XXXX"
+[Licensing::Module] Serial number assigned to: "20066251893327-UnityPersXXXX"
+Application.AssetDatabase Initial Refresh Start
+[ScriptCompilation] Requested script compilation because: Assetdatabase observed changes in script compilation related files
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:80
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG\
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 30.9549ms
+Starting: C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: C:/Users/hoope/Projects/UnityProjects/SpaceColonyRPG
+DisplayProgressbar: Compiling Scripts
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+warn: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.runtime.interopservices.windowsruntime has duplicate hint path. Ignoring "C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\Facades\System.Runtime.InteropServices.WindowsRuntime.dll" in favor of "C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\NetStandard\Extensions\2.0.0\System.Runtime.InteropServices.WindowsRuntime.dll"
+warn: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.componentmodel.composition has duplicate hint path. Ignoring "C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\UnityReferenceAssemblies\unity-4.8-api\System.ComponentModel.Composition.dll" in favor of "C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\NetStandard\compat\2.1.0\shims\netfx\System.ComponentModel.Composition.dll"
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Burst.Cecil, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library\PackageCache\com.unity.burst@6aff1dd08a0c\Unity.Burst.CodeGen\Unity.Burst.Cecil.dll
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Mono.Cecil, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library\PackageCache\com.unity.nuget.mono-cecil@d6f9955a5d5f\Mono.Cecil.dll
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Mono.CecilX, Version=0.11.0.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Assets\Mirror\Plugins\Mono.Cecil\Mono.CecilX.dll
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 44.5734ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+info: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/1900b0aE.dag/SpaceColonyRPG.Editor.dll, with 132 defines and 275 references
+info: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Mirror.Weaver.ILPostProcessorHook, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+info: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Mirror.Weaver.ILPostProcessorHook
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+info: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.dll, with 134 defines and 312 references
+info: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Mirror.Weaver.ILPostProcessorHook, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+info: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Mirror.Weaver.ILPostProcessorHook
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Mirror, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with Library\Bee\artifacts\1900b0aE.dag\Mirror.dll
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Managed\UnityEngine\UnityEngine.CoreModule.dll
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+info: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll, with 132 defines and 332 references
+info: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Mirror.Weaver.ILPostProcessorHook, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+info: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Mirror.Weaver.ILPostProcessorHook
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved UnityEditor.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Data\Managed\UnityEngine\UnityEditor.CoreModule.dll
+Find all reader and writers took 57 milliseconds
+Script Module: Assembly-CSharp.dll
+Find all reader and writers took 59 milliseconds
+Script Module: Assembly-CSharp-Editor.dll
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Mono.CecilX.Rocks, Version=0.11.0.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Assets\Mirror\Plugins\Mono.Cecil\Mono.CecilX.Rocks.dll
+Weave behaviours and messages took 16 milliseconds
+info: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+Weave behaviours and messages took 18 milliseconds
+info: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+Find all reader and writers took 153 milliseconds
+Script Module: SpaceColonyRPG.Editor.dll
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Collections, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with Library\Bee\artifacts\1900b0aE.dag\Unity.Collections.dll
+Weave behaviours and messages took 14 milliseconds
+info: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+info: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 1193.7672ms
+info: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+info: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+info: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Burst.Cecil.Rocks, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library\PackageCache\com.unity.burst@6aff1dd08a0c\Unity.Burst.CodeGen\Unity.Burst.Cecil.Rocks.dll
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 1169.2686ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 1386.1296ms
+ExitCode: 0 Duration: 2s161ms
+[741/958    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY ls=DIR $*  
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY cp=COPY $*  
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY xcp=XCOPY $* 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY mv=MOVE $*  
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY clear=CLS 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY h=DOSKEY /HISTORY 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY bazel=bazelisk $* 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY python=C:\Users\hoope\anaconda3\python.exe $* 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY alias=if ".$*." == ".." ( DOSKEY /MACROS ) else ( DOSKEY $* ) 
+[946/958    0s] Csc Library/Bee/artifacts/1900b0aE.dag/SpaceColonyRPG.Editor.dll (+2 others)
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY ls=DIR $*  
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY cp=COPY $*  
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY xcp=XCOPY $* 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY mv=MOVE $*  
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY clear=CLS 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY h=DOSKEY /HISTORY 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY bazel=bazelisk $* 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY python=C:\Users\hoope\anaconda3\python.exe $* 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY alias=if ".$*." == ".." ( DOSKEY /MACROS ) else ( DOSKEY $* ) 
+
+Assets\_Project\Scripts\Editor\ColonySceneSetup.cs(169,43): warning CS0618: 'Object.FindObjectOfType<T>()' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindFirstObjectByType instead or if finding any instance is acceptable the faster Object.FindAnyObjectByType'
+[947/958    0s] Csc Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.dll (+2 others)
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY ls=DIR $*  
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY cp=COPY $*  
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY xcp=XCOPY $* 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY mv=MOVE $*  
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY clear=CLS 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY h=DOSKEY /HISTORY 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY bazel=bazelisk $* 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY python=C:\Users\hoope\anaconda3\python.exe $* 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY alias=if ".$*." == ".." ( DOSKEY /MACROS ) else ( DOSKEY $* ) 
+[948/958    0s] Csc Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll (+2 others)
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY ls=DIR $*  
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY cp=COPY $*  
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY xcp=XCOPY $* 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY mv=MOVE $*  
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY clear=CLS 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY h=DOSKEY /HISTORY 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY bazel=bazelisk $* 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY python=C:\Users\hoope\anaconda3\python.exe $* 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY alias=if ".$*." == ".." ( DOSKEY /MACROS ) else ( DOSKEY $* ) 
+[949/958    1s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/SpaceColonyRPG.Editor.dll (+pdb)
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY ls=DIR $*  
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY cp=COPY $*  
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY xcp=XCOPY $* 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY mv=MOVE $*  
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY clear=CLS 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY h=DOSKEY /HISTORY 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY bazel=bazelisk $* 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY python=C:\Users\hoope\anaconda3\python.exe $* 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY alias=if ".$*." == ".." ( DOSKEY /MACROS ) else ( DOSKEY $* ) 
+
+Processing assembly Library/Bee/artifacts/1900b0aE.dag/SpaceColonyRPG.Editor.dll, with 132 defines and 275 references
+
+processors: Mirror.Weaver.ILPostProcessorHook, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Mirror.Weaver.ILPostProcessorHook
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[950/958    0s] CopyFiles Library/ScriptAssemblies/SpaceColonyRPG.Editor.pdb
+[951/958    0s] CopyFiles Library/ScriptAssemblies/SpaceColonyRPG.Editor.dll
+[952/958    1s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Assembly-CSharp.dll (+pdb)
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY ls=DIR $*  
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY cp=COPY $*  
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY xcp=XCOPY $* 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY mv=MOVE $*  
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY clear=CLS 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY h=DOSKEY /HISTORY 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY bazel=bazelisk $* 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY python=C:\Users\hoope\anaconda3\python.exe $* 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY alias=if ".$*." == ".." ( DOSKEY /MACROS ) else ( DOSKEY $* ) 
+
+Processing assembly Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.dll, with 134 defines and 312 references
+
+processors: Mirror.Weaver.ILPostProcessorHook, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Mirror.Weaver.ILPostProcessorHook
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[953/958    1s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Assembly-CSharp-Editor.dll (+pdb)
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY ls=DIR $*  
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY cp=COPY $*  
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY xcp=XCOPY $* 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY mv=MOVE $*  
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY clear=CLS 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY h=DOSKEY /HISTORY 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY bazel=bazelisk $* 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY python=C:\Users\hoope\anaconda3\python.exe $* 
+
+
+
+C:\Users\hoope\Projects\UnityProjects\SpaceColonyRPG>DOSKEY alias=if ".$*." == ".." ( DOSKEY /MACROS ) else ( DOSKEY $* ) 
+
+Processing assembly Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll, with 132 defines and 332 references
+
+processors: Mirror.Weaver.ILPostProcessorHook, Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Mirror.Weaver.ILPostProcessorHook
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[954/958    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.pdb
+[955/958    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.dll
+[956/958    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.pdb
+[957/958    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.dll
+*** Tundra build success (2.14 seconds), 13 items updated, 958 evaluated
+Assets\_Project\Scripts\Editor\ColonySceneSetup.cs(169,43): warning CS0618: 'Object.FindObjectOfType<T>()' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindFirstObjectByType instead or if finding any instance is acceptable the faster Object.FindAnyObjectByType'
+AssetDatabase: script compilation time: 2.526841s
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  1.167 seconds
+Start importing Assets/Tests using Guid(0a4a76b14d236974280ce2d59ad60a57) (DefaultImporter) -> (artifact id: 'e01ed9c2b27c83a7ea4aa1d7755e1262') in 0.0226796 seconds
+Start importing Assets/Tests/EditMode using Guid(7acd170351e20a84fb965e5d430e9074) (DefaultImporter) -> (artifact id: 'b1825e1b4f475bf9fd7f1134738e10bd') in 0.0070734 seconds
+Start importing Assets/Tests/PlayMode using Guid(8ad47d5e1853ea74488b741591a86edd) (DefaultImporter) -> (artifact id: '56d9e548068cfacf7302b372fd1c05c3') in 0.005684 seconds
+Start importing Assets/Tests/PlayMode/Integration using Guid(41eddc3d1cb6e23459917c8d930257ec) (DefaultImporter) -> (artifact id: '3912b6cff4d6c9c08d0e38d00fc80ef0') in 0.0079341 seconds
+Start importing Assets/Tests/PlayMode/Networking using Guid(24d3fe416abada8449b289f43062186e) (DefaultImporter) -> (artifact id: '55ef6495e24764cfdf3fba4c6c011e9b') in 0.0067208 seconds
+Start importing Assets/Tests/EditMode/Utilities using Guid(7433b96f16db480458db4680657337f2) (DefaultImporter) -> (artifact id: 'bb392e3c3dffae17e2155e40be1e78cc') in 0.0061117 seconds
+Start importing Assets/Tests/EditMode/Combat using Guid(55886556ecbefa14faa4e8263d887015) (DefaultImporter) -> (artifact id: '8f0185625b7131ca8ce8222f1c710644') in 0.0060093 seconds
+Start importing Assets/Tests/EditMode/Player using Guid(88e5cb9a3946f7b44b79d351dc17643a) (DefaultImporter) -> (artifact id: 'd52008dde11b1e71ba64903070fb90c7') in 0.0053459 seconds
+Start importing Assets/Tests/EditMode/Colony using Guid(5a91295c6b058fd48b6bf49356960a29) (DefaultImporter) -> (artifact id: 'f561d1a5781caa2aec6f9cbb717ce412') in 0.0055653 seconds
+Start importing Assets/_Project/Scripts/Editor/SpaceColonyRPG.Editor.asmdef using Guid(50a162d4c6be0e74c830d4620e0f58b2) (AssemblyDefinitionImporter) -> (artifact id: '37ad3e0dd8d1dd238cf0c68d42925ccc') in 0.0066312 seconds
+Start importing Assets/Tests/EditMode/EditModeTests.asmdef using Guid(e44b28dc937bb38499d655a0b2c3b4a2) (AssemblyDefinitionImporter) -> (artifact id: '4f586cb8f5d15e55dd3a421d9d7c4c0a') in 0.0065381 seconds
+Start importing Assets/Tests/PlayMode/PlayModeTests.asmdef using Guid(edccd53c835e6884f9bc2b9f0864d9b7) (AssemblyDefinitionImporter) -> (artifact id: 'ae56d233674e6181cd960b6e6cabbad7') in 0.0062263 seconds
+Start importing Assets/_Project/Scripts/SpaceColonyRPG.Runtime.asmdef using Guid(0fa9afb18ee919941a707c1d177830f5) (AssemblyDefinitionImporter) -> (artifact id: 'a1a559e2645d950c8c341f8c29f5f661') in 0.0058488 seconds
+Refreshing native plugins compatible for Editor in 1.35 ms, found 3 plugins.
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Mirror | mirror-networking.com | discord.gg/N9QVxbM
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  2.699 seconds
+Domain Reload Profiling: 3861ms
+	BeginReloadAssembly (259ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (10ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (135ms)
+	RebuildCommonClasses (29ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (27ms)
+	LoadAllAssembliesAndSetupDomain (838ms)
+		LoadAssemblies (701ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (217ms)
+			TypeCache.Refresh (159ms)
+				TypeCache.ScanAssembly (146ms)
+			BuildScriptInfoCaches (43ms)
+			ResolveRequiredComponents (11ms)
+	FinalizeReload (2699ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (2519ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (25ms)
+			SetLoadedEditorAssemblies (4ms)
+			BeforeProcessingInitializeOnLoad (122ms)
+			ProcessInitializeOnLoadAttributes (2266ms)
+			ProcessInitializeOnLoadMethodAttributes (96ms)
+			AfterProcessingInitializeOnLoad (5ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (6ms)
+Start importing Assets/Tests/SETUP_REQUIRED.md using Guid(b20708f22cee8a947962314c513604bf) (TextScriptImporter) -> (artifact id: 'd1bf5a5a15a0a6b6015844094ef660b5') in 0.0210997 seconds
+Start importing Assets/Tests/README.md using Guid(95e69fa58de535d4092f8f1188b33a98) (TextScriptImporter) -> (artifact id: '6526609775f0354a0ab7b67285dd1c94') in 0.0091617 seconds
+Start importing Assets/_Project/Prefabs/Buildings/Storage.prefab using Guid(557ba1821e734fe44af276ef03d94f2f) (PrefabImporter) -> (artifact id: 'dd5ed9b98b7f77fc5d673673b50aabbc') in 0.0070927 seconds
+Start importing Assets/_Project/Prefabs/Buildings/Farm.prefab using Guid(573072048fb2a51478575bd8a86930b6) (PrefabImporter) -> (artifact id: '99a4fa239bafaa06bc2d1604a93b1a1c') in 0.0035572 seconds
+Start importing Assets/_Project/Prefabs/Buildings/Generator.prefab using Guid(cae4364be5f7935428aae9e1837a18a3) (PrefabImporter) -> (artifact id: 'e4ad664013aa0d5c41ab0e94ca72ebea') in 0.0033129 seconds
+Start importing Assets/_Project/Prefabs/Buildings/Mine.prefab using Guid(0df84186c1a21cf4099bccb0a7e7183c) (PrefabImporter) -> (artifact id: 'e4937e7252b2517c814e8fe5a99f7d45') in 0.0034121 seconds
+Start importing Assets/_Project/Prefabs/Buildings/Barracks.prefab using Guid(2dddc560c1adecf4e9a563bcea482c8a) (PrefabImporter) -> (artifact id: '3a385043121ce2beb1e6cb5ddcf7dc17') in 0.0028855 seconds
+Refreshing native plugins compatible for Editor in 1.31 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=669f32d9c72d0b546a2762f4cc60a665): Total: 7.209 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=18 (actual=18, local cache=0, cache server=0)
+		Asset DB Process Time: managed=6 ms, native=3259 ms
+		Asset DB Callback time: managed=192 ms, native=4 ms
+		Scripting: domain reloads=1, domain reload time=1167 ms, compile time=2528 ms, other=50 ms
+		Project Asset Count: scripts=1549, non-scripts=3344
+		Asset File Changes: new=0, changed=3, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.002ms
+	InvokePackagesCallback: 2.131ms
+	ApplyChangesToAssetFolders: 0.435ms
+	Scan: 96.791ms
+	OnSourceAssetsModified: 0.840ms
+	CategorizeAssetsWithTransientArtifact: 42.186ms
+	ProcessAssetsWithTransientArtifactChanges: 67.626ms
+	CategorizeAssets: 52.878ms
+	ImportOutOfDateAssets: 2870.515ms (177.842ms without children)
+		ImportManagerImport: 162.202ms (7.344ms without children)
+			ImportInProcess: 154.632ms
+			UpdateCategorizedAssets: 0.226ms
+		CompileScripts: 2528.123ms
+		ReloadNativeAssets: 0.050ms
+		UnloadImportedAssets: 1.032ms
+		ReloadImportedAssets: 0.006ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.895ms
+		InitializingProgressBar: 0.012ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.001ms
+		OnDemandSchedulerStart: 0.352ms
+	PostProcessAllAssets: 192.461ms
+	Hotreload: 3.796ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.001ms
+	UnloadStreamsBegin: 1.501ms
+	PersistCurrentRevisions: 0.262ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 3.945ms
+	Untracked: 3877.863ms
+
+Application.AssetDatabase Initial Refresh End
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.01 seconds
+Scanning for USB devices : 12.673ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-Space Colony Defender
+Cannot add menu item 'SpaceColony/Quick Setup Helper' for method 'SetupAutomation.ShowQuickSetupWindow' because a menu item with the same name already exists.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.MenuItemScriptCommand:Update (UnityEditor.MenuItem,System.Reflection.MethodInfo)
+UnityEditor.MenuService:ExtractMenuItemsFromAttributes ()
+UnityEditor.MenuService:GetMenuItemsFromAttributesById (string)
+UnityEditor.MenuService:GetMenuItemsFromAttributes ()
+
+Unloading 15 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6618 unused Assets / (4.4 MB). Loaded Objects now: 7358.
+Memory consumption went from 194.5 MB to 190.2 MB.
+Total: 10.072800 ms (FindLiveObjects: 1.073800 ms CreateObjectMapping: 0.737300 ms MarkObjects: 5.581400 ms  DeleteObjects: 2.679700 ms)
+
+Batchmode quit successfully invoked - shutting down!
+[Physics::Module] Cleanup current backned.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-hoope-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-hoope channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+Shut down.
+Cleanup mono
+abort_threads: Failed aborting id: 0000000000000C24, mono_thread_manage will ignore it
+
+abort_threads: Failed aborting id: 000000000000838C, mono_thread_manage will ignore it
+
+abort_threads: Failed aborting id: 0000000000000C24, mono_thread_manage will ignore it
+
+abort_threads: Failed aborting id: 000000000000838C, mono_thread_manage will ignore it
+
+Exiting batchmode successfully now!
+Exiting without the bug reporter. Application will terminate with return code 0

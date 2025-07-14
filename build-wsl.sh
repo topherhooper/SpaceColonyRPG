@@ -331,7 +331,28 @@ run_all_tests() {
         
         # Show failed tests from log
         if [ -f "$edit_log" ]; then
-            grep -A 5 "FAILED:" "$edit_log" | head -20
+            echo -e "\n${RED}=== Failed Test Details ===${NC}"
+            
+            # Show failed test names
+            grep -E "(FAILED:|Failed:)" "$edit_log" | head -10
+            
+            # Show assertion failures
+            echo -e "\n${RED}=== Assertion Failures ===${NC}"
+            grep -A 3 -B 1 "Assert\." "$edit_log" | grep -v "^--$" | head -20
+            
+            # Show exceptions
+            if grep -q "Exception:" "$edit_log"; then
+                echo -e "\n${RED}=== Exceptions ===${NC}"
+                grep -A 5 "Exception:" "$edit_log" | head -20
+            fi
+            
+            # Show compilation errors if any
+            if grep -q "error CS" "$edit_log"; then
+                echo -e "\n${RED}=== Compilation Errors ===${NC}"
+                grep "error CS" "$edit_log" | head -10
+            fi
+            
+            echo -e "\n${YELLOW}Full log available at: $edit_log${NC}"
         fi
     fi
     
@@ -362,7 +383,28 @@ run_all_tests() {
         
         # Show failed tests from log
         if [ -f "$play_log" ]; then
-            grep -A 5 "FAILED:" "$play_log" | head -20
+            echo -e "\n${RED}=== Failed Test Details ===${NC}"
+            
+            # Show failed test names
+            grep -E "(FAILED:|Failed:)" "$play_log" | head -10
+            
+            # Show assertion failures
+            echo -e "\n${RED}=== Assertion Failures ===${NC}"
+            grep -A 3 -B 1 "Assert\." "$play_log" | grep -v "^--$" | head -20
+            
+            # Show exceptions
+            if grep -q "Exception:" "$play_log"; then
+                echo -e "\n${RED}=== Exceptions ===${NC}"
+                grep -A 5 "Exception:" "$play_log" | head -20
+            fi
+            
+            # Show compilation errors if any
+            if grep -q "error CS" "$play_log"; then
+                echo -e "\n${RED}=== Compilation Errors ===${NC}"
+                grep "error CS" "$play_log" | head -10
+            fi
+            
+            echo -e "\n${YELLOW}Full log available at: $play_log${NC}"
         fi
     fi
     
@@ -416,9 +458,31 @@ run_test_category() {
         echo -e "${GREEN}✅ $category tests passed!${NC}"
     else
         echo -e "${RED}❌ $category tests failed!${NC}"
+        
         # Show failures
         if [ -f "$log_file" ]; then
-            grep -A 5 "FAILED:" "$log_file" | head -20
+            echo -e "\n${RED}=== Failed Test Details ===${NC}"
+            
+            # Show failed test names
+            grep -E "(FAILED:|Failed:)" "$log_file" | head -10
+            
+            # Show assertion failures
+            echo -e "\n${RED}=== Assertion Failures ===${NC}"
+            grep -A 3 -B 1 "Assert\." "$log_file" | grep -v "^--$" | head -20
+            
+            # Show exceptions
+            if grep -q "Exception:" "$log_file"; then
+                echo -e "\n${RED}=== Exceptions ===${NC}"
+                grep -A 5 "Exception:" "$log_file" | head -20
+            fi
+            
+            # Show compilation errors if any
+            if grep -q "error CS" "$log_file"; then
+                echo -e "\n${RED}=== Compilation Errors ===${NC}"
+                grep "error CS" "$log_file" | head -10
+            fi
+            
+            echo -e "\n${YELLOW}Full log available at: $log_file${NC}"
         fi
     fi
     

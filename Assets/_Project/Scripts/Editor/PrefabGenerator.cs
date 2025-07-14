@@ -57,8 +57,9 @@ public class PrefabGenerator : EditorWindow
 
         // Add components
         player.AddComponent<NetworkIdentity>();
-        player.AddComponent<NetworkTransformReliable>();
-        player.AddComponent<NetworkAnimator>();
+        // Optional Mirror components - uncomment if available
+        // player.AddComponent<NetworkTransformReliable>();
+        // player.AddComponent<NetworkAnimator>();
         
         CharacterController controller = player.AddComponent<CharacterController>();
         controller.height = 2f;
@@ -104,7 +105,8 @@ public class PrefabGenerator : EditorWindow
 
         // Add components
         enemy.AddComponent<NetworkIdentity>();
-        enemy.AddComponent<NetworkTransformReliable>();
+        // Optional Mirror component - uncomment if available
+        // enemy.AddComponent<NetworkTransformReliable>();
         
         CapsuleCollider collider = enemy.GetComponent<CapsuleCollider>();
         collider.height = 2f;
@@ -154,7 +156,8 @@ public class PrefabGenerator : EditorWindow
 
         // Add components
         projectile.AddComponent<NetworkIdentity>();
-        projectile.AddComponent<NetworkTransformUnreliable>();
+        // Optional Mirror component - uncomment if available
+        // projectile.AddComponent<NetworkTransformUnreliable>();
         
         Rigidbody rb = projectile.AddComponent<Rigidbody>();
         rb.mass = 0.1f;
@@ -288,7 +291,8 @@ public class PrefabGenerator : EditorWindow
 
         // Add components
         loot.AddComponent<NetworkIdentity>();
-        loot.AddComponent<NetworkTransformReliable>();
+        // Optional Mirror component - uncomment if available
+        // loot.AddComponent<NetworkTransformReliable>();
         
         SphereCollider collider = loot.AddComponent<SphereCollider>();
         collider.isTrigger = true;
