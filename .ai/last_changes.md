@@ -1,56 +1,48 @@
 # Recent Changes (Auto-generated)
-Generated: 2025-07-13 19:28:20
+Generated: 2025-07-13 19:31:26
 
 ## Modified Files
-Assets/_Project/Scripts/Colony/ColonyEnvironmentSetup.cs
-Assets/_Project/Scripts/Editor/AlienMaterialCreator.cs
-Assets/_Project/Scripts/UI/MenuController.cs
-ProjectPlanningDocs/ColonySceneFixes.md
-ProjectPlanningDocs/ColonyScenePlan.md
-ProjectPlanningDocs/SceneCodingPlan.md
+Assets/_Project/Scripts/Colony/EnergyCrystalPrefab.cs
+Assets/_Project/Scripts/Colony/SpaceSkyboxController.cs
 
 ## Statistics  
- .../Scripts/Colony/ColonyEnvironmentSetup.cs       |  136 +
- .../Scripts/Editor/AlienMaterialCreator.cs         |  152 +
- Assets/_Project/Scripts/UI/MenuController.cs       |  526 +--
- ProjectPlanningDocs/ColonySceneFixes.md            | 1126 ++++++
- ProjectPlanningDocs/ColonyScenePlan.md             | 3956 ++++++++++----------
- ProjectPlanningDocs/SceneCodingPlan.md             | 1098 +++---
- 6 files changed, 4209 insertions(+), 2785 deletions(-)
+ .../_Project/Scripts/Colony/EnergyCrystalPrefab.cs | 215 +++++++++++++++++++
+ .../Scripts/Colony/SpaceSkyboxController.cs        | 234 +++++++++++++++++++++
+ 2 files changed, 449 insertions(+)
 
 ## Key Changes
 --- /dev/null
-+++ b/Assets/_Project/Scripts/Colony/ColonyEnvironmentSetup.cs
-@@ -0,0 +1,136 @@
++++ b/Assets/_Project/Scripts/Colony/EnergyCrystalPrefab.cs
+@@ -0,0 +1,215 @@
 +using UnityEngine;
 +namespace SpaceColonyRPG.Colony
 +{
-+    public class ColonyEnvironmentSetup : MonoBehaviour
++    public class EnergyCrystalPrefab : MonoBehaviour
 +    {
-+        [Header("Terrain Settings")]
-+        public Material alienGroundMaterial;
-+        public Texture2D heightmapTexture;
-+        public float terrainSize = 100f;
-+        public float maxHeight = 5f;
++        [Header("Crystal Settings")]
++        public float glowIntensity = 2f;
++        public float pulseSpeed = 1f;
++        public Color crystalColor = new Color(0.3f, 0.8f, 1f);
 +        
-+        [Header("Decoration Prefabs")]
-+        public GameObject[] rockPrefabs; // Use SimpleLowPolyNature rocks
-+        public GameObject[] alienTreePrefabs; // Recolored trees
-+        public GameObject[] crystalPrefabs; // Energy crystals
-+        public GameObject[] debrisPrefabs; // Space debris
++        [Header("Mesh Generation")]
++        public bool generateMeshOnStart = true;
++        public float crystalHeight = 2f;
++        public float crystalWidth = 0.5f;
 +        
-+        [Header("Spawn Settings")]
-+        public int minRocks = 30;
-+        public int maxRocks = 50;
-+        public int minTrees = 20;
-+        public int maxTrees = 40;
-+        public int minCrystals = 10;
-+        public int maxCrystals = 15;
-+        public int minDebris = 5;
-+        public int maxDebris = 10;
++        [Header("Effects")]
++        public bool enableRotation = true;
++        public float rotationSpeed = 10f;
++        public bool enableFloating = true;
++        public float floatAmplitude = 0.1f;
++        public float floatSpeed = 1f;
++        
++        private Material crystalMaterial;
++        private float baseIntensity;
++        private Vector3 startPosition;
++        private MeshRenderer meshRenderer;
 +        
 
 ## Staged Changes Summary
-- Files changed: 6
-- Insertions: 4209 insertion
-- Deletions: 2785 deletion
+- Files changed: 2
+- Insertions: 449 insertion
+- Deletions: 0 deletions
