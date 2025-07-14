@@ -1,173 +1,170 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections.Generic;
 
-public class Colonist : MonoBehaviour
+namespace SpaceColonyRPG.Colony
 {
-    public enum State { Idle, Working, Moving }
-    
-    [Header("State")]
-    public State currentState = State.Idle;
-    
-    [Header("Movement")]
-    public float moveSpeed = 3f;
-    public float workSpeed = 1f;
-    
-    [Header("Work")]
-    private Building targetBuilding;
-    private Vector3 targetPosition;
-    private float idleTimer = 0f;
-    private float searchInterval = 2f;
-    
-    private NavMeshAgent navAgent;
-    
-    void Start()
+    public enum ColonistState
     {
-        navAgent = GetComponent<NavMeshAgent>();
-        if (navAgent != null)
+        Idle,
+        Wandering,
+        WorkingAnimation
+    }
+    
+    public class Colonist : MonoBehaviour
+    {
+        [Header("Identity")]
+        public string colonistName;
+        
+        [Header("Movement")]
+        public float moveSpeed = 3f;
+        public float rotationSpeed = 120f;
+        
+        [Header("State")]
+        public ColonistState currentState = ColonistState.Idle;
+        
+        private NavMeshAgent agent;
+        private Animator animator;
+        private List<Transform> wanderPoints;
+        private Transform currentTarget;
+        private float stateTimer = 0f;
+    
+        public void Initialize(string name, List<Transform> wander)
         {
-            navAgent.speed = moveSpeed;
+            colonistName = name;
+            wanderPoints = wander;
+            
+            // Setup components
+            agent = GetComponent<NavMeshAgent>();
+            if (!agent) agent = gameObject.AddComponent<NavMeshAgent>();
+            
+            agent.speed = moveSpeed;
+            agent.angularSpeed = rotationSpeed;
+            agent.stoppingDistance = 0.5f;
+            
+            animator = GetComponent<Animator>();
+            
+            // Start behavior
+            ChangeState(ColonistState.Idle);
         }
         
-        idleTimer = Random.Range(0f, searchInterval);
-    }
-    
-    void Update()
-    {
-        switch (currentState)
+        void Update()
         {
-            case State.Idle:
-                HandleIdle();
-                break;
-                
-            case State.Moving:
-                HandleMoving();
-                break;
-                
-            case State.Working:
-                HandleWorking();
-                break;
-        }
-    }
-    
-    void HandleIdle()
-    {
-        idleTimer += Time.deltaTime;
-        
-        if (idleTimer >= searchInterval)
-        {
-            idleTimer = 0f;
-            FindNearestJob();
-        }
-    }
-    
-    void HandleMoving()
-    {
-        if (navAgent != null && navAgent.enabled)
-        {
-            if (!navAgent.pathPending && navAgent.remainingDistance < 0.5f)
+            stateTimer += Time.deltaTime;
+            
+            switch (currentState)
             {
-                if (targetBuilding != null)
+                case ColonistState.Idle:
+                    UpdateIdle();
+                    break;
+                case ColonistState.Wandering:
+                    UpdateWandering();
+                    break;
+                case ColonistState.WorkingAnimation:
+                    UpdateWorking();
+                    break;
+            }
+            
+            // Update animator
+            if (animator && agent)
+            {
+                animator.SetFloat("Speed", agent.velocity.magnitude);
+            }
+        }
+        
+        void UpdateIdle()
+        {
+            // Wait 2-5 seconds then wander
+            if (stateTimer > Random.Range(2f, 5f))
+            {
+                ChangeState(ColonistState.Wandering);
+            }
+        }
+        
+        void UpdateWandering()
+        {
+            if (!agent) return;
+            
+            // Check if reached destination
+            if (!agent.pathPending && agent.remainingDistance < 0.5f)
+            {
+                // Chance to "work" at this location
+                if (Random.value < 0.3f && IsNearBuilding())
                 {
-                    currentState = State.Working;
-                    targetBuilding.SetWorker(true);
+                    ChangeState(ColonistState.WorkingAnimation);
                 }
                 else
                 {
-                    currentState = State.Idle;
+                    ChangeState(ColonistState.Idle);
                 }
             }
         }
-        else
+        
+        void UpdateWorking()
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-            
-            if (Vector3.Distance(transform.position, targetPosition) < 0.5f)
+            // Play work animation for 3-6 seconds
+            if (stateTimer > Random.Range(3f, 6f))
             {
-                if (targetBuilding != null)
+                ChangeState(ColonistState.Idle);
+            }
+        }
+        
+        void ChangeState(ColonistState newState)
+        {
+            currentState = newState;
+            stateTimer = 0f;
+            
+            switch (newState)
+            {
+                case ColonistState.Idle:
+                    if (agent) agent.isStopped = true;
+                    if (animator) animator.SetBool("Working", false);
+                    break;
+                    
+                case ColonistState.Wandering:
+                    if (agent) agent.isStopped = false;
+                    SelectRandomDestination();
+                    if (animator) animator.SetBool("Working", false);
+                    break;
+                    
+                case ColonistState.WorkingAnimation:
+                    if (agent) agent.isStopped = true;
+                    if (animator) animator.SetBool("Working", true);
+                    break;
+            }
+        }
+        
+        void SelectRandomDestination()
+        {
+            if (wanderPoints == null || wanderPoints.Count == 0 || !agent) return;
+            
+            // Pick random wander point
+            Transform target = wanderPoints[Random.Range(0, wanderPoints.Count)];
+            
+            // Or sometimes go to a building
+            if (Random.value < 0.4f)
+            {
+                Building[] buildings = FindObjectsOfType<Building>();
+                if (buildings.Length > 0)
                 {
-                    currentState = State.Working;
-                    targetBuilding.SetWorker(true);
-                }
-                else
-                {
-                    currentState = State.Idle;
+                    Building randomBuilding = buildings[Random.Range(0, buildings.Length)];
+                    target = randomBuilding.transform;
                 }
             }
-        }
-    }
-    
-    void HandleWorking()
-    {
-        if (targetBuilding == null || !targetBuilding.NeedsWork())
-        {
-            if (targetBuilding != null)
-            {
-                targetBuilding.SetWorker(false);
-            }
             
-            targetBuilding = null;
-            currentState = State.Idle;
-            return;
+            currentTarget = target;
+            agent.SetDestination(target.position);
         }
         
-        targetBuilding.AddWork(workSpeed * Time.deltaTime);
-        
-        Vector3 lookDirection = (targetBuilding.transform.position - transform.position).normalized;
-        if (lookDirection != Vector3.zero)
+        bool IsNearBuilding()
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDirection), Time.deltaTime * 5f);
-        }
-    }
-    
-    void FindNearestJob()
-    {
-        Building[] buildings = FindObjectsOfType<Building>();
-        Building nearestBuilding = null;
-        float nearestDistance = float.MaxValue;
-        
-        foreach (Building building in buildings)
-        {
-            if (building.NeedsWork())
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 3f);
+            foreach (var col in colliders)
             {
-                float distance = Vector3.Distance(transform.position, building.transform.position);
-                if (distance < nearestDistance)
-                {
-                    nearestBuilding = building;
-                    nearestDistance = distance;
-                }
+                if (col.GetComponent<Building>())
+                    return true;
             }
-        }
-        
-        if (nearestBuilding != null)
-        {
-            targetBuilding = nearestBuilding;
-            targetPosition = nearestBuilding.workPosition != null ? 
-                           nearestBuilding.workPosition.position : 
-                           nearestBuilding.transform.position;
-            
-            currentState = State.Moving;
-            
-            if (navAgent != null && navAgent.enabled)
-            {
-                navAgent.SetDestination(targetPosition);
-            }
-        }
-    }
-    
-    void OnDestroy()
-    {
-        if (targetBuilding != null)
-        {
-            targetBuilding.SetWorker(false);
-        }
-    }
-    
-    void OnDrawGizmosSelected()
-    {
-        if (targetBuilding != null)
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawLine(transform.position, targetBuilding.transform.position);
+            return false;
         }
     }
 }

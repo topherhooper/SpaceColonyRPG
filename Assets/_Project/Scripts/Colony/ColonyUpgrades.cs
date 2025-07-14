@@ -1,8 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class ColonyUpgrades : MonoBehaviour
+namespace SpaceColonyRPG.Colony
 {
+    public class ColonyUpgrades : MonoBehaviour
+    {
     public static ColonyUpgrades Instance;
     
     [System.Serializable]
@@ -78,8 +80,8 @@ public class ColonyUpgrades : MonoBehaviour
         
         if (upgrade.purchased) return false;
         
-        return ResourceManager.Instance.CanAfford("Metal", upgrade.metalCost) &&
-               ResourceManager.Instance.CanAfford("Energy", upgrade.energyCost);
+        return ResourceManager.Instance.CanAfford(ResourceType.Metal, upgrade.metalCost) &&
+               ResourceManager.Instance.CanAfford(ResourceType.Energy, upgrade.energyCost);
     }
     
     public void PurchaseUpgrade(int index)
@@ -88,8 +90,8 @@ public class ColonyUpgrades : MonoBehaviour
         
         Upgrade upgrade = availableUpgrades[index];
         
-        ResourceManager.Instance.SpendResource("Metal", upgrade.metalCost);
-        ResourceManager.Instance.SpendResource("Energy", upgrade.energyCost);
+        ResourceManager.Instance.ModifyResource(ResourceType.Metal, -upgrade.metalCost);
+        ResourceManager.Instance.ModifyResource(ResourceType.Energy, -upgrade.energyCost);
         
         upgrade.purchased = true;
         
@@ -157,5 +159,6 @@ public class ColonyUpgrades : MonoBehaviour
         {
             upgrade.purchased = false;
         }
+    }
     }
 }

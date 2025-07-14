@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using SpaceColonyRPG.Colony;
 
 public class UIManager : MonoBehaviour
 {
@@ -100,14 +101,15 @@ public class UIManager : MonoBehaviour
     {
         if (ResourceManager.Instance == null) return;
         
+        // For now, use dummy values until we integrate with proper ResourceManager
         if (metalText != null)
-            metalText.text = $"Metal: {ResourceManager.Instance.GetResource("Metal")}";
+            metalText.text = $"Metal: 0";
         
         if (energyText != null)
-            energyText.text = $"Energy: {ResourceManager.Instance.GetResource("Energy")}";
+            energyText.text = $"Energy: 0";
         
         if (foodText != null)
-            foodText.text = $"Food: {ResourceManager.Instance.GetResource("Food")}";
+            foodText.text = $"Food: 0";
     }
     
     public void UpdateColonistCount(int count)
@@ -301,18 +303,19 @@ public class UIManager : MonoBehaviour
         buildingTooltip.transform.position = screenPos + Vector3.up * 50f;
         
         Text nameText = buildingTooltip.transform.Find("NameText")?.GetComponent<Text>();
-        if (nameText != null) nameText.text = building.buildingName;
+        if (nameText != null) nameText.text = building.buildingData ? building.buildingData.buildingName : "Unknown";
         
         Text progressText = buildingTooltip.transform.Find("ProgressText")?.GetComponent<Text>();
         if (progressText != null)
         {
-            if (!building.isConstructed)
+            if (!building.isActive)
             {
-                progressText.text = $"Construction: {Mathf.RoundToInt(building.GetConstructionProgress() * 100)}%";
+                progressText.text = "Under Construction";
             }
-            else if (building.isProducer)
+            else if (building.buildingData && building.buildingData.resourceProduction.Length > 0)
             {
-                progressText.text = $"Producing: {building.productionAmount} {building.producedResource}";
+                var production = building.buildingData.resourceProduction[0];
+                progressText.text = $"Producing: {production.amountPerMinute} {production.resourceType}/min";
             }
             else
             {

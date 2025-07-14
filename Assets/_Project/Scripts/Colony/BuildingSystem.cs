@@ -1,230 +1,254 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class BuildingSystem : MonoBehaviour
+namespace SpaceColonyRPG.Colony
 {
-    [Header("Building Settings")]
-    public LayerMask groundLayer = 1 << 8;
-    public LayerMask buildingLayer = 1 << 9;
-    public GameObject[] buildingPrefabs;
-    public Material validPlacementMat;
-    public Material invalidPlacementMat;
-    public float gridSize = 2f;
-    
-    [Header("Build Mode")]
-    private GameObject currentBuilding;
-    public int selectedBuildingIndex { get; private set; }
-    private bool isBuilding = false;
-    private Renderer[] buildingRenderers;
-    private Material[] originalMaterials;
-    
-    void Update()
+    public class BuildingSystem : MonoBehaviour
     {
-        if (Input.GetKeyDown(KeyCode.B))
+        public static BuildingSystem Instance { get; private set; }
+        
+        [Header("Configuration")]
+        public LayerMask placementCheckMask;
+        public Material validPlacementMaterial;
+        public Material invalidPlacementMaterial;
+        
+        [Header("Building Data")]
+        public List<BuildingData> availableBuildings;
+        
+        [Header("Effects")]
+        public GameObject placementEffectPrefab;
+        public GameObject constructionCompletePrefab;
+        
+        // Placement state
+        private GameObject currentPreview;
+        private BuildingData selectedBuilding;
+        private bool isPlacing = false;
+        private bool canPlace = false;
+        
+        // Placed buildings
+        private List<Building> placedBuildings = new List<Building>();
+        
+        void Awake()
         {
-            ToggleBuildMode();
+            Instance = this;
+        }
+    
+        void Update()
+        {
+            if (isPlacing)
+            {
+                UpdatePlacementPreview();
+                HandlePlacementInput();
+            }
         }
         
-        if (isBuilding && currentBuilding != null)
+        public void StartPlacement(BuildingData buildingData)
         {
-            UpdatePlacementPreview();
+            // Check if can afford
+            if (!ResourceManager.Instance.CanAfford(buildingData.GetCosts()))
+            {
+                ColonyUIManager.Instance.ShowError("Insufficient resources!");
+                return;
+            }
             
-            if (Input.GetMouseButtonDown(0) && CanPlaceBuilding())
+            // Check requirements
+            if (!CheckBuildingRequirements(buildingData))
+            {
+                ColonyUIManager.Instance.ShowError("Requirements not met!");
+                return;
+            }
+            
+            // Start placement
+            selectedBuilding = buildingData;
+            currentPreview = Instantiate(buildingData.prefab);
+            
+            // Setup preview
+            SetupPreviewMaterials(currentPreview);
+            
+            // Disable components during preview
+            var building = currentPreview.GetComponent<Building>();
+            if (building) building.enabled = false;
+            
+            isPlacing = true;
+        }
+    
+        void UpdatePlacementPreview()
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            
+            if (Physics.Raycast(ray, out hit, 100f, placementCheckMask))
+            {
+                // Get grid position
+                Vector2Int gridPos = GridSystem.Instance.WorldToGridPosition(hit.point);
+                Vector3 worldPos = GridSystem.Instance.GridToWorldPosition(gridPos);
+                
+                // Update preview position
+                currentPreview.transform.position = worldPos;
+                
+                // Check if can place
+                canPlace = GridSystem.Instance.CanPlaceBuilding(gridPos, selectedBuilding.gridSize);
+                
+                // Update preview material
+                UpdatePreviewMaterial(canPlace);
+            }
+        }
+        
+        void HandlePlacementInput()
+        {
+            if (Input.GetMouseButtonDown(0) && canPlace)
             {
                 PlaceBuilding();
             }
-            
-            if (Input.GetMouseButtonDown(1))
+            else if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Escape))
             {
                 CancelPlacement();
             }
+        }
+    
+        void PlaceBuilding()
+        {
+            // Get final position
+            Vector2Int gridPos = GridSystem.Instance.WorldToGridPosition(currentPreview.transform.position);
+            Vector3 worldPos = GridSystem.Instance.GridToWorldPosition(gridPos);
             
-            if (Input.GetAxis("Mouse ScrollWheel") > 0f)
+            // Spend resources
+            ResourceManager.Instance.SpendResources(selectedBuilding.GetCosts());
+            
+            // Destroy preview
+            Destroy(currentPreview);
+            
+            // Create actual building
+            GameObject buildingObj = Instantiate(selectedBuilding.prefab, worldPos, Quaternion.identity);
+            Transform buildingsParent = GameObject.Find("_Dynamic/Buildings")?.transform;
+            if (buildingsParent) buildingObj.transform.SetParent(buildingsParent);
+            
+            // Setup building component
+            Building building = buildingObj.GetComponent<Building>();
+            if (!building) building = buildingObj.AddComponent<Building>();
+            
+            building.Initialize(selectedBuilding, gridPos);
+            placedBuildings.Add(building);
+            
+            // Update grid
+            GridSystem.Instance.OccupyCells(gridPos, selectedBuilding.gridSize, buildingObj);
+            
+            // Effects
+            if (constructionCompletePrefab)
             {
-                SelectNextBuilding();
+                Instantiate(constructionCompletePrefab, worldPos, Quaternion.identity);
             }
-            else if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+            
+            // Audio
+            AudioManager audioManager = FindObjectOfType<AudioManager>();
+            if (audioManager && audioManager.buildingPlaceSound)
             {
-                SelectPreviousBuilding();
+                audioManager.PlaySFX(audioManager.buildingPlaceSound);
             }
+            
+            // End placement
+            isPlacing = false;
+            selectedBuilding = null;
+            
+            // Update UI
+            ColonyUIManager.Instance.RefreshBuildingButtons();
+        }
+    
+        void CancelPlacement()
+        {
+            if (currentPreview)
+            {
+                Destroy(currentPreview);
+            }
+            
+            isPlacing = false;
+            selectedBuilding = null;
         }
         
-        for (int i = 0; i < Mathf.Min(buildingPrefabs.Length, 9); i++)
+        void SetupPreviewMaterials(GameObject preview)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+            Renderer[] renderers = preview.GetComponentsInChildren<Renderer>();
+            foreach (var renderer in renderers)
             {
-                selectedBuildingIndex = i;
-                if (isBuilding)
+                Material[] mats = new Material[renderer.materials.Length];
+                for (int i = 0; i < mats.Length; i++)
                 {
-                    StartPlacement(selectedBuildingIndex);
+                    mats[i] = validPlacementMaterial;
                 }
+                renderer.materials = mats;
             }
         }
-    }
-    
-    public void ToggleBuildMode()
-    {
-        isBuilding = !isBuilding;
         
-        if (isBuilding)
+        void UpdatePreviewMaterial(bool valid)
         {
-            StartPlacement(selectedBuildingIndex);
-        }
-        else
-        {
-            CancelPlacement();
-        }
-    }
-    
-    public void StartPlacement(int buildingIndex)
-    {
-        if (buildingIndex < 0 || buildingIndex >= buildingPrefabs.Length) return;
-        
-        CancelPlacement();
-        
-        selectedBuildingIndex = buildingIndex;
-        currentBuilding = Instantiate(buildingPrefabs[buildingIndex]);
-        currentBuilding.name = "BuildingPreview";
-        
-        buildingRenderers = currentBuilding.GetComponentsInChildren<Renderer>();
-        originalMaterials = new Material[buildingRenderers.Length];
-        for (int i = 0; i < buildingRenderers.Length; i++)
-        {
-            originalMaterials[i] = buildingRenderers[i].material;
-        }
-        
-        Collider[] colliders = currentBuilding.GetComponentsInChildren<Collider>();
-        foreach (Collider col in colliders)
-        {
-            col.enabled = false;
-        }
-        
-        Building building = currentBuilding.GetComponent<Building>();
-        if (building != null)
-        {
-            building.enabled = false;
-        }
-        
-        isBuilding = true;
-    }
-    
-    void UpdatePlacementPreview()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        
-        if (Physics.Raycast(ray, out hit, 100f, groundLayer))
-        {
-            Vector3 pos = hit.point;
-            pos.x = Mathf.Round(pos.x / gridSize) * gridSize;
-            pos.z = Mathf.Round(pos.z / gridSize) * gridSize;
-            pos.y = 0;
+            Material mat = valid ? validPlacementMaterial : invalidPlacementMaterial;
+            Renderer[] renderers = currentPreview.GetComponentsInChildren<Renderer>();
             
-            currentBuilding.transform.position = pos;
-            
-            bool canPlace = CanPlaceBuilding();
-            Material matToUse = canPlace ? validPlacementMat : invalidPlacementMat;
-            
-            foreach (Renderer renderer in buildingRenderers)
+            foreach (var renderer in renderers)
             {
-                renderer.material = matToUse;
+                Material[] mats = renderer.materials;
+                for (int i = 0; i < mats.Length; i++)
+                {
+                    mats[i] = mat;
+                }
+                renderer.materials = mats;
             }
         }
-    }
     
-    bool CanPlaceBuilding()
-    {
-        if (currentBuilding == null) return false;
-        
-        Building building = buildingPrefabs[selectedBuildingIndex].GetComponent<Building>();
-        if (building != null)
+        bool CheckBuildingRequirements(BuildingData data)
         {
-            if (!ResourceManager.Instance.CanAfford("Metal", building.metalCost) ||
-                !ResourceManager.Instance.CanAfford("Energy", building.energyCost))
-            {
+            // Check colony level
+            if (ColonyManager.Instance && ColonyManager.Instance.colonyLevel < data.requiredColonyLevel)
                 return false;
+                
+            // Check prerequisites
+            foreach (var prereq in data.prerequisiteBuildings)
+            {
+                if (!HasBuilding(prereq))
+                    return false;
             }
+            
+            return true;
         }
         
-        Collider[] buildingColliders = currentBuilding.GetComponentsInChildren<Collider>();
-        
-        foreach (Collider collider in buildingColliders)
+        bool HasBuilding(BuildingData buildingType)
         {
-            collider.enabled = true;
-            
-            Bounds bounds = collider.bounds;
-            bounds.Expand(-0.1f);
-            
-            Collider[] overlaps = Physics.OverlapBox(bounds.center, bounds.extents, currentBuilding.transform.rotation, buildingLayer);
-            
-            collider.enabled = false;
-            
-            foreach (Collider overlap in overlaps)
+            return placedBuildings.Exists(b => b.buildingData == buildingType);
+        }
+        
+        public List<Building> GetBuildingsOfType(BuildingData type)
+        {
+            return placedBuildings.FindAll(b => b.buildingData == type);
+        }
+        
+        public int GetTotalEnergyProduction()
+        {
+            int total = 0;
+            foreach (var building in placedBuildings)
             {
-                if (overlap.transform.root != currentBuilding.transform)
+                if (building.isActive)
                 {
-                    return false;
+                    foreach (var prod in building.buildingData.resourceProduction)
+                    {
+                        if (prod.resourceType == ResourceType.Energy)
+                            total += prod.amountPerMinute;
+                    }
                 }
             }
+            return total;
         }
         
-        return true;
-    }
-    
-    void PlaceBuilding()
-    {
-        Building buildingComponent = buildingPrefabs[selectedBuildingIndex].GetComponent<Building>();
-        if (buildingComponent != null)
+        public int GetTotalEnergyConsumption()
         {
-            ResourceManager.Instance.SpendResource("Metal", buildingComponent.metalCost);
-            ResourceManager.Instance.SpendResource("Energy", buildingComponent.energyCost);
+            int total = 0;
+            foreach (var building in placedBuildings)
+            {
+                if (building.isActive)
+                {
+                    total += building.buildingData.energyConsumption;
+                }
+            }
+            return total;
         }
-        
-        GameObject placedBuilding = Instantiate(buildingPrefabs[selectedBuildingIndex], currentBuilding.transform.position, currentBuilding.transform.rotation);
-        placedBuilding.name = buildingPrefabs[selectedBuildingIndex].name;
-        
-        if (AudioManager.Instance != null && AudioManager.Instance.buildingPlaceSound != null)
-        {
-            AudioManager.Instance.PlaySFX(AudioManager.Instance.buildingPlaceSound);
-        }
-        
-        CancelPlacement();
-        
-        StartPlacement(selectedBuildingIndex);
-    }
-    
-    void CancelPlacement()
-    {
-        if (currentBuilding != null)
-        {
-            Destroy(currentBuilding);
-            currentBuilding = null;
-        }
-        
-        isBuilding = false;
-    }
-    
-    void SelectNextBuilding()
-    {
-        selectedBuildingIndex = (selectedBuildingIndex + 1) % buildingPrefabs.Length;
-        if (isBuilding)
-        {
-            StartPlacement(selectedBuildingIndex);
-        }
-    }
-    
-    void SelectPreviousBuilding()
-    {
-        selectedBuildingIndex = selectedBuildingIndex - 1;
-        if (selectedBuildingIndex < 0) selectedBuildingIndex = buildingPrefabs.Length - 1;
-        if (isBuilding)
-        {
-            StartPlacement(selectedBuildingIndex);
-        }
-    }
-    
-    public bool IsInBuildMode()
-    {
-        return isBuilding;
     }
 }

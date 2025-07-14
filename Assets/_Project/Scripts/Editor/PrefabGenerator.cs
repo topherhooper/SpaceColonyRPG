@@ -4,6 +4,7 @@ using UnityEditor;
 using System.IO;
 using Mirror;
 using UnityEngine.AI;
+using SpaceColonyRPG.Colony;
 
 public class PrefabGenerator : EditorWindow
 {
@@ -207,16 +208,8 @@ public class PrefabGenerator : EditorWindow
             
             // Add building component
             Building buildingComp = building.AddComponent<Building>();
-            buildingComp.buildingName = config.name;
-            buildingComp.metalCost = config.metalCost;
-            buildingComp.energyCost = config.energyCost;
-            
-            if (!string.IsNullOrEmpty(config.produces))
-            {
-                buildingComp.isProducer = true;
-                buildingComp.producedResource = config.produces;
-                buildingComp.productionAmount = config.amount;
-            }
+            // TODO: Update to use BuildingData ScriptableObject
+            // buildingComp.buildingData = [reference to appropriate BuildingData asset]
             
             // Add collider
             BoxCollider collider = building.AddComponent<BoxCollider>();

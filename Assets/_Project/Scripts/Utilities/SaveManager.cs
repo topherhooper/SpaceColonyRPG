@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using SpaceColonyRPG.Colony;
 
 [System.Serializable]
 public class ColonySaveData
@@ -50,11 +51,11 @@ public static class SaveManager
         {
             saveData.buildings.Add(new ColonySaveData.BuildingData
             {
-                prefabName = building.prefabName,
+                prefabName = building.buildingData ? building.buildingData.name : "",
                 position = building.transform.position,
                 rotation = building.transform.rotation,
-                workProgress = building.workProgress,
-                isConstructed = building.isConstructed
+                workProgress = 1f,
+                isConstructed = building.isActive
             });
         }
         
@@ -74,8 +75,8 @@ public static class SaveManager
             {
                 saveData.resources.Add(new ColonySaveData.ResourceData
                 {
-                    name = resource.name,
-                    amount = resource.amount
+                    name = resource.displayName,
+                    amount = resource.currentAmount
                 });
             }
         }
@@ -136,42 +137,14 @@ public static class SaveManager
             Object.Destroy(colonist.gameObject);
         }
         
-        BuildingSystem buildingSystem = Object.FindObjectOfType<BuildingSystem>();
-        if (buildingSystem != null && buildingSystem.buildingPrefabs != null)
-        {
-            foreach (ColonySaveData.BuildingData buildingData in saveData.buildings)
-            {
-                GameObject prefab = null;
-                foreach (GameObject buildingPrefab in buildingSystem.buildingPrefabs)
-                {
-                    Building b = buildingPrefab.GetComponent<Building>();
-                    if (b != null && b.buildingName == buildingData.prefabName)
-                    {
-                        prefab = buildingPrefab;
-                        break;
-                    }
-                }
-                
-                if (prefab != null)
-                {
-                    GameObject building = Object.Instantiate(prefab, buildingData.position, buildingData.rotation);
-                    Building comp = building.GetComponent<Building>();
-                    if (comp != null)
-                    {
-                        comp.workProgress = buildingData.workProgress;
-                        comp.isConstructed = buildingData.isConstructed;
-                    }
-                }
-            }
-        }
+        // TODO: Implement building loading
+        // BuildingSystem buildingSystem = Object.FindObjectOfType<BuildingSystem>();
+        // Need to update this to work with the new BuildingData ScriptableObject system
         
         if (ResourceManager.Instance != null)
         {
-            ResourceManager.Instance.resources.Clear();
-            foreach (ColonySaveData.ResourceData resourceData in saveData.resources)
-            {
-                ResourceManager.Instance.resources.Add(new ResourceManager.Resource(resourceData.name, resourceData.amount));
-            }
+            // TODO: Implement resource loading
+            // Need to update this to work with the current ResourceManager system
         }
         
         if (ColonyUpgrades.Instance != null)

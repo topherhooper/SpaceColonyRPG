@@ -1,110 +1,160 @@
 using UnityEngine;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 
-public class ResourceManager : MonoBehaviour
+namespace SpaceColonyRPG.Colony
 {
-    public static ResourceManager Instance;
-    
-    [System.Serializable]
-    public class Resource
+    public class ResourceManager : MonoBehaviour
     {
-        public string name;
-        public int amount;
-        public Sprite icon;
+        public static ResourceManager Instance { get; private set; }
         
-        public Resource(string resourceName, int startAmount)
+        [Header("Resource Configuration")]
+        public List<Resource> resources = new List<Resource>();
+        
+        [Header("Starting Resources")]
+        public int startingMetal = 100;
+        public int startingEnergy = 0;
+        public int startingCredits = 0;
+        public int startingColonists = 2;
+        
+        // Events
+        public static event Action<ResourceType, int> OnResourceChanged;
+        
+        [Serializable]
+        public class Resource
         {
-            name = resourceName;
-            amount = startAmount;
+            public ResourceType type;
+            public string displayName;
+            public Sprite icon;
+            public int currentAmount;
+            public int maxCapacity;
+            public Color displayColor = Color.white;
         }
-    }
-    
-    [Header("Resources")]
-    public List<Resource> resources = new List<Resource>
-    {
-        new Resource("Metal", 100),
-        new Resource("Energy", 50),
-        new Resource("Food", 25)
-    };
-    
-    public delegate void ResourceChangedDelegate(string resourceName, int oldAmount, int newAmount);
-    public event ResourceChangedDelegate OnResourceChanged;
-    
-    void Awake()
-    {
-        if (Instance == null)
+        
+        void Awake()
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            InitializeResources();
         }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-    
-    public bool CanAfford(string resourceName, int amount)
-    {
-        Resource resource = resources.Find(r => r.name == resourceName);
-        return resource != null && resource.amount >= amount;
-    }
-    
-    public void SpendResource(string resourceName, int amount)
-    {
-        Resource resource = resources.Find(r => r.name == resourceName);
-        if (resource != null && resource.amount >= amount)
-        {
-            int oldAmount = resource.amount;
-            resource.amount -= amount;
-            OnResourceChanged?.Invoke(resourceName, oldAmount, resource.amount);
-            UpdateUI();
-        }
-    }
-    
-    public void AddResource(string resourceName, int amount)
-    {
-        Resource resource = resources.Find(r => r.name == resourceName);
-        if (resource != null)
-        {
-            int oldAmount = resource.amount;
-            resource.amount += amount;
-            OnResourceChanged?.Invoke(resourceName, oldAmount, resource.amount);
-            UpdateUI();
-        }
-        else
-        {
-            resources.Add(new Resource(resourceName, amount));
-            OnResourceChanged?.Invoke(resourceName, 0, amount);
-            UpdateUI();
-        }
-    }
-    
-    public int GetResource(string resourceName)
-    {
-        Resource resource = resources.Find(r => r.name == resourceName);
-        return resource != null ? resource.amount : 0;
-    }
-    
-    void UpdateUI()
-    {
-        if (UIManager.Instance != null)
-        {
-            UIManager.Instance.UpdateResourceDisplay();
-        }
-    }
-    
-    public void InitializeForColony()
-    {
-        resources.Clear();
-        resources.Add(new Resource("Metal", 200));
-        resources.Add(new Resource("Energy", 100));
-        resources.Add(new Resource("Food", 50));
-        UpdateUI();
-    }
-    
-    public void InitializeForRaid()
-    {
         
+        void InitializeResources()
+        {
+            // Create resource entries
+            resources = new List<Resource>
+            {
+                new Resource 
+                { 
+                    type = ResourceType.Metal, 
+                    displayName = "Metal",
+                    currentAmount = startingMetal,
+                    maxCapacity = 500,
+                    displayColor = new Color(0.7f, 0.7f, 0.8f)
+                },
+                new Resource 
+                { 
+                    type = ResourceType.Energy, 
+                    displayName = "Energy",
+                    currentAmount = startingEnergy,
+                    maxCapacity = int.MaxValue, // Energy is flow-based
+                    displayColor = new Color(0.3f, 0.8f, 1f)
+                },
+                new Resource 
+                { 
+                    type = ResourceType.Credits, 
+                    displayName = "Credits",
+                    currentAmount = startingCredits,
+                    maxCapacity = int.MaxValue,
+                    displayColor = new Color(1f, 0.9f, 0.3f)
+                },
+                new Resource 
+                { 
+                    type = ResourceType.Colonists, 
+                    displayName = "Colonists",
+                    currentAmount = startingColonists,
+                    maxCapacity = 2, // Starts with housing for 2
+                    displayColor = new Color(0.3f, 1f, 0.3f)
+                },
+                new Resource 
+                { 
+                    type = ResourceType.Research, 
+                    displayName = "Research",
+                    currentAmount = 0,
+                    maxCapacity = int.MaxValue,
+                    displayColor = new Color(0.8f, 0.3f, 1f)
+                }
+            };
+        }
+        
+        public bool CanAfford(ResourceType type, int amount)
+        {
+            var resource = GetResource(type);
+            return resource != null && resource.currentAmount >= amount;
+        }
+        
+        public bool CanAfford(Dictionary<ResourceType, int> costs)
+        {
+            foreach (var cost in costs)
+            {
+                if (!CanAfford(cost.Key, cost.Value))
+                    return false;
+            }
+            return true;
+        }
+        
+        public void SpendResources(Dictionary<ResourceType, int> costs)
+        {
+            foreach (var cost in costs)
+            {
+                ModifyResource(cost.Key, -cost.Value);
+            }
+        }
+        
+        public void ModifyResource(ResourceType type, int amount)
+        {
+            var resource = GetResource(type);
+            if (resource != null)
+            {
+                int oldAmount = resource.currentAmount;
+                resource.currentAmount = Mathf.Clamp(
+                    resource.currentAmount + amount, 
+                    0, 
+                    resource.maxCapacity
+                );
+                
+                if (oldAmount != resource.currentAmount)
+                {
+                    OnResourceChanged?.Invoke(type, resource.currentAmount);
+                }
+            }
+        }
+        
+        public Resource GetResource(ResourceType type)
+        {
+            return resources.Find(r => r.type == type);
+        }
+        
+        public int GetResourceAmount(ResourceType type)
+        {
+            var resource = GetResource(type);
+            return resource?.currentAmount ?? 0;
+        }
+        
+        public void IncreaseCapacity(ResourceType type, int amount)
+        {
+            var resource = GetResource(type);
+            if (resource != null)
+            {
+                resource.maxCapacity += amount;
+            }
+        }
+    }
+    
+    public enum ResourceType
+    {
+        Metal,
+        Energy,
+        Credits,
+        Colonists,
+        Research
     }
 }

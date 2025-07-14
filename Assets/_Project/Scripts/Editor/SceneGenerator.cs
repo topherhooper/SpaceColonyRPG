@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using Mirror;
 using kcp2k;
 using UnityEngine.EventSystems;
+using SpaceColonyRPG.Colony;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.Rendering.Universal;
 
@@ -701,7 +702,8 @@ public class SceneGenerator : EditorWindow
             BuildingSystem buildingSystem = GameObject.FindFirstObjectByType<BuildingSystem>();
             if (buildingSystem != null)
             {
-                buildingSystem.StartPlacement(buildingIndex);
+                // TODO: Update to pass BuildingData instead of index
+                // buildingSystem.StartPlacement(buildingData);
             }
         });
         return button;

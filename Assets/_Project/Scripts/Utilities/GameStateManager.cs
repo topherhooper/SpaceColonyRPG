@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using SpaceColonyRPG.Colony;
 
 public class GameStateManager : MonoBehaviour
 {
@@ -68,7 +69,7 @@ public class GameStateManager : MonoBehaviour
     {
         currentState = GameState.Colony;
 
-        ResourceManager.Instance.InitializeForColony();
+        // ResourceManager.Instance.InitializeForColony(); // TODO: Implement this method
         ColonyUpgrades.Instance.ResetForNewGame();
 
         SceneManager.LoadScene("ColonyScene");
@@ -151,8 +152,8 @@ public class GameStateManager : MonoBehaviour
                         : 25
                 );
 
-            ResourceManager.Instance.AddResource("Metal", bonusMetal);
-            ResourceManager.Instance.AddResource("Energy", bonusEnergy);
+            ResourceManager.Instance.ModifyResource(ResourceType.Metal, bonusMetal);
+            ResourceManager.Instance.ModifyResource(ResourceType.Energy, bonusEnergy);
 
             if (UIManager.Instance != null)
             {
@@ -199,7 +200,7 @@ public class GameStateManager : MonoBehaviour
 
     private void OnColonySceneLoaded()
     {
-        ResourceManager.Instance.InitializeForColony();
+        // ResourceManager.Instance.InitializeForColony(); // TODO: Implement this method
 
         if (ColonyUpgrades.Instance != null && PlayerController.LocalPlayer != null)
         {
@@ -209,7 +210,7 @@ public class GameStateManager : MonoBehaviour
 
     private void OnRaidSceneLoaded()
     {
-        ResourceManager.Instance.InitializeForRaid();
+        // ResourceManager.Instance.InitializeForRaid(); // TODO: Implement this method
     }
 
     public void ReturnToMainMenu()

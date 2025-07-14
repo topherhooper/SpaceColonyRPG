@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.IO;
+using SpaceColonyRPG.Colony;
 
 public class QuickSetupHelper : EditorWindow
 {
@@ -199,9 +200,9 @@ public class QuickSetupHelper : EditorWindow
     {
         if (ResourceManager.Instance != null)
         {
-            ResourceManager.Instance.AddResource("Metal", 1000);
-            ResourceManager.Instance.AddResource("Energy", 1000);
-            ResourceManager.Instance.AddResource("Food", 1000);
+            ResourceManager.Instance.ModifyResource(ResourceType.Metal, 1000);
+            ResourceManager.Instance.ModifyResource(ResourceType.Energy, 1000);
+            ResourceManager.Instance.ModifyResource(ResourceType.Credits, 1000);
             Debug.Log("Added 1000 of each resource!");
         }
         else

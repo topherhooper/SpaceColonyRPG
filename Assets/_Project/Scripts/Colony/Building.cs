@@ -1,152 +1,139 @@
 using UnityEngine;
+using System.Collections;
 
-public class Building : MonoBehaviour
+namespace SpaceColonyRPG.Colony
 {
-    [Header("Building Info")]
-    public string buildingName = "Basic Building";
-    public string prefabName;
-    
-    [Header("Resource Costs")]
-    public int metalCost = 50;
-    public int energyCost = 25;
-    
-    [Header("Production")]
-    public bool isProducer = false;
-    public string producedResource = "Energy";
-    public int productionAmount = 5;
-    public float productionInterval = 10f;
-    
-    [Header("Construction")]
-    public float constructionTime = 10f;
-    public float workProgress = 0f;
-    public bool isConstructed = false;
-    
-    [Header("Colonist Work")]
-    public bool needsWorker = true;
-    public Transform workPosition;
-    public bool hasWorker = false;
-    
-    private float nextProductionTime;
-    private GameObject constructionVisual;
-    private GameObject completeVisual;
-    
-    void Start()
+    public class Building : MonoBehaviour
     {
-        prefabName = buildingName;
+        [Header("Data")]
+        public BuildingData buildingData;
+        public Vector2Int gridPosition;
         
-        Transform construction = transform.Find("ConstructionSite");
-        Transform complete = transform.Find("Model");
+        [Header("State")]
+        public bool isActive = true;
+        public bool hasEnoughPower = true;
+        public bool hasEnoughWorkers = true;
         
-        if (construction != null)
-        {
-            constructionVisual = construction.gameObject;
-        }
+        [Header("Visual")]
+        public GameObject[] activationEffects;
+        public GameObject noPowerIndicator;
+        public Transform effectSpawnPoint;
         
-        if (complete != null)
-        {
-            completeVisual = complete.gameObject;
-        }
-        
-        if (workPosition == null)
-        {
-            GameObject workPosGO = new GameObject("WorkPosition");
-            workPosition = workPosGO.transform;
-            workPosition.SetParent(transform);
-            workPosition.localPosition = new Vector3(2f, 0, 0);
-        }
-        
-        UpdateVisuals();
-    }
+        private float productionTimer = 0f;
+        private float productionInterval = 60f; // 1 minute
     
-    void Update()
-    {
-        if (!isConstructed) return;
-        
-        if (isProducer && (!needsWorker || hasWorker))
+        public void Initialize(BuildingData data, Vector2Int gridPos)
         {
-            if (Time.time >= nextProductionTime)
+            buildingData = data;
+            gridPosition = gridPos;
+            
+            // Start production
+            StartCoroutine(ProductionLoop());
+            
+            // Apply visual settings
+            ApplyVisualSettings();
+            
+            // Update colony stats
+            UpdateColonyStats(true);
+        }
+        
+        void ApplyVisualSettings()
+        {
+            // Apply tint color
+            if (buildingData.buildingTintColor != Color.white)
             {
-                ProduceResource();
-                nextProductionTime = Time.time + productionInterval;
+                Renderer[] renderers = GetComponentsInChildren<Renderer>();
+                foreach (var renderer in renderers)
+                {
+                    if (renderer.material)
+                    {
+                        renderer.material.color = buildingData.buildingTintColor;
+                    }
+                }
+            }
+            
+            // Enable activation effects
+            SetActivationEffects(true);
+        }
+        
+        IEnumerator ProductionLoop()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(1f);
+                
+                if (isActive && hasEnoughPower && hasEnoughWorkers)
+                {
+                    productionTimer += 1f;
+                    
+                    if (productionTimer >= productionInterval)
+                    {
+                        ProduceResources();
+                        productionTimer = 0f;
+                    }
+                }
             }
         }
-    }
-    
-    public void AddWork(float amount)
-    {
-        if (isConstructed) return;
         
-        workProgress += amount;
-        
-        if (workProgress >= constructionTime)
+        void ProduceResources()
         {
-            CompleteConstruction();
+            foreach (var production in buildingData.resourceProduction)
+            {
+                ResourceManager.Instance.ModifyResource(
+                    production.resourceType, 
+                    production.amountPerMinute
+                );
+                
+                // Visual feedback
+                if (buildingData.productionEffectPrefab && effectSpawnPoint)
+                {
+                    var effect = Instantiate(
+                        buildingData.productionEffectPrefab, 
+                        effectSpawnPoint.position, 
+                        Quaternion.identity
+                    );
+                    Destroy(effect, 2f);
+                }
+            }
         }
         
-        UpdateVisuals();
-    }
-    
-    void CompleteConstruction()
-    {
-        isConstructed = true;
-        workProgress = constructionTime;
-        
-        if (AudioManager.Instance != null && AudioManager.Instance.buildingPlaceSound != null)
+        public void UpdatePowerStatus(bool hasPower)
         {
-            AudioManager.Instance.PlaySFX(AudioManager.Instance.buildingPlaceSound);
+            hasEnoughPower = hasPower;
+            
+            if (noPowerIndicator)
+                noPowerIndicator.SetActive(!hasPower);
+                
+            SetActivationEffects(hasPower && hasEnoughWorkers);
         }
         
-        if (VisualEffects.Instance != null)
+        void SetActivationEffects(bool active)
         {
-            VisualEffects.Instance.ShowBuildingCompleteEffect(transform.position);
+            foreach (var effect in activationEffects)
+            {
+                if (effect) effect.SetActive(active);
+            }
         }
         
-        UpdateVisuals();
-    }
-    
-    void ProduceResource()
-    {
-        ResourceManager.Instance.AddResource(producedResource, productionAmount);
-    }
-    
-    public bool NeedsWork()
-    {
-        if (!isConstructed) return true;
-        
-        if (needsWorker && !hasWorker) return true;
-        
-        return false;
-    }
-    
-    public void SetWorker(bool hasWorkerNow)
-    {
-        hasWorker = hasWorkerNow;
-    }
-    
-    void UpdateVisuals()
-    {
-        if (constructionVisual != null)
+        void UpdateColonyStats(bool adding)
         {
-            constructionVisual.SetActive(!isConstructed);
+            int multiplier = adding ? 1 : -1;
+            
+            // Housing capacity
+            if (buildingData.housingCapacity > 0)
+            {
+                ResourceManager.Instance.IncreaseCapacity(
+                    ResourceType.Colonists, 
+                    buildingData.housingCapacity * multiplier
+                );
+            }
+            
+            // Raid bonuses are handled by RaidManager when loading raid scene
         }
         
-        if (completeVisual != null)
+        void OnDestroy()
         {
-            completeVisual.SetActive(isConstructed);
-        }
-    }
-    
-    public float GetConstructionProgress()
-    {
-        return Mathf.Clamp01(workProgress / constructionTime);
-    }
-    
-    void OnDrawGizmosSelected()
-    {
-        if (workPosition != null)
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(workPosition.position, 0.5f);
+            UpdateColonyStats(false);
         }
     }
 }
