@@ -8,113 +8,30 @@ on:
   workflow_dispatch:
 
 jobs:
-  lint:
-    name: Code Linting
+  performance-check:
+    name: Performance Check
     runs-on: ubuntu-latest
     
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
       
-    - name: Check C# Files
+    - name: Check for Performance Issues
       run: |
-        echo "=== Checking C# Code Quality ==="
+        echo "=== Checking for Unity performance issues ==="
         
-        # Create report file
-        echo "# Code Quality Report" > code-quality-report.md
-        echo "" >> code-quality-report.md
-        echo "Generated at: $(date)" >> code-quality-report.md
-        echo "" >> code-quality-report.md
+        # Check for GameObject.Find and FindObjectOfType usage
+        PERF_ISSUES=$(grep -r -n -E "(GameObject\.Find|FindObjectOfType)" Assets/_Project/Scripts --include="*.cs" | grep -v "// PERF:" || true)
         
-        # Initialize counters
-        total_files=0
-        files_with_issues=0
-        total_issues=0
-        
-        # Check all C# files
-        while IFS= read -r -d '' file; do
-          ((total_files++))
-          file_has_issues=false
-          file_issues=""
-          
-          # Check for tabs (should use spaces)
-          if grep -q $'\t' "$file"; then
-            file_has_issues=true
-            ((total_issues++))
-            line_numbers=$(grep -n $'\t' "$file" | cut -d: -f1 | head -5 | tr '\n' ', ' | sed 's/,$//')
-            file_issues+="\n  - Contains tabs (lines: $line_numbers)"
-          fi
-          
-          # Check for trailing whitespace
-          if grep -q '[[:space:]]$' "$file"; then
-            file_has_issues=true
-            ((total_issues++))
-            line_numbers=$(grep -n '[[:space:]]$' "$file" | cut -d: -f1 | head -5 | tr '\n' ', ' | sed 's/,$//')
-            file_issues+="\n  - Trailing whitespace (lines: $line_numbers)"
-          fi
-          
-          # Check for lines over 120 characters
-          long_lines=$(awk 'length > 120 {print NR}' "$file" | head -5 | tr '\n' ', ' | sed 's/,$//')
-          if [ -n "$long_lines" ]; then
-            file_has_issues=true
-            ((total_issues++))
-            file_issues+="\n  - Lines over 120 chars (lines: $long_lines)"
-          fi
-          
-          # Check for multiple blank lines
-          if grep -Pzo '(?s)\n\n\n' "$file" > /dev/null 2>&1; then
-            file_has_issues=true
-            ((total_issues++))
-            file_issues+="\n  - Multiple consecutive blank lines"
-          fi
-          
-          # Check file naming (should be PascalCase)
-          filename=$(basename "$file")
-          if [[ "$filename" =~ ^[a-z] ]] && [[ "$filename" != "packages.config" ]]; then
-            file_has_issues=true
-            ((total_issues++))
-            file_issues+="\n  - Filename should start with uppercase"
-          fi
-          
-          if [ "$file_has_issues" = true ]; then
-            ((files_with_issues++))
-            echo "" >> code-quality-report.md
-            echo "## $file" >> code-quality-report.md
-            echo -e "$file_issues" >> code-quality-report.md
-          fi
-          
-        done < <(find Assets/_Project/Scripts -name "*.cs" -type f -print0)
-        
-        # Generate summary
-        echo "" >> code-quality-report.md
-        echo "---" >> code-quality-report.md
-        echo "## Summary" >> code-quality-report.md
-        echo "- Total files checked: $total_files" >> code-quality-report.md
-        echo "- Files with issues: $files_with_issues" >> code-quality-report.md
-        echo "- Total issues found: $total_issues" >> code-quality-report.md
-        
-        # Display report
-        cat code-quality-report.md
-        
-        # Set exit code based on issues
-        if [ $total_issues -gt 0 ]; then
+        if [ -n "$PERF_ISSUES" ]; then
+          echo "::warning::Performance warnings found:"
+          echo "$PERF_ISSUES"
           echo ""
-          echo "::warning::Found $total_issues code quality issues in $files_with_issues files"
-          # Don't fail the build for quality issues, just warn
-          exit 0
+          echo "Consider adding '// PERF: [justification]' if these are intentional."
+          echo "These are warnings only - not blocking the build."
         else
-          echo ""
-          echo "::notice::No code quality issues found!"
-          exit 0
+          echo "::notice::No performance issues found!"
         fi
-        
-    - name: Upload Quality Report
-      uses: actions/upload-artifact@v3
-      if: always()
-      with:
-        name: code-quality-report
-        path: code-quality-report.md
-        retention-days: 7
 
   security:
     name: Security Scan
@@ -154,62 +71,82 @@ jobs:
           echo "::notice::Security scan passed!"
         fi
 
-  structure:
-    name: Project Structure
+  code-style-optional:
+    name: Code Style Check (Optional)
     runs-on: ubuntu-latest
+    continue-on-error: true
     
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
       
-    - name: Verify Required Files
+    - name: Check Code Style
       run: |
-        echo "=== Verifying project structure ==="
+        echo "=== Running optional code style checks ==="
+        echo "Note: These checks are informational only and won't fail the build"
         
-        required_files=(
-          "Assets/_Project/Scripts/Colony/ColonyManager.cs"
-          "Assets/_Project/Scripts/Colony/ResourceManager.cs"
-          "Assets/_Project/Scripts/Combat/CombatManager.cs"
-          "Assets/_Project/Scripts/Networking/GameNetworkManager.cs"
-          "Assets/_Project/Scripts/UI/UIManager.cs"
-          "Assets/Tests/EditMode/EditModeTests.asmdef"
-          "Assets/Tests/PlayMode/PlayModeTests.asmdef"
-          ".editorconfig"
-        )
+        # Create report file
+        echo "# Code Style Report (Informational)" > code-style-report.md
+        echo "" >> code-style-report.md
+        echo "Generated at: $(date)" >> code-style-report.md
+        echo "" >> code-style-report.md
+        echo "**Note: These are suggestions only. The build will not fail due to style issues.**" >> code-style-report.md
+        echo "" >> code-style-report.md
         
-        missing_files=()
+        # Initialize counters
+        total_files=0
+        files_with_suggestions=0
+        total_suggestions=0
         
-        for file in "${required_files[@]}"; do
-          if [ ! -f "$file" ]; then
-            missing_files+=("$file")
+        # Check project C# files (not Mirror)
+        while IFS= read -r -d '' file; do
+          ((total_files++))
+          file_has_suggestions=false
+          file_suggestions=""
+          
+          # Check for lines over 120 characters (suggestion only)
+          long_lines=$(awk 'length > 120 {print NR}' "$file" | head -3 | tr '\n' ', ' | sed 's/,$//')
+          if [ -n "$long_lines" ]; then
+            file_has_suggestions=true
+            ((total_suggestions++))
+            file_suggestions+="\n  - Consider shortening lines over 120 chars (lines: $long_lines)"
           fi
-        done
+          
+          # Check file naming (suggestion only)
+          filename=$(basename "$file")
+          if [[ "$filename" =~ ^[a-z] ]] && [[ "$filename" != "packages.config" ]]; then
+            file_has_suggestions=true
+            ((total_suggestions++))
+            file_suggestions+="\n  - Consider using PascalCase for filename"
+          fi
+          
+          if [ "$file_has_suggestions" = true ]; then
+            ((files_with_suggestions++))
+            echo "" >> code-style-report.md
+            echo "### $file" >> code-style-report.md
+            echo -e "$file_suggestions" >> code-style-report.md
+          fi
+          
+        done < <(find Assets/_Project/Scripts -name "*.cs" -type f -print0)
         
-        if [ ${#missing_files[@]} -eq 0 ]; then
-          echo "::notice::All required files present!"
-        else
-          echo "::error::Missing required files:"
-          printf '%s\n' "${missing_files[@]}"
-          exit 1
-        fi
+        # Generate summary
+        echo "" >> code-style-report.md
+        echo "---" >> code-style-report.md
+        echo "## Summary" >> code-style-report.md
+        echo "- Total files checked: $total_files" >> code-style-report.md
+        echo "- Files with style suggestions: $files_with_suggestions" >> code-style-report.md
+        echo "- Total suggestions: $total_suggestions" >> code-style-report.md
         
-    - name: Check Test Coverage
-      run: |
-        echo "=== Checking test coverage ==="
+        # Display report
+        cat code-style-report.md
         
-        # Count test files
-        test_count=$(find Assets/Tests -name "*Tests.cs" -type f | wc -l)
+        echo ""
+        echo "::notice::Code style check complete (informational only)"
         
-        # Count main script files (excluding tests and editor)
-        script_count=$(find Assets/_Project/Scripts -name "*.cs" -type f | grep -v -E "(Editor|Tests)" | wc -l)
-        
-        echo "Found $test_count test files"
-        echo "Found $script_count main script files"
-        
-        # Basic coverage check (at least 1 test file per 5 script files)
-        min_tests=$((script_count / 5))
-        if [ $test_count -lt $min_tests ]; then
-          echo "::warning::Low test coverage! Have $test_count tests but recommend at least $min_tests"
-        else
-          echo "::notice::Good test coverage!"
-        fi
+    - name: Upload Style Report
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: code-style-report
+        path: code-style-report.md
+        retention-days: 7

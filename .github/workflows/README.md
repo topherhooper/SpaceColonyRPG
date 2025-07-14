@@ -49,12 +49,17 @@ If you have Unity Teams Advanced:
 
 ## Workflow Features
 
+### Unity Tests (`unity-tests.yml`)
 - **Automatic Testing**: Runs both EditMode and PlayMode tests
 - **Code Coverage**: Generates coverage reports with badges
 - **Build Validation**: Ensures the project builds successfully
-- **Code Quality**: Basic linting and style checks
 - **Caching**: Speeds up subsequent runs by caching Unity Library
 - **Artifacts**: Stores test results and builds for 7 days
+
+### Code Quality (`code-quality.yml`)
+- **Security Scanning**: Blocks commits with potential sensitive data
+- **Performance Warnings**: Identifies potential performance issues (non-blocking)
+- **Code Style Suggestions**: Optional style checks (informational only)
 
 ## Customization
 
@@ -107,3 +112,11 @@ Before pushing, test locally with:
 ```
 
 This runs the same tests that will run in CI.
+
+## Note on Code Quality
+
+Code linting is available but not enforced in the workflows. You can run linting locally with:
+```bash
+./build-wsl.sh lint        # Check for issues
+./build-wsl.sh fix-lint    # Auto-fix issues
+```
