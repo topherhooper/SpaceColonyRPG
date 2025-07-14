@@ -119,8 +119,8 @@ namespace Mirror.Examples.MultipleAdditiveScenes
         public override void OnStopServer()
         {
             NetworkServer.SendToAll(new SceneMessage { sceneName = gameScene, sceneOperation = SceneOperation.UnloadAdditive });
-            
-            if (gameObject.activeSelf) 
+
+            if (gameObject.activeSelf)
                 StartCoroutine(ServerUnloadSubScenes());
 
             Spawner.ClearPool();

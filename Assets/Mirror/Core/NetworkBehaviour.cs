@@ -1077,7 +1077,7 @@ namespace Mirror
             {
                 return null;
             }
-            
+
             // ensure componentIndex is in range.
             // show explicit errors if something went wrong, instead of IndexOutOfRangeException.
             // removing components at runtime isn't allowed, yet this happened in a project so we need to check for it.

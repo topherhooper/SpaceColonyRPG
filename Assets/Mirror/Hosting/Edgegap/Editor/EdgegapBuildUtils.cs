@@ -129,9 +129,9 @@ namespace Edgegap
             await RunCommand("cmd.exe", "/c docker image ls --format \"{{.Repository}}:{{.Tag}}\"", outputReciever,
 
 #elif UNITY_EDITOR_OSX
-            await RunCommand("/bin/bash", "-c \"docker image ls --format \"{{.Repository}}:{{.Tag}}\"\"", outputReciever, 
+            await RunCommand("/bin/bash", "-c \"docker image ls --format \"{{.Repository}}:{{.Tag}}\"\"", outputReciever,
 #elif UNITY_EDITOR_LINUX
-            await RunCommand("/bin/bash", "-c \"docker image ls --format \"{{.Repository}}:{{.Tag}}\"\"", outputReciever, 
+            await RunCommand("/bin/bash", "-c \"docker image ls --format \"{{.Repository}}:{{.Tag}}\"\"", outputReciever,
 #endif
                 (msg) =>
                 {

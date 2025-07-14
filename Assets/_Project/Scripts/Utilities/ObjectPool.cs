@@ -103,7 +103,7 @@ namespace SpaceColony.Core
             if (obj == null) return;
 
             obj.gameObject.SetActive(false);
-            
+
             // Reset transform
             if (_parent != null)
             {
@@ -121,7 +121,7 @@ namespace SpaceColony.Core
         public void ReturnDelayed(T obj, float delay)
         {
             if (obj == null) return;
-            
+
             // In a real implementation, you'd use a coroutine or timer
             // For now, just return immediately
             Return(obj);

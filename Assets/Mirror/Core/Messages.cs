@@ -82,9 +82,9 @@ namespace Mirror
         public bool isOwner
         {
             get => spawnFlags.HasFlag(SpawnFlags.isOwner);
-            set => spawnFlags = 
-                value 
-                ? spawnFlags | SpawnFlags.isOwner 
+            set => spawnFlags =
+                value
+                ? spawnFlags | SpawnFlags.isOwner
                 : spawnFlags & ~SpawnFlags.isOwner;
         }
 
@@ -92,9 +92,9 @@ namespace Mirror
         public bool isLocalPlayer
         {
             get => spawnFlags.HasFlag(SpawnFlags.isLocalPlayer);
-            set => spawnFlags = 
-                value 
-                ? spawnFlags | SpawnFlags.isLocalPlayer 
+            set => spawnFlags =
+                value
+                ? spawnFlags | SpawnFlags.isLocalPlayer
                 : spawnFlags & ~SpawnFlags.isLocalPlayer;
         }
     }
@@ -109,9 +109,9 @@ namespace Mirror
         public bool isOwner
         {
             get => spawnFlags.HasFlag(SpawnFlags.isOwner);
-            set => spawnFlags = 
-                value 
-                ? spawnFlags | SpawnFlags.isOwner 
+            set => spawnFlags =
+                value
+                ? spawnFlags | SpawnFlags.isOwner
                 : spawnFlags & ~SpawnFlags.isOwner;
         }
 
@@ -119,9 +119,9 @@ namespace Mirror
         public bool isLocalPlayer
         {
             get => spawnFlags.HasFlag(SpawnFlags.isLocalPlayer);
-            set => spawnFlags = 
-                value 
-                ? spawnFlags | SpawnFlags.isLocalPlayer 
+            set => spawnFlags =
+                value
+                ? spawnFlags | SpawnFlags.isLocalPlayer
                 : spawnFlags & ~SpawnFlags.isLocalPlayer;
         }
     }

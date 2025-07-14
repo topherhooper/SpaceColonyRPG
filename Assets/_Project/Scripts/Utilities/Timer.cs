@@ -147,7 +147,7 @@ namespace SpaceColony.Core
             {
                 _timeRemaining = 0f;
                 OnTimerComplete?.Invoke();
-                
+
                 if (_autoReset)
                 {
                     Start();
@@ -175,7 +175,7 @@ namespace SpaceColony.Core
     public class TimerBehaviour : MonoBehaviour
     {
         [SerializeField] private Timer _timer = new Timer(1f);
-        
+
         public Timer Timer => _timer;
 
         public void StartTimer(float duration)

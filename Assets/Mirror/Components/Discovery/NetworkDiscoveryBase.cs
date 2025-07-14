@@ -271,7 +271,7 @@ namespace Mirror.Discovery
 #endif
 
         void BeginMulticastLock()
-		{
+        {
 #if UNITY_ANDROID
             if (hasMulticastLock) return;
 
@@ -286,7 +286,7 @@ namespace Mirror.Discovery
                         hasMulticastLock = true;
                     }
                 }
-			}
+            }
 #endif
         }
 

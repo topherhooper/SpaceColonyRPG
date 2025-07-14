@@ -61,6 +61,6 @@ namespace Mirror.Examples.TopDownShooter
             canvasTopDown.UpdateEnemyUI(enemyCounter);
 #endif
         }
-        
+
     }
 }

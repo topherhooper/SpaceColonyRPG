@@ -68,7 +68,7 @@ namespace Mirror.SimpleWeb
 
                 try
                 {
-                    // stream 
+                    // stream
                     stream?.Dispose();
                     stream = null;
                     client.Dispose();

@@ -17,23 +17,23 @@ namespace SpaceColonyRPG.Tests.EditMode.Colony
         {
             colonistObject = new GameObject("TestColonist");
             colonist = colonistObject.AddComponent<Colonist>();
-            
+
             // Add required NavMeshAgent component (mocked for edit mode)
             var agent = colonistObject.AddComponent<NavMeshAgent>();
-            
+
             // Create test wander points
             testWanderPoints = new List<Transform>();
             for (int i = 0; i < 5; i++)
             {
                 var point = new GameObject($"WanderPoint_{i}");
                 point.transform.position = new Vector3(
-                    Random.Range(-10f, 10f), 
-                    0, 
+                    Random.Range(-10f, 10f),
+                    0,
                     Random.Range(-10f, 10f)
                 );
                 testWanderPoints.Add(point.transform);
             }
-            
+
             // Initialize colonist
             colonist.Initialize("TestColonist", testWanderPoints);
         }
@@ -60,7 +60,7 @@ namespace SpaceColonyRPG.Tests.EditMode.Colony
 
             // Assert
             Assert.AreEqual(expectedName, colonist.colonistName);
-            
+
             // Cleanup
             Object.DestroyImmediate(newWanderPoints[0].gameObject);
         }
@@ -125,7 +125,7 @@ namespace SpaceColonyRPG.Tests.EditMode.Colony
         public void ChangeState_UpdatesStateTimer()
         {
             // Arrange
-            var stateTimerField = typeof(Colonist).GetField("stateTimer", 
+            var stateTimerField = typeof(Colonist).GetField("stateTimer",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             stateTimerField.SetValue(colonist, 10f);
 
@@ -141,7 +141,7 @@ namespace SpaceColonyRPG.Tests.EditMode.Colony
         public void SelectRandomDestination_WithWanderPoints_SetsTarget()
         {
             // Arrange
-            var currentTargetField = typeof(Colonist).GetField("currentTarget", 
+            var currentTargetField = typeof(Colonist).GetField("currentTarget",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
 
             // Act
@@ -180,21 +180,21 @@ namespace SpaceColonyRPG.Tests.EditMode.Colony
         // Helper methods
         private void SetColonistState(Colonist colonist, ColonistState state)
         {
-            var stateField = typeof(Colonist).GetField("currentState", 
+            var stateField = typeof(Colonist).GetField("currentState",
                 System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
             stateField.SetValue(colonist, state);
         }
 
         private void InvokePrivateMethod(object obj, string methodName, params object[] parameters)
         {
-            var method = obj.GetType().GetMethod(methodName, 
+            var method = obj.GetType().GetMethod(methodName,
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             method.Invoke(obj, parameters);
         }
 
         private T InvokePrivateMethod<T>(object obj, string methodName, params object[] parameters)
         {
-            var method = obj.GetType().GetMethod(methodName, 
+            var method = obj.GetType().GetMethod(methodName,
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             return (T)method.Invoke(obj, parameters);
         }

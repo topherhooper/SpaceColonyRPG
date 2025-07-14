@@ -176,7 +176,7 @@ namespace Telepathy
             // add 'Disconnected' event to receive pipe so that the caller
             // knows that the Connect failed. otherwise they will never know
             state.receivePipe.Enqueue(0, EventType.Disconnected, default);
-            
+
             // sendthread might be waiting on ManualResetEvent,
             // so let's make sure to end it if the connection
             // closed.

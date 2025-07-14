@@ -12,17 +12,17 @@ public class PrefabGenerator : EditorWindow
     public static void GenerateAllPrefabs()
     {
         CreateDirectoryStructure();
-        
+
         GeneratePlayerPrefab();
         GenerateEnemyPrefab();
         GenerateProjectilePrefab();
         GenerateBuildingPrefabs();
         GenerateColonistPrefab();
         GenerateLootPickupPrefab();
-        
+
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
-        
+
         Debug.Log("All prefabs generated successfully!");
     }
 
@@ -60,18 +60,18 @@ public class PrefabGenerator : EditorWindow
         // Optional Mirror components - uncomment if available
         // player.AddComponent<NetworkTransformReliable>();
         // player.AddComponent<NetworkAnimator>();
-        
+
         CharacterController controller = player.AddComponent<CharacterController>();
         controller.height = 2f;
         controller.radius = 0.5f;
         controller.center = new Vector3(0, 1f, 0);
-        
+
         player.AddComponent<PlayerController>();
-        
+
         CombatStats combatStats = player.AddComponent<CombatStats>();
         combatStats.maxHealth = 100;
         combatStats.health = 100;
-        
+
         player.AddComponent<Weapon>();
         player.AddComponent<PlayerProgression>();
 
@@ -91,7 +91,7 @@ public class PrefabGenerator : EditorWindow
         string prefabPath = "Assets/_Project/Prefabs/Players/Player.prefab";
         PrefabUtility.SaveAsPrefabAsset(player, prefabPath);
         DestroyImmediate(player);
-        
+
         Debug.Log($"Player prefab created at: {prefabPath}");
     }
 
@@ -107,27 +107,27 @@ public class PrefabGenerator : EditorWindow
         enemy.AddComponent<NetworkIdentity>();
         // Optional Mirror component - uncomment if available
         // enemy.AddComponent<NetworkTransformReliable>();
-        
+
         CapsuleCollider collider = enemy.GetComponent<CapsuleCollider>();
         collider.height = 2f;
         collider.radius = 0.5f;
-        
+
         NavMeshAgent agent = enemy.AddComponent<NavMeshAgent>();
         agent.speed = 3f;
         agent.stoppingDistance = 2f;
         agent.radius = 0.5f;
         agent.height = 2f;
-        
+
         SimpleEnemy simpleEnemy = enemy.AddComponent<SimpleEnemy>();
         simpleEnemy.detectionRange = 10f;
         simpleEnemy.attackRange = 2f;
         simpleEnemy.moveSpeed = 3f;
-        
+
         CombatStats combatStats = enemy.AddComponent<CombatStats>();
         combatStats.maxHealth = 50;
         combatStats.health = 50;
         combatStats.damage = 10;
-        
+
         LootDrop lootDrop = enemy.AddComponent<LootDrop>();
 
         // Apply material if exists
@@ -141,7 +141,7 @@ public class PrefabGenerator : EditorWindow
         string prefabPath = "Assets/_Project/Prefabs/Enemies/Enemy.prefab";
         PrefabUtility.SaveAsPrefabAsset(enemy, prefabPath);
         DestroyImmediate(enemy);
-        
+
         Debug.Log($"Enemy prefab created at: {prefabPath}");
     }
 
@@ -158,20 +158,20 @@ public class PrefabGenerator : EditorWindow
         projectile.AddComponent<NetworkIdentity>();
         // Optional Mirror component - uncomment if available
         // projectile.AddComponent<NetworkTransformUnreliable>();
-        
+
         Rigidbody rb = projectile.AddComponent<Rigidbody>();
         rb.mass = 0.1f;
         rb.linearDamping = 0f;
         rb.angularDamping = 0f;
         rb.useGravity = false;
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-        
+
         SphereCollider collider = projectile.GetComponent<SphereCollider>();
         collider.isTrigger = true;
         collider.radius = 0.5f;
-        
+
         projectile.AddComponent<Projectile>();
-        
+
         // Add trail renderer
         TrailRenderer trail = projectile.AddComponent<TrailRenderer>();
         trail.time = 0.5f;
@@ -185,7 +185,7 @@ public class PrefabGenerator : EditorWindow
         string prefabPath = "Assets/_Project/Prefabs/Projectiles/Projectile.prefab";
         PrefabUtility.SaveAsPrefabAsset(projectile, prefabPath);
         DestroyImmediate(projectile);
-        
+
         Debug.Log($"Projectile prefab created at: {prefabPath}");
     }
 
@@ -208,48 +208,48 @@ public class PrefabGenerator : EditorWindow
         foreach (var config in buildingConfigs)
         {
             GameObject building = new GameObject(config.name);
-            
+
             // Add building component
             Building buildingComp = building.AddComponent<Building>();
             // TODO: Update to use BuildingData ScriptableObject
             // buildingComp.buildingData = [reference to appropriate BuildingData asset]
-            
+
             // Add collider
             BoxCollider collider = building.AddComponent<BoxCollider>();
             collider.size = new Vector3(2f, 3f, 2f);
             collider.center = new Vector3(0, 1.5f, 0);
-            
+
             // Create model
             GameObject model = GameObject.CreatePrimitive(PrimitiveType.Cube);
             model.name = "Model";
             model.transform.SetParent(building.transform);
             model.transform.localScale = new Vector3(2f, 3f, 2f);
             model.transform.localPosition = new Vector3(0, 1.5f, 0);
-            
+
             if (buildingMat != null)
             {
                 model.GetComponent<Renderer>().material = buildingMat;
             }
-            
+
             // Create construction site
             GameObject construction = new GameObject("ConstructionSite");
             construction.transform.SetParent(building.transform);
-            
+
             GameObject constructModel = GameObject.CreatePrimitive(PrimitiveType.Cube);
             constructModel.transform.SetParent(construction.transform);
             constructModel.transform.localScale = new Vector3(2f, 0.5f, 2f);
             constructModel.transform.localPosition = new Vector3(0, 0.25f, 0);
-            
+
             // Create work position
             GameObject workPos = new GameObject("WorkPosition");
             workPos.transform.SetParent(building.transform);
             workPos.transform.localPosition = new Vector3(2f, 0, 0);
-            
+
             // Save prefab
             string prefabPath = $"Assets/_Project/Prefabs/Buildings/{config.name}.prefab";
             PrefabUtility.SaveAsPrefabAsset(building, prefabPath);
             DestroyImmediate(building);
-            
+
             Debug.Log($"{config.name} prefab created at: {prefabPath}");
         }
     }
@@ -267,9 +267,9 @@ public class PrefabGenerator : EditorWindow
         agent.speed = 3f;
         agent.radius = 0.35f;
         agent.height = 1.4f;
-        
+
         colonist.AddComponent<Colonist>();
-        
+
         // Make them visually distinct
         Renderer renderer = colonist.GetComponent<Renderer>();
         renderer.material.color = new Color(0.5f, 0.8f, 1f);
@@ -278,7 +278,7 @@ public class PrefabGenerator : EditorWindow
         string prefabPath = "Assets/_Project/Prefabs/Colonist.prefab";
         PrefabUtility.SaveAsPrefabAsset(colonist, prefabPath);
         DestroyImmediate(colonist);
-        
+
         Debug.Log($"Colonist prefab created at: {prefabPath}");
     }
 
@@ -293,23 +293,23 @@ public class PrefabGenerator : EditorWindow
         loot.AddComponent<NetworkIdentity>();
         // Optional Mirror component - uncomment if available
         // loot.AddComponent<NetworkTransformReliable>();
-        
+
         SphereCollider collider = loot.AddComponent<SphereCollider>();
         collider.isTrigger = true;
         collider.radius = 2f;
-        
+
         Rigidbody rb = loot.AddComponent<Rigidbody>();
         rb.mass = 0.5f;
         rb.linearDamping = 2f;
-        
+
         loot.AddComponent<LootPickup>();
-        
+
         // Create visual
         GameObject visual = GameObject.CreatePrimitive(PrimitiveType.Cube);
         visual.name = "Visual";
         visual.transform.SetParent(loot.transform);
         visual.transform.localScale = Vector3.one * 0.5f;
-        
+
         // Make it glow
         Renderer renderer = visual.GetComponent<Renderer>();
         renderer.material.color = Color.yellow;
@@ -320,7 +320,7 @@ public class PrefabGenerator : EditorWindow
         string prefabPath = "Assets/_Project/Prefabs/LootPickup.prefab";
         PrefabUtility.SaveAsPrefabAsset(loot, prefabPath);
         DestroyImmediate(loot);
-        
+
         Debug.Log($"LootPickup prefab created at: {prefabPath}");
     }
 }

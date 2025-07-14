@@ -313,7 +313,7 @@ namespace Mirror.Examples.TopDownShooter
                     canvasTopDown.buttonRespawnPlayer.gameObject.SetActive(true);
                 }
             }
-            // else if (playerStatus == 2) // can be used for other features, such as spectator, make local camera follow another player 
+            // else if (playerStatus == 2) // can be used for other features, such as spectator, make local camera follow another player
 #endif
         }
 

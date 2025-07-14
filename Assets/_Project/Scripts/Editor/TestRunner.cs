@@ -16,12 +16,12 @@ namespace SpaceColonyRPG.Editor
         {
             var testRunnerApi = ScriptableObject.CreateInstance<TestRunnerApi>();
             testRunnerApi.RegisterCallbacks(new TestCallbacks());
-            
+
             var filter = new Filter()
             {
                 testMode = TestMode.EditMode | TestMode.PlayMode
             };
-            
+
             testRunnerApi.Execute(new ExecutionSettings(filter));
         }
 
@@ -29,60 +29,60 @@ namespace SpaceColonyRPG.Editor
         {
             testsPass = false;
             testsComplete = false;
-            
+
             RunAllTests();
-            
+
             // Wait for tests to complete (with timeout)
             var startTime = DateTime.Now;
             while (!testsComplete && (DateTime.Now - startTime).TotalSeconds < 300)
             {
                 System.Threading.Thread.Sleep(100);
             }
-            
+
             return testsPass;
         }
 
         private class TestCallbacks : ICallbacks
         {
-            public void RunStarted(ITestAdaptor testsToRun) 
+            public void RunStarted(ITestAdaptor testsToRun)
             {
                 UnityEngine.Debug.Log($"Starting test run with {CountTests(testsToRun)} tests");
             }
-            
+
             public void RunFinished(ITestResultAdaptor result)
             {
                 testsPass = result.FailCount == 0;
                 testsComplete = true;
-                
+
                 UnityEngine.Debug.Log($"Tests completed. Passed: {result.PassCount}, Failed: {result.FailCount}");
-                
+
                 if (result.FailCount > 0)
                 {
                     LogFailedTests(result);
                 }
             }
-            
-            public void TestStarted(ITestAdaptor test) 
+
+            public void TestStarted(ITestAdaptor test)
             {
                 UnityEngine.Debug.Log($"Running: {test.FullName}");
             }
-            
-            public void TestFinished(ITestResultAdaptor result) 
+
+            public void TestFinished(ITestResultAdaptor result)
             {
                 if (!result.HasChildren && result.TestStatus == TestStatus.Failed)
                 {
                     UnityEngine.Debug.LogError($"FAILED: {result.FullName}\n{result.Message}");
                 }
             }
-            
+
             private int CountTests(ITestAdaptor test)
             {
                 if (!test.HasChildren)
                     return 1;
-                
+
                 return test.Children.Sum(child => CountTests(child));
             }
-            
+
             private void LogFailedTests(ITestResultAdaptor result)
             {
                 if (!result.HasChildren)

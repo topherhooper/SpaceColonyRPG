@@ -91,7 +91,7 @@ namespace Mirror.SimpleWeb
             }
             else if (lenByte == Constants.UlongPayloadLength)
             {
-                // header is 8 bytes 
+                // header is 8 bytes
                 ulong value = 0;
                 value |= ((ulong)buffer[offset + 2] << 56);
                 value |= ((ulong)buffer[offset + 3] << 48);

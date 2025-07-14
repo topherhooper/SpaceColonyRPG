@@ -8,13 +8,13 @@ namespace Edgegap.Editor.Api
 {
     /// <summary>
     /// Wraps the v1/app API endpoint: Applications Control API.
-    /// - API Doc | https://docs.edgegap.com/api/#tag/Applications 
+    /// - API Doc | https://docs.edgegap.com/api/#tag/Applications
     /// </summary>
     public class EdgegapAppApi : EdgegapApiBase
     {
         public EdgegapAppApi(
-            ApiEnvironment apiEnvironment, 
-            string apiToken, 
+            ApiEnvironment apiEnvironment,
+            string apiToken,
             EdgegapWindowMetadata.LogLevel logLevel = EdgegapWindowMetadata.LogLevel.Error)
             : base(apiEnvironment, apiToken, logLevel)
         {
@@ -25,7 +25,7 @@ namespace Edgegap.Editor.Api
         /// <summary>
         /// POST to v1/app
         /// - Create an application that will regroup application versions.
-        /// - API Doc | https://docs.edgegap.com/api/#tag/Applications/operation/application-post 
+        /// - API Doc | https://docs.edgegap.com/api/#tag/Applications/operation/application-post
         /// </summary>
         /// <returns>
         /// Http info with GetCreateAppResult data model
@@ -40,14 +40,14 @@ namespace Edgegap.Editor.Api
             bool isSuccess = response.StatusCode == HttpStatusCode.OK; // 200
             if (!isSuccess)
                 return result;
-            
+
             return result;
         }
-        
+
         /// <summary>
         /// GET to v1/app
         /// - Get an application that will regroup application versions.
-        /// - API Doc | https://docs.edgegap.com/api/#tag/Applications/operation/application-post 
+        /// - API Doc | https://docs.edgegap.com/api/#tag/Applications/operation/application-post
         /// </summary>
         /// <returns>
         /// Http info with GetCreateAppResult data model
@@ -61,10 +61,10 @@ namespace Edgegap.Editor.Api
             bool isSuccess = response.StatusCode == HttpStatusCode.OK; // 200
             if (!isSuccess)
                 return result;
-            
+
             return result;
         }
-        
+
         /// <summary>
         /// PATCH to v1/app/{app_name}/version/{version_name}
         /// - Update an *existing* application version with new specifications.
@@ -83,7 +83,7 @@ namespace Edgegap.Editor.Api
             bool isSuccess = response.StatusCode == HttpStatusCode.OK; // 200
             if (!isSuccess)
                 return result;
-            
+
             return result;
         }
 
@@ -175,7 +175,7 @@ namespace Edgegap.Editor.Api
                 CreateAppVersionRequest createAppVersionRequest = CreateAppVersionRequest.FromUpdateRequest(request);
                 result = await CreateAppVersion(createAppVersionRequest); // POST
             }
-            
+
             bool isSuccess = result.StatusCode == HttpStatusCode.OK; // 200
 
             if (!isSuccess)
@@ -183,6 +183,6 @@ namespace Edgegap.Editor.Api
 
             return result;
         }
-        #endregion // Chained API Methods 
+        #endregion // Chained API Methods
     }
 }

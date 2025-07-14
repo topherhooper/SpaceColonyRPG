@@ -11,28 +11,28 @@ public class SetupAutomation : EditorWindow
         Debug.Log("===============================================");
         Debug.Log("Starting Space Colony RPG Complete Setup");
         Debug.Log("===============================================");
-        
+
         try
         {
             // 1. Create directory structure
             CreateProjectDirectories();
-            
+
             // 2. Create materials
             MaterialGenerator.GenerateAllMaterials();
-            
+
             // 3. Setup layers and tags
             SetupLayersAndTags();
-            
+
             // 4. Generate missing scenes (won't overwrite existing)
             SceneGenerator.GenerateMissingScenesOnly();
-            
+
             // 5. Generate all prefabs
             PrefabGenerator.GenerateAllPrefabs();
-            
+
             // 6. Refresh asset database
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            
+
             Debug.Log("===============================================");
             Debug.Log("Setup Complete! Project is ready to play.");
             Debug.Log("===============================================");
@@ -46,11 +46,11 @@ public class SetupAutomation : EditorWindow
             Debug.LogError($"Setup failed with error: {e.Message}\n{e.StackTrace}");
         }
     }
-    
+
     static void CreateProjectDirectories()
     {
         Debug.Log("Creating project directories...");
-        
+
         string[] directories = new string[]
         {
             "Assets/_Project",
@@ -77,7 +77,7 @@ public class SetupAutomation : EditorWindow
             "Assets/_Project/Audio/Music",
             "Assets/_Project/Scenes"
         };
-        
+
         foreach (string dir in directories)
         {
             if (!Directory.Exists(dir))
@@ -87,11 +87,11 @@ public class SetupAutomation : EditorWindow
             }
         }
     }
-    
+
     static void SetupLayersAndTags()
     {
         Debug.Log("Setting up layers and tags...");
-        
+
         // Add layers
         string[] layers = new string[]
         {
@@ -104,7 +104,7 @@ public class SetupAutomation : EditorWindow
             "UI",          // Layer 14
             "PostProcessing" // Layer 15
         };
-        
+
         // Add tags
         string[] tags = new string[]
         {
@@ -116,10 +116,10 @@ public class SetupAutomation : EditorWindow
             "Resource",
             "Colonist"
         };
-        
+
         // Get TagManager
         SerializedObject tagManager = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);
-        
+
         // Add layers
         SerializedProperty layersProp = tagManager.FindProperty("layers");
         for (int i = 0; i < layers.Length; i++)
@@ -135,7 +135,7 @@ public class SetupAutomation : EditorWindow
                 }
             }
         }
-        
+
         // Add tags
         SerializedProperty tagsProp = tagManager.FindProperty("tags");
         foreach (string tag in tags)
@@ -150,7 +150,7 @@ public class SetupAutomation : EditorWindow
                     break;
                 }
             }
-            
+
             if (!found)
             {
                 tagsProp.InsertArrayElementAtIndex(0);
@@ -159,17 +159,17 @@ public class SetupAutomation : EditorWindow
                 Debug.Log($"Added tag: {tag}");
             }
         }
-        
+
         tagManager.ApplyModifiedProperties();
-        
+
         // Setup physics collision matrix
         SetupPhysicsCollisions();
     }
-    
+
     static void SetupPhysicsCollisions()
     {
         Debug.Log("Setting up physics collision matrix...");
-        
+
         // Get layer indices
         int playerLayer = LayerMask.NameToLayer("Player");
         int enemyLayer = LayerMask.NameToLayer("Enemy");
@@ -177,31 +177,31 @@ public class SetupAutomation : EditorWindow
         int buildingLayer = LayerMask.NameToLayer("Building");
         int groundLayer = LayerMask.NameToLayer("Ground");
         int environmentLayer = LayerMask.NameToLayer("Environment");
-        
+
         // Players don't collide with each other
         Physics.IgnoreLayerCollision(playerLayer, playerLayer, true);
-        
+
         // Projectiles don't collide with each other
         Physics.IgnoreLayerCollision(projectileLayer, projectileLayer, true);
-        
+
         // Buildings don't collide with ground (they're placed on it)
         Physics.IgnoreLayerCollision(buildingLayer, groundLayer, true);
-        
+
         Debug.Log("Physics collision matrix configured");
     }
-    
+
     [MenuItem("SpaceColony/Quick Setup Helper")]
     public static void ShowQuickSetupWindow()
     {
         EditorWindow window = GetWindow<SetupAutomation>("Space Colony Setup");
         window.minSize = new Vector2(400, 300);
     }
-    
+
     void OnGUI()
     {
         GUILayout.Label("Space Colony RPG - Quick Setup", EditorStyles.boldLabel);
         GUILayout.Space(10);
-        
+
         EditorGUILayout.HelpBox(
             "This will automatically set up your entire project:\n" +
             "• Create all directories\n" +
@@ -211,46 +211,46 @@ public class SetupAutomation : EditorWindow
             "• Generate all prefabs",
             MessageType.Info
         );
-        
+
         GUILayout.Space(20);
-        
+
         if (GUILayout.Button("Run Complete Setup", GUILayout.Height(40)))
         {
             RunCompleteSetup();
         }
-        
+
         GUILayout.Space(10);
-        
+
         GUILayout.Label("Individual Setup Steps:", EditorStyles.boldLabel);
-        
+
         if (GUILayout.Button("1. Create Directories Only"))
         {
             CreateProjectDirectories();
             AssetDatabase.Refresh();
         }
-        
+
         if (GUILayout.Button("2. Generate Materials Only"))
         {
             MaterialGenerator.GenerateAllMaterials();
         }
-        
+
         if (GUILayout.Button("3. Setup Layers/Tags Only"))
         {
             SetupLayersAndTags();
         }
-        
+
         if (GUILayout.Button("4. Generate Scenes Only"))
         {
             SceneGenerator.GenerateAllScenes();
         }
-        
+
         if (GUILayout.Button("5. Generate Prefabs Only"))
         {
             PrefabGenerator.GenerateAllPrefabs();
         }
-        
+
         GUILayout.Space(10);
-        
+
         if (GUILayout.Button("Open Main Menu Scene"))
         {
             UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/_Project/Scenes/MainMenu.unity");

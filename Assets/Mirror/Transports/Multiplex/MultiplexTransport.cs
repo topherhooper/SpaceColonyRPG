@@ -291,7 +291,7 @@ namespace Mirror
                         }
                         else
                             Debug.LogWarning($"[Multiplexer] Received data for unknown connectionId={originalConnectionId} on transport={transportIndex}");
-              
+
                         return;
                     }
                     OnServerDataReceived.Invoke(multiplexedId, data, channel);
@@ -311,7 +311,7 @@ namespace Mirror
                         }
                         else
                             Debug.LogError($"[Multiplexer] Received error for unknown connectionId={originalConnectionId} on transport={transportIndex}");
-                        
+
                         return;
                     }
                     OnServerError.Invoke(multiplexedId, error, reason);
@@ -338,7 +338,7 @@ namespace Mirror
                         }
                         else
                             Debug.LogWarning($"[Multiplexer] Received disconnect for unknown connectionId={originalConnectionId} on transport={transportIndex}");
-                        
+
                         return;
                     }
                     OnServerDisconnected.Invoke(multiplexedId);

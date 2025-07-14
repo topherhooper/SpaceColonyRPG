@@ -43,13 +43,13 @@ namespace SpaceColony.Utilities
 
         [Header("Quick Setup")]
         public bool createMaterialsFolder = true;
-        
+
         void Start()
         {
             Debug.Log("=== MATERIAL SETUP GUIDE ===");
             Debug.Log(instructions);
             Debug.Log("=== END GUIDE ===");
-            
+
             // This will be visible in the Inspector too!
         }
     }

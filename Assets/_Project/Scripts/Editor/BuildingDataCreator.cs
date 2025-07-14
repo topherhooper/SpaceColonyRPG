@@ -10,26 +10,26 @@ namespace SpaceColonyRPG.Editor
         static void CreateDefaultBuildings()
         {
             string path = "Assets/_Project/ScriptableObjects/Buildings/";
-            
+
             // Ensure directory exists
             if (!System.IO.Directory.Exists(path))
             {
                 System.IO.Directory.CreateDirectory(path);
                 AssetDatabase.Refresh();
             }
-            
+
             // Check if assets already exist
             string[] existingAssets = AssetDatabase.FindAssets("t:BuildingData", new[] { path });
             if (existingAssets.Length > 0)
             {
-                if (!EditorUtility.DisplayDialog("Buildings Already Exist", 
-                    "Building assets already exist in this folder. Do you want to overwrite them?", 
+                if (!EditorUtility.DisplayDialog("Buildings Already Exist",
+                    "Building assets already exist in this folder. Do you want to overwrite them?",
                     "Overwrite", "Cancel"))
                 {
                     return;
                 }
             }
-            
+
             // Command Center
             BuildingData commandCenter = ScriptableObject.CreateInstance<BuildingData>();
             commandCenter.buildingName = "Command Center";
@@ -40,7 +40,7 @@ namespace SpaceColonyRPG.Editor
             commandCenter.requiredColonyLevel = 1;
             commandCenter.housingCapacity = 2;
             CreateBuildingAsset(commandCenter, path + "CommandCenter.asset");
-            
+
             // Solar Panel
             BuildingData solarPanel = ScriptableObject.CreateInstance<BuildingData>();
             solarPanel.buildingName = "Solar Panel";
@@ -53,7 +53,7 @@ namespace SpaceColonyRPG.Editor
                 new BuildingData.ResourceProduction { resourceType = ResourceType.Energy, amountPerMinute = 10 }
             };
             CreateBuildingAsset(solarPanel, path + "SolarPanel.asset");
-            
+
             // Metal Mine
             BuildingData metalMine = ScriptableObject.CreateInstance<BuildingData>();
             metalMine.buildingName = "Metal Mine";
@@ -68,7 +68,7 @@ namespace SpaceColonyRPG.Editor
                 new BuildingData.ResourceProduction { resourceType = ResourceType.Metal, amountPerMinute = 20 }
             };
             CreateBuildingAsset(metalMine, path + "MetalMine.asset");
-            
+
             // Habitat Pod
             BuildingData habitatPod = ScriptableObject.CreateInstance<BuildingData>();
             habitatPod.buildingName = "Habitat Pod";
@@ -79,7 +79,7 @@ namespace SpaceColonyRPG.Editor
             habitatPod.energyConsumption = 2;
             habitatPod.housingCapacity = 4;
             CreateBuildingAsset(habitatPod, path + "HabitatPod.asset");
-            
+
             // Research Lab
             BuildingData researchLab = ScriptableObject.CreateInstance<BuildingData>();
             researchLab.buildingName = "Research Lab";
@@ -95,7 +95,7 @@ namespace SpaceColonyRPG.Editor
                 new BuildingData.ResourceProduction { resourceType = ResourceType.Research, amountPerMinute = 5 }
             };
             CreateBuildingAsset(researchLab, path + "ResearchLab.asset");
-            
+
             // Defense Tower
             BuildingData defenseTower = ScriptableObject.CreateInstance<BuildingData>();
             defenseTower.buildingName = "Defense Tower";
@@ -106,7 +106,7 @@ namespace SpaceColonyRPG.Editor
             defenseTower.energyConsumption = 5;
             defenseTower.raidDamageBonus = 0.1f;
             CreateBuildingAsset(defenseTower, path + "DefenseTower.asset");
-            
+
             // Shield Generator
             BuildingData shieldGen = ScriptableObject.CreateInstance<BuildingData>();
             shieldGen.buildingName = "Shield Generator";
@@ -118,7 +118,7 @@ namespace SpaceColonyRPG.Editor
             shieldGen.requiredColonyLevel = 3;
             shieldGen.raidShieldBonus = 0.2f;
             CreateBuildingAsset(shieldGen, path + "ShieldGenerator.asset");
-            
+
             // Medical Bay
             BuildingData medicalBay = ScriptableObject.CreateInstance<BuildingData>();
             medicalBay.buildingName = "Medical Bay";
@@ -131,13 +131,13 @@ namespace SpaceColonyRPG.Editor
             medicalBay.requiredColonyLevel = 2;
             medicalBay.raidHealthRegenBonus = 0.15f;
             CreateBuildingAsset(medicalBay, path + "MedicalBay.asset");
-            
+
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            
+
             Debug.Log("Default building data assets created!");
         }
-        
+
         static void CreateBuildingAsset(BuildingData buildingData, string assetPath)
         {
             try
@@ -147,7 +147,7 @@ namespace SpaceColonyRPG.Editor
                 {
                     AssetDatabase.DeleteAsset(assetPath);
                 }
-                
+
                 AssetDatabase.CreateAsset(buildingData, assetPath);
                 Debug.Log($"Created: {assetPath}");
             }

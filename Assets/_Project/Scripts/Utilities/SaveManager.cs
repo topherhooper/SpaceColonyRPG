@@ -11,7 +11,7 @@ public class ColonySaveData
     public List<string> purchasedUpgrades = new List<string>();
     public int playerLevel;
     public int playerExperience;
-    
+
     [System.Serializable]
     public class BuildingData
     {
@@ -21,14 +21,14 @@ public class ColonySaveData
         public float workProgress;
         public bool isConstructed;
     }
-    
+
     [System.Serializable]
     public class ColonistData
     {
         public Vector3 position;
         public string currentState;
     }
-    
+
     [System.Serializable]
     public class ResourceData
     {
@@ -41,11 +41,11 @@ public static class SaveManager
 {
     private const string SAVE_KEY = "ColonySave";
     private const string HAS_SAVE_KEY = "HasSave";
-    
+
     public static void SaveColony()
     {
         ColonySaveData saveData = new ColonySaveData();
-        
+
         Building[] buildings = Object.FindObjectsOfType<Building>();
         foreach (Building building in buildings)
         {
@@ -58,7 +58,7 @@ public static class SaveManager
                 isConstructed = building.isActive
             });
         }
-        
+
         Colonist[] colonists = Object.FindObjectsOfType<Colonist>();
         foreach (Colonist colonist in colonists)
         {
@@ -68,7 +68,7 @@ public static class SaveManager
                 currentState = colonist.currentState.ToString()
             });
         }
-        
+
         if (ResourceManager.Instance != null)
         {
             foreach (ResourceManager.Resource resource in ResourceManager.Instance.resources)
@@ -80,7 +80,7 @@ public static class SaveManager
                 });
             }
         }
-        
+
         if (ColonyUpgrades.Instance != null)
         {
             foreach (ColonyUpgrades.Upgrade upgrade in ColonyUpgrades.Instance.availableUpgrades)
@@ -91,7 +91,7 @@ public static class SaveManager
                 }
             }
         }
-        
+
         if (PlayerController.LocalPlayer != null)
         {
             PlayerProgression progression = PlayerController.LocalPlayer.GetComponent<PlayerProgression>();
@@ -101,28 +101,28 @@ public static class SaveManager
                 saveData.playerExperience = progression.experience;
             }
         }
-        
+
         string json = JsonUtility.ToJson(saveData, true);
         PlayerPrefs.SetString(SAVE_KEY, json);
         PlayerPrefs.SetInt(HAS_SAVE_KEY, 1);
         PlayerPrefs.Save();
-        
+
         Debug.Log("Colony saved successfully!");
     }
-    
+
     public static void LoadColony()
     {
         if (!HasSave()) return;
-        
+
         string json = PlayerPrefs.GetString(SAVE_KEY);
         ColonySaveData saveData = JsonUtility.FromJson<ColonySaveData>(json);
-        
+
         if (saveData != null)
         {
             RestoreColony(saveData);
         }
     }
-    
+
     static void RestoreColony(ColonySaveData saveData)
     {
         Building[] existingBuildings = Object.FindObjectsOfType<Building>();
@@ -130,23 +130,23 @@ public static class SaveManager
         {
             Object.Destroy(building.gameObject);
         }
-        
+
         Colonist[] existingColonists = Object.FindObjectsOfType<Colonist>();
         foreach (Colonist colonist in existingColonists)
         {
             Object.Destroy(colonist.gameObject);
         }
-        
+
         // TODO: Implement building loading
         // BuildingSystem buildingSystem = Object.FindObjectOfType<BuildingSystem>();
         // Need to update this to work with the new BuildingData ScriptableObject system
-        
+
         if (ResourceManager.Instance != null)
         {
             // TODO: Implement resource loading
             // Need to update this to work with the current ResourceManager system
         }
-        
+
         if (ColonyUpgrades.Instance != null)
         {
             foreach (ColonyUpgrades.Upgrade upgrade in ColonyUpgrades.Instance.availableUpgrades)
@@ -154,15 +154,15 @@ public static class SaveManager
                 upgrade.purchased = saveData.purchasedUpgrades.Contains(upgrade.name);
             }
         }
-        
+
         Debug.Log("Colony loaded successfully!");
     }
-    
+
     public static bool HasSave()
     {
         return PlayerPrefs.GetInt(HAS_SAVE_KEY, 0) == 1;
     }
-    
+
     public static void DeleteSave()
     {
         PlayerPrefs.DeleteKey(SAVE_KEY);

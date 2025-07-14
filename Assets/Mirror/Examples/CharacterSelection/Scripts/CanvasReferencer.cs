@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using static Mirror.Examples.CharacterSelection.NetworkManagerCharacterSelection;
 
 namespace Mirror.Examples.CharacterSelection
-{ 
+{
     public class CanvasReferencer : MonoBehaviour
     {
         // Make sure to attach these Buttons in the Inspector

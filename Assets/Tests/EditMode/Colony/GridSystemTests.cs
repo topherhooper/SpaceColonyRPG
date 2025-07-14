@@ -14,30 +14,30 @@ namespace SpaceColonyRPG.Tests.EditMode.Colony
         {
             testObject = new GameObject("TestGridSystem");
             gridSystem = testObject.AddComponent<GridSystem>();
-            
+
             // Set up test grid configuration
             gridSystem.gridWidth = 10;
             gridSystem.gridHeight = 10;
             gridSystem.cellSize = 2f;
-            
+
             // Manually initialize the grid since Awake won't be called in tests
-            var gridField = typeof(GridSystem).GetField("grid", 
+            var gridField = typeof(GridSystem).GetField("grid",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             var grid = new GridSystem.GridCell[gridSystem.gridWidth, gridSystem.gridHeight];
-            
+
             for (int x = 0; x < gridSystem.gridWidth; x++)
             {
                 for (int z = 0; z < gridSystem.gridHeight; z++)
                 {
-                    grid[x, z] = new GridSystem.GridCell 
-                    { 
+                    grid[x, z] = new GridSystem.GridCell
+                    {
                         position = new Vector2Int(x, z),
                         isOccupied = false,
                         occupyingBuilding = null
                     };
                 }
             }
-            
+
             gridField.SetValue(gridSystem, grid);
         }
 

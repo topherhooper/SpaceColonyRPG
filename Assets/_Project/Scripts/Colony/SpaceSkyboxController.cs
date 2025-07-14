@@ -9,35 +9,35 @@ namespace SpaceColonyRPG.Colony
         public Material spaceSkybox;
         public Gradient skyGradient;
         public float rotationSpeed = 0.5f;
-        
+
         [Header("Atmospheric Effects")]
         public GameObject dustParticlesPrefab;
         public Light sunLight;
         public Light ambientLight;
-        
+
         [Header("Lighting Colors")]
         public Color sunColor = new Color(0.8f, 0.7f, 1f);
         public float sunIntensity = 1.2f;
         public Color ambientSkyColor = new Color(0.3f, 0.2f, 0.5f);
         public Color ambientEquatorColor = new Color(0.2f, 0.15f, 0.3f);
         public Color ambientGroundColor = new Color(0.1f, 0.08f, 0.15f);
-        
+
         [Header("Particle Settings")]
         public int dustParticleCount = 100;
         public float dustLifetime = 20f;
         public float dustSpeed = 0.5f;
         public Color dustColor = new Color(0.6f, 0.5f, 0.8f, 0.3f);
-        
+
         private Material runtimeSkybox;
         private ParticleSystem atmosphericDust;
-        
+
         void Start()
         {
             SetupSkybox();
             SetupLighting();
             CreateAtmosphericEffects();
         }
-        
+
         void SetupSkybox()
         {
             if (spaceSkybox)
@@ -52,15 +52,15 @@ namespace SpaceColonyRPG.Colony
                 runtimeSkybox = CreateProceduralSkybox();
                 RenderSettings.skybox = runtimeSkybox;
             }
-            
+
             // Update skybox exposure for alien atmosphere
             RenderSettings.skybox.SetFloat("_Exposure", 0.8f);
         }
-        
+
         Material CreateProceduralSkybox()
         {
             Material skyMat = null;
-            
+
             // Try to find procedural skybox shader
             Shader proceduralShader = Shader.Find("Skybox/Procedural");
             if (proceduralShader)
@@ -82,14 +82,14 @@ namespace SpaceColonyRPG.Colony
                     skyMat.SetColor("_Color2", new Color(0.2f, 0.1f, 0.3f));
                 }
             }
-            
+
             return skyMat;
         }
-        
+
         void SetupLighting()
         {
             // Find or setup main sun light
-            if (!sunLight) 
+            if (!sunLight)
             {
                 Light[] lights = FindObjectsOfType<Light>();
                 foreach (var light in lights)
@@ -101,13 +101,13 @@ namespace SpaceColonyRPG.Colony
                     }
                 }
             }
-            
+
             if (sunLight)
             {
                 sunLight.color = sunColor;
                 sunLight.intensity = sunIntensity;
                 sunLight.transform.rotation = Quaternion.Euler(35f, -30f, 0);
-                
+
                 // Add subtle shadows
                 sunLight.shadows = LightShadows.Soft;
                 sunLight.shadowStrength = 0.7f;
@@ -116,13 +116,13 @@ namespace SpaceColonyRPG.Colony
             {
                 Debug.LogWarning("No directional light found for sun");
             }
-            
+
             // Ambient lighting
             RenderSettings.ambientMode = AmbientMode.Trilight;
             RenderSettings.ambientSkyColor = ambientSkyColor;
             RenderSettings.ambientEquatorColor = ambientEquatorColor;
             RenderSettings.ambientGroundColor = ambientGroundColor;
-            
+
             // Fog for atmosphere
             RenderSettings.fog = true;
             RenderSettings.fogColor = new Color(0.2f, 0.15f, 0.3f, 1f);
@@ -130,7 +130,7 @@ namespace SpaceColonyRPG.Colony
             RenderSettings.fogStartDistance = 30f;
             RenderSettings.fogEndDistance = 100f;
         }
-        
+
         void CreateAtmosphericEffects()
         {
             // Create floating dust particles
@@ -144,20 +144,20 @@ namespace SpaceColonyRPG.Colony
                 dustObj = Instantiate(dustParticlesPrefab);
                 dustObj.name = "AtmosphericDust";
             }
-            
+
             atmosphericDust = dustObj.GetComponent<ParticleSystem>();
-            if (!atmosphericDust) 
+            if (!atmosphericDust)
             {
                 atmosphericDust = dustObj.AddComponent<ParticleSystem>();
             }
-            
+
             SetupDustParticles();
         }
-        
+
         void SetupDustParticles()
         {
             if (!atmosphericDust) return;
-            
+
             var main = atmosphericDust.main;
             main.maxParticles = dustParticleCount;
             main.startLifetime = dustLifetime;
@@ -165,35 +165,35 @@ namespace SpaceColonyRPG.Colony
             main.startSize = 0.2f;
             main.startColor = dustColor;
             main.loop = true;
-            
+
             var shape = atmosphericDust.shape;
             shape.shapeType = ParticleSystemShapeType.Box;
             shape.scale = new Vector3(100, 20, 100);
             shape.position = new Vector3(0, 10, 0);
-            
+
             var velocityOverLifetime = atmosphericDust.velocityOverLifetime;
             velocityOverLifetime.enabled = true;
             velocityOverLifetime.space = ParticleSystemSimulationSpace.World;
             velocityOverLifetime.x = new ParticleSystem.MinMaxCurve(-0.5f, 0.5f);
             velocityOverLifetime.y = new ParticleSystem.MinMaxCurve(-0.1f, 0.1f);
             velocityOverLifetime.z = new ParticleSystem.MinMaxCurve(-0.5f, 0.5f);
-            
+
             var colorOverLifetime = atmosphericDust.colorOverLifetime;
             colorOverLifetime.enabled = true;
             Gradient gradient = new Gradient();
             gradient.SetKeys(
-                new GradientColorKey[] { 
-                    new GradientColorKey(Color.white, 0.0f), 
-                    new GradientColorKey(Color.white, 1.0f) 
+                new GradientColorKey[] {
+                    new GradientColorKey(Color.white, 0.0f),
+                    new GradientColorKey(Color.white, 1.0f)
                 },
-                new GradientAlphaKey[] { 
-                    new GradientAlphaKey(0.0f, 0.0f), 
-                    new GradientAlphaKey(0.3f, 0.5f), 
-                    new GradientAlphaKey(0.0f, 1.0f) 
+                new GradientAlphaKey[] {
+                    new GradientAlphaKey(0.0f, 0.0f),
+                    new GradientAlphaKey(0.3f, 0.5f),
+                    new GradientAlphaKey(0.0f, 1.0f)
                 }
             );
             colorOverLifetime.color = gradient;
-            
+
             // Use unlit material for particles
             var renderer = atmosphericDust.GetComponent<ParticleSystemRenderer>();
             if (renderer)
@@ -202,7 +202,7 @@ namespace SpaceColonyRPG.Colony
                 renderer.material.color = dustColor;
             }
         }
-        
+
         void Update()
         {
             // Slowly rotate skybox for dynamic feel
@@ -212,7 +212,7 @@ namespace SpaceColonyRPG.Colony
                 runtimeSkybox.SetFloat("_Rotation", rotation % 360f);
             }
         }
-        
+
         void OnDestroy()
         {
             // Clean up runtime materials
@@ -221,7 +221,7 @@ namespace SpaceColonyRPG.Colony
                 Destroy(runtimeSkybox);
             }
         }
-        
+
         // Editor helpers
         [ContextMenu("Apply Atmosphere Settings")]
         public void ApplyAtmosphereSettings()

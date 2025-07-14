@@ -15,27 +15,27 @@ namespace SpaceColonyRPG.Tests.EditMode.Colony
         {
             testObject = new GameObject("TestResourceManager");
             resourceManager = testObject.AddComponent<ResourceManager>();
-            
+
             // Initialize resources for testing
             resourceManager.resources = new List<ResourceManager.Resource>
             {
-                new ResourceManager.Resource 
-                { 
-                    type = ResourceType.Metal, 
+                new ResourceManager.Resource
+                {
+                    type = ResourceType.Metal,
                     displayName = "Metal",
                     currentAmount = 100,
                     maxCapacity = 500
                 },
-                new ResourceManager.Resource 
-                { 
-                    type = ResourceType.Energy, 
+                new ResourceManager.Resource
+                {
+                    type = ResourceType.Energy,
                     displayName = "Energy",
                     currentAmount = 0,
                     maxCapacity = int.MaxValue
                 },
-                new ResourceManager.Resource 
-                { 
-                    type = ResourceType.Credits, 
+                new ResourceManager.Resource
+                {
+                    type = ResourceType.Credits,
                     displayName = "Credits",
                     currentAmount = 50,
                     maxCapacity = int.MaxValue

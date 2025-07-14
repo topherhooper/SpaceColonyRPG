@@ -174,7 +174,7 @@ public class GameStateManager : MonoBehaviour
     private IEnumerator ReturnToColony()
     {
         yield return new WaitForSeconds(postRaidReturnDelay);
-        
+
         if (GameNetworkManager.Instance != null && GameNetworkManager.Instance.isNetworkActive)
         {
             if (GameNetworkManager.Instance.mode == Mirror.NetworkManagerMode.Host)

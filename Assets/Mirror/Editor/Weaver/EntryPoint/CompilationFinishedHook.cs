@@ -76,7 +76,7 @@ namespace Mirror.Weaver
             }
 
             // Should not run on the editor only assemblies (test ones still need to be weaved)
-            if (assemblyPath.Contains("-Editor") || 
+            if (assemblyPath.Contains("-Editor") ||
                 (assemblyPath.Contains(".Editor") && !assemblyPath.Contains(".Tests")))
             {
                 return;

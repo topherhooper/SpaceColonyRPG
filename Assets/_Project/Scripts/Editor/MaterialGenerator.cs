@@ -9,13 +9,13 @@ public class MaterialGenerator : EditorWindow
     public static void GenerateAllMaterials()
     {
         Debug.Log("Generating materials...");
-        
+
         string materialsPath = "Assets/_Project/Materials";
         if (!Directory.Exists(materialsPath))
         {
             Directory.CreateDirectory(materialsPath);
         }
-        
+
         // Create basic materials
         CreateMaterial("Player_Mat", Color.blue);
         CreateMaterial("Enemy_Mat", Color.red);
@@ -24,20 +24,20 @@ public class MaterialGenerator : EditorWindow
         CreateMaterial("Projectile_Mat", Color.yellow);
         CreateMaterial("Colonist_Mat", Color.green);
         CreateMaterial("Loot_Mat", Color.magenta);
-        
+
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
-        
+
         Debug.Log("Materials generated successfully!");
     }
-    
+
     static void CreateMaterial(string name, Color color)
     {
         string path = $"Assets/_Project/Materials/{name}.mat";
-        
+
         Material mat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
         mat.color = color;
-        
+
         AssetDatabase.CreateAsset(mat, path);
         Debug.Log($"Created material: {path}");
     }

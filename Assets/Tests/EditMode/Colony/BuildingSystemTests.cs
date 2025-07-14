@@ -21,24 +21,24 @@ namespace SpaceColonyRPG.Tests.EditMode.Colony
             // Create BuildingSystem
             testObject = new GameObject("TestBuildingSystem");
             buildingSystem = testObject.AddComponent<BuildingSystem>();
-            
+
             // Create and setup GridSystem
             gridSystemObject = new GameObject("TestGridSystem");
             gridSystem = gridSystemObject.AddComponent<GridSystem>();
             gridSystem.gridWidth = 10;
             gridSystem.gridHeight = 10;
             gridSystem.cellSize = 2f;
-            
+
             // Create ResourceManager
             var resourceManagerObject = new GameObject("TestResourceManager");
             resourceManager = resourceManagerObject.AddComponent<ResourceManager>();
             SetupResourceManager();
-            
+
             // Create ColonyManager
             var colonyManagerObject = new GameObject("TestColonyManager");
             colonyManager = colonyManagerObject.AddComponent<ColonyManager>();
             colonyManager.colonyLevel = 1;
-            
+
             // Create test BuildingData
             testBuildingData = ScriptableObject.CreateInstance<BuildingData>();
             testBuildingData.buildingName = "Test Building";
@@ -49,25 +49,25 @@ namespace SpaceColonyRPG.Tests.EditMode.Colony
             testBuildingData.energyCost = 10;
             testBuildingData.requiredColonyLevel = 1;
             testBuildingData.prefab = new GameObject("BuildingPrefab");
-            
+
             // Setup BuildingSystem
             buildingSystem.availableBuildings = new List<BuildingData> { testBuildingData };
             buildingSystem.placementCheckMask = LayerMask.GetMask("Ground");
-            
+
             // Create placement materials
             buildingSystem.validPlacementMaterial = new Material(Shader.Find("Standard"));
             buildingSystem.invalidPlacementMaterial = new Material(Shader.Find("Standard"));
-            
+
             // Force singleton instances
             var instanceProperty = typeof(GridSystem).GetProperty("Instance");
             instanceProperty.SetValue(null, gridSystem);
-            
+
             var resourceInstanceProperty = typeof(ResourceManager).GetProperty("Instance");
             resourceInstanceProperty.SetValue(null, resourceManager);
-            
+
             var colonyInstanceProperty = typeof(ColonyManager).GetProperty("Instance");
             colonyInstanceProperty.SetValue(null, colonyManager);
-            
+
             var buildingInstanceProperty = typeof(BuildingSystem).GetProperty("Instance");
             buildingInstanceProperty.SetValue(null, buildingSystem);
         }
@@ -78,16 +78,16 @@ namespace SpaceColonyRPG.Tests.EditMode.Colony
             // Clean up singletons
             var instanceProperty = typeof(GridSystem).GetProperty("Instance");
             instanceProperty.SetValue(null, null);
-            
+
             var resourceInstanceProperty = typeof(ResourceManager).GetProperty("Instance");
             resourceInstanceProperty.SetValue(null, null);
-            
+
             var colonyInstanceProperty = typeof(ColonyManager).GetProperty("Instance");
             colonyInstanceProperty.SetValue(null, null);
-            
+
             var buildingInstanceProperty = typeof(BuildingSystem).GetProperty("Instance");
             buildingInstanceProperty.SetValue(null, null);
-            
+
             // Destroy objects
             Object.DestroyImmediate(testBuildingData.prefab);
             Object.DestroyImmediate(testBuildingData);
@@ -103,16 +103,16 @@ namespace SpaceColonyRPG.Tests.EditMode.Colony
         {
             resourceManager.resources = new List<ResourceManager.Resource>
             {
-                new ResourceManager.Resource 
-                { 
-                    type = ResourceType.Metal, 
+                new ResourceManager.Resource
+                {
+                    type = ResourceType.Metal,
                     displayName = "Metal",
                     currentAmount = 100,
                     maxCapacity = 500
                 },
-                new ResourceManager.Resource 
-                { 
-                    type = ResourceType.Energy, 
+                new ResourceManager.Resource
+                {
+                    type = ResourceType.Energy,
                     displayName = "Energy",
                     currentAmount = 50,
                     maxCapacity = int.MaxValue
@@ -124,7 +124,7 @@ namespace SpaceColonyRPG.Tests.EditMode.Colony
         public void StartPlacement_ValidBuilding_CanAfford_StartsPlacement()
         {
             // Arrange
-            var isPlacingField = typeof(BuildingSystem).GetField("isPlacing", 
+            var isPlacingField = typeof(BuildingSystem).GetField("isPlacing",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
 
             // Act
@@ -140,7 +140,7 @@ namespace SpaceColonyRPG.Tests.EditMode.Colony
         {
             // Arrange
             resourceManager.GetResource(ResourceType.Metal).currentAmount = 10; // Not enough
-            var isPlacingField = typeof(BuildingSystem).GetField("isPlacing", 
+            var isPlacingField = typeof(BuildingSystem).GetField("isPlacing",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
 
             // Act
@@ -156,7 +156,7 @@ namespace SpaceColonyRPG.Tests.EditMode.Colony
         {
             // Arrange
             testBuildingData.requiredColonyLevel = 5; // Higher than current level
-            var isPlacingField = typeof(BuildingSystem).GetField("isPlacing", 
+            var isPlacingField = typeof(BuildingSystem).GetField("isPlacing",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
 
             // Act
@@ -171,10 +171,10 @@ namespace SpaceColonyRPG.Tests.EditMode.Colony
         public void HasBuilding_BuildingExists_ReturnsTrue()
         {
             // Arrange
-            var placedBuildingsField = typeof(BuildingSystem).GetField("placedBuildings", 
+            var placedBuildingsField = typeof(BuildingSystem).GetField("placedBuildings",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             var placedBuildings = (List<Building>)placedBuildingsField.GetValue(buildingSystem);
-            
+
             var buildingObject = new GameObject("TestBuilding");
             var building = buildingObject.AddComponent<Building>();
             building.buildingData = testBuildingData;
@@ -194,15 +194,15 @@ namespace SpaceColonyRPG.Tests.EditMode.Colony
         public void GetBuildingsOfType_ReturnsCorrectBuildings()
         {
             // Arrange
-            var placedBuildingsField = typeof(BuildingSystem).GetField("placedBuildings", 
+            var placedBuildingsField = typeof(BuildingSystem).GetField("placedBuildings",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             var placedBuildings = (List<Building>)placedBuildingsField.GetValue(buildingSystem);
-            
+
             var buildingObject1 = new GameObject("TestBuilding1");
             var building1 = buildingObject1.AddComponent<Building>();
             building1.buildingData = testBuildingData;
             placedBuildings.Add(building1);
-            
+
             var buildingObject2 = new GameObject("TestBuilding2");
             var building2 = buildingObject2.AddComponent<Building>();
             building2.buildingData = testBuildingData;
@@ -227,17 +227,17 @@ namespace SpaceColonyRPG.Tests.EditMode.Colony
             // Arrange
             testBuildingData.resourceProduction = new BuildingData.ResourceProduction[]
             {
-                new BuildingData.ResourceProduction 
-                { 
-                    resourceType = ResourceType.Energy, 
-                    amountPerMinute = 10 
+                new BuildingData.ResourceProduction
+                {
+                    resourceType = ResourceType.Energy,
+                    amountPerMinute = 10
                 }
             };
-            
-            var placedBuildingsField = typeof(BuildingSystem).GetField("placedBuildings", 
+
+            var placedBuildingsField = typeof(BuildingSystem).GetField("placedBuildings",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             var placedBuildings = (List<Building>)placedBuildingsField.GetValue(buildingSystem);
-            
+
             var buildingObject = new GameObject("TestBuilding");
             var building = buildingObject.AddComponent<Building>();
             building.buildingData = testBuildingData;
@@ -259,17 +259,17 @@ namespace SpaceColonyRPG.Tests.EditMode.Colony
         {
             // Arrange
             testBuildingData.energyConsumption = 5;
-            
-            var placedBuildingsField = typeof(BuildingSystem).GetField("placedBuildings", 
+
+            var placedBuildingsField = typeof(BuildingSystem).GetField("placedBuildings",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             var placedBuildings = (List<Building>)placedBuildingsField.GetValue(buildingSystem);
-            
+
             var buildingObject1 = new GameObject("TestBuilding1");
             var building1 = buildingObject1.AddComponent<Building>();
             building1.buildingData = testBuildingData;
             building1.isActive = true;
             placedBuildings.Add(building1);
-            
+
             var buildingObject2 = new GameObject("TestBuilding2");
             var building2 = buildingObject2.AddComponent<Building>();
             building2.buildingData = testBuildingData;
@@ -322,7 +322,7 @@ namespace SpaceColonyRPG.Tests.EditMode.Colony
         // Helper method to invoke private methods
         private T InvokePrivateMethod<T>(object obj, string methodName, params object[] parameters)
         {
-            var method = obj.GetType().GetMethod(methodName, 
+            var method = obj.GetType().GetMethod(methodName,
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             return (T)method.Invoke(obj, parameters);
         }

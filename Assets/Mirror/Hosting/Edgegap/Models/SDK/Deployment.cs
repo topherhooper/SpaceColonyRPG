@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 namespace IO.Swagger.Model {
 
   /// <summary>
-  /// 
+  ///
   /// </summary>
   [DataContract]
   public class Deployment {
@@ -53,7 +53,7 @@ namespace IO.Swagger.Model {
     public bool? WhitelistingActive { get; set; }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <value></value>
     [DataMember(Name="fqdn", EmitDefaultValue=false)]

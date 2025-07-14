@@ -6,22 +6,22 @@ namespace SpaceColonyRPG.Colony
     public class ColonyManager : MonoBehaviour
     {
         public static ColonyManager Instance { get; private set; }
-        
+
         [Header("Colony Stats")]
         public int colonyLevel = 1;
         public float colonyInfluence = 0f;
-        
+
         [Header("Systems")]
         public GridSystem gridSystem;
         public BuildingSystem buildingSystem;
         public ResourceManager resourceManager;
         public ColonistManager colonistManager;
         public ColonyUIManager uiManager;
-        
+
         [Header("Configuration")]
         public float resourceUpdateInterval = 1f;
         public float powerCheckInterval = 5f;
-        
+
         void Awake()
         {
             if (Instance == null)
@@ -34,86 +34,86 @@ namespace SpaceColonyRPG.Colony
                 return;
             }
         }
-        
+
         void Start()
         {
             // Initialize systems in order
             StartCoroutine(InitializeSystems());
-            
+
             // Start update loops
             StartCoroutine(ResourceUpdateLoop());
             StartCoroutine(PowerCheckLoop());
         }
-        
+
         IEnumerator InitializeSystems()
         {
             // Small delays to ensure proper initialization order
             yield return new WaitForSeconds(0.1f);
-            
+
             // Load any saved colony data
             LoadColonyData();
-            
+
             Debug.Log("Colony Manager initialized!");
         }
-        
+
         IEnumerator ResourceUpdateLoop()
         {
             while (true)
             {
                 yield return new WaitForSeconds(resourceUpdateInterval);
-                
+
                 // This is handled by individual buildings now
                 // But we can add global effects here
             }
         }
-        
+
         IEnumerator PowerCheckLoop()
         {
             while (true)
             {
                 yield return new WaitForSeconds(powerCheckInterval);
-                
+
                 CheckPowerStatus();
             }
         }
-        
+
         void CheckPowerStatus()
         {
             int production = buildingSystem.GetTotalEnergyProduction();
             int consumption = buildingSystem.GetTotalEnergyConsumption();
-            
+
             bool hasPower = production >= consumption;
-            
+
             // Update all buildings
             foreach (var building in FindObjectsOfType<Building>())
             {
                 building.UpdatePowerStatus(hasPower);
             }
-            
+
             // Update UI
             if (uiManager) uiManager.UpdateColonyStats();
         }
-        
+
         public void IncreaseColonyLevel()
         {
             colonyLevel++;
             colonyInfluence += 100f;
-            
+
             // Unlock new buildings
             if (uiManager) uiManager.RefreshBuildingButtons();
-            
+
             // Celebration effect
             Debug.Log($"Colony reached level {colonyLevel}!");
         }
-        
+
         public ColonySaveData CreateSaveData()
         {
             var saveData = new ColonySaveData();
-            
+
             // Save colony stats
             saveData.colonyLevel = colonyLevel;
             saveData.colonyInfluence = colonyInfluence;
-            
+
             // Save resources
             if (resourceManager)
             {
@@ -127,7 +127,7 @@ namespace SpaceColonyRPG.Colony
                     });
                 }
             }
-            
+
             // Save buildings
             foreach (var building in FindObjectsOfType<Building>())
             {
@@ -138,23 +138,23 @@ namespace SpaceColonyRPG.Colony
                     isActive = building.isActive
                 });
             }
-            
+
             // Save colonist count
             if (colonistManager)
             {
                 saveData.colonistCount = colonistManager.GetColonistCount();
             }
-            
+
             return saveData;
         }
-        
+
         void LoadColonyData()
         {
             // For hackathon, just use PlayerPrefs
             if (PlayerPrefs.HasKey("ColonyLevel"))
             {
                 colonyLevel = PlayerPrefs.GetInt("ColonyLevel");
-                
+
                 // Load resources
                 if (resourceManager)
                 {
@@ -163,7 +163,7 @@ namespace SpaceColonyRPG.Colony
                     {
                         metalResource.currentAmount = PlayerPrefs.GetInt("Metal", 100);
                     }
-                    
+
                     var creditsResource = resourceManager.GetResource(ResourceType.Credits);
                     if (creditsResource != null)
                     {
@@ -172,7 +172,7 @@ namespace SpaceColonyRPG.Colony
                 }
             }
         }
-        
+
         public void SaveColonyData()
         {
             PlayerPrefs.SetInt("ColonyLevel", colonyLevel);
@@ -183,11 +183,11 @@ namespace SpaceColonyRPG.Colony
             }
             PlayerPrefs.Save();
         }
-        
+
         public float CalculateRaidBonus(RaidBonusType type)
         {
             float bonus = 0f;
-            
+
             foreach (var building in FindObjectsOfType<Building>())
             {
                 if (building.buildingData)
@@ -206,20 +206,20 @@ namespace SpaceColonyRPG.Colony
                     }
                 }
             }
-            
+
             return bonus;
         }
-        
+
         public void PrepareForRaid()
         {
             // Save colony state
             SaveColonyData();
-            
+
             // Calculate and store raid bonuses
             PlayerPrefs.SetFloat("RaidDamageBonus", CalculateRaidBonus(RaidBonusType.Damage));
             PlayerPrefs.SetFloat("RaidShieldBonus", CalculateRaidBonus(RaidBonusType.Shield));
             PlayerPrefs.SetFloat("RaidHealthRegenBonus", CalculateRaidBonus(RaidBonusType.HealthRegen));
-            
+
             // Transition to raid
             GameStateManager gameStateManager = FindObjectOfType<GameStateManager>();
             if (gameStateManager)
@@ -227,7 +227,7 @@ namespace SpaceColonyRPG.Colony
                 gameStateManager.StartRaid(true);
             }
         }
-        
+
         public void ReturnFromRaid(int creditsEarned)
         {
             // Add raid rewards
@@ -235,7 +235,7 @@ namespace SpaceColonyRPG.Colony
             {
                 resourceManager.ModifyResource(ResourceType.Credits, creditsEarned);
             }
-            
+
             // Check for colony level up
             if (resourceManager && resourceManager.GetResourceAmount(ResourceType.Credits) >= colonyLevel * 100)
             {
@@ -243,14 +243,14 @@ namespace SpaceColonyRPG.Colony
             }
         }
     }
-    
+
     public enum RaidBonusType
     {
         Damage,
         Shield,
         HealthRegen
     }
-    
+
     [System.Serializable]
     public class ColonySaveData
     {
@@ -259,7 +259,7 @@ namespace SpaceColonyRPG.Colony
         public System.Collections.Generic.List<ResourceData> resources = new System.Collections.Generic.List<ResourceData>();
         public System.Collections.Generic.List<SavedBuildingData> buildings = new System.Collections.Generic.List<SavedBuildingData>();
         public int colonistCount;
-        
+
         [System.Serializable]
         public class ResourceData
         {
@@ -267,7 +267,7 @@ namespace SpaceColonyRPG.Colony
             public int amount;
             public int capacity;
         }
-        
+
         [System.Serializable]
         public class SavedBuildingData
         {

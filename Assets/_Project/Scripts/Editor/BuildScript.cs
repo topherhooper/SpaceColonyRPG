@@ -79,7 +79,7 @@ public class BuildScript
         {
             Debug.Log($"Build succeeded: {summary.totalSize / 1024 / 1024} MB");
             Debug.Log($"Build saved to: {outputPath}");
-            
+
             // Post-build actions
             PostBuildActions(outputPath, target);
         }
@@ -124,10 +124,10 @@ public class BuildScript
         PlayerSettings.defaultScreenWidth = 1920;
         PlayerSettings.defaultScreenHeight = 1080;
         PlayerSettings.fullScreenMode = UnityEngine.FullScreenMode.Windowed;
-        
+
         // Graphics settings
         PlayerSettings.SetGraphicsAPIs(BuildTarget.StandaloneWindows64, new[] { UnityEngine.Rendering.GraphicsDeviceType.Direct3D11 });
-        
+
         // Quality settings
         QualitySettings.SetQualityLevel(2); // Medium quality
     }
@@ -135,7 +135,7 @@ public class BuildScript
     private static string[] GetScenePaths()
     {
         List<string> validScenes = new List<string>();
-        
+
         foreach (string scene in SCENES)
         {
             if (File.Exists(scene))
@@ -211,15 +211,15 @@ public class BuildScript
     private static void PostBuildActions(string buildPath, BuildTarget target)
     {
         string buildDir = Path.GetDirectoryName(buildPath);
-        
+
         // Copy README
         string readmePath = Path.Combine(buildDir, "README.txt");
         File.WriteAllText(readmePath, GetReadmeContent());
-        
+
         // Copy controls guide
         string controlsPath = Path.Combine(buildDir, "Controls.txt");
         File.WriteAllText(controlsPath, GetControlsContent());
-        
+
         Debug.Log($"Post-build actions completed for {target}");
     }
 
@@ -238,7 +238,7 @@ QUICK START:
 5. Survive the alien attack!
 
 MULTIPLAYER:
-- Host: Click 'Host Raid' 
+- Host: Click 'Host Raid'
 - Join: Enter host's IP and click 'Join Raid'
 
 KNOWN ISSUES:

@@ -44,7 +44,7 @@ namespace Mirror.Examples.AutoLANClientController
                 networkDiscovery = GameObject.FindAnyObjectByType<AutoLANNetworkDiscovery>();
 #else
                 // Deprecated in Unity 2023.1
-                networkDiscovery = GameObject.FindObjectOfType<AutoLANNetworkDiscovery>(); 
+                networkDiscovery = GameObject.FindObjectOfType<AutoLANNetworkDiscovery>();
 #endif
             }
 

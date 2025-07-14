@@ -10,8 +10,8 @@ namespace Edgegap.Editor.Api
     {
         /// <summary>Extended path after the base uri</summary>
         public EdgegapWizardApi(
-            ApiEnvironment apiEnvironment, 
-            string apiToken, 
+            ApiEnvironment apiEnvironment,
+            string apiToken,
             EdgegapWindowMetadata.LogLevel logLevel = EdgegapWindowMetadata.LogLevel.Error)
             : base(apiEnvironment, apiToken, logLevel)
         {
@@ -32,7 +32,7 @@ namespace Edgegap.Editor.Api
 
             return result;
         }
-        
+
         /// <summary>GET to v1/wizard/registry-credentials</summary>
         /// <returns>
         /// - Http info with GetRegistryCredentialsResult data model
