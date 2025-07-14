@@ -301,22 +301,6 @@ run_all_tests() {
     echo -e "${YELLOW}Running all unit tests...${NC}"
     echo "========================================"
     
-    # Run linting first
-    echo -e "\n${YELLOW}🔍 Running code linter...${NC}"
-    local lint_issues=$(find Assets -name "*.cs" -type f ! -path "*/TextMesh Pro/*" ! -path "*/Mirror/*" ! -path "*/ThirdParty/*" -exec grep -l -E "(^\s*$|[ \t]+$|\t)" {} \; 2>/dev/null | wc -l)
-    
-    if [ "$lint_issues" -gt 0 ]; then
-        echo -e "${RED}❌ Linting errors found in $lint_issues files${NC}"
-        echo "Run './fix-linting.sh' to automatically fix these issues."
-        echo ""
-        echo "Files with issues:"
-        find Assets -name "*.cs" -type f ! -path "*/TextMesh Pro/*" ! -path "*/Mirror/*" ! -path "*/ThirdParty/*" -exec grep -l -E "(^\s*$|[ \t]+$|\t)" {} \; 2>/dev/null | head -10
-        echo ""
-        echo -e "${YELLOW}Continuing with tests despite linting errors...${NC}"
-    else
-        echo -e "${GREEN}✅ Code linting passed!${NC}"
-    fi
-    
     # Create test results directory
     mkdir -p TestResults
     
@@ -606,7 +590,7 @@ case "$1" in
         echo "  setup        - Generate all scenes and prefabs"
         echo "  build        - Build Windows executable"
         echo "  test         - Run validation tests"
-        echo "  tests        - Run all unit tests with linting (EditMode + PlayMode)"
+        echo "  tests        - Run all unit tests (EditMode + PlayMode)"
         echo "  test-category <name> - Run specific test category (Colony/Combat/Integration)"
         echo "  lint         - Check code for linting issues"
         echo "  fix-lint     - Automatically fix linting issues"
@@ -618,7 +602,7 @@ case "$1" in
         echo "  $0 check   # Check for compile errors"
         echo "  $0 setup   # First-time setup"
         echo "  $0 build   # Create Windows build"
-        echo "  $0 tests   # Run all unit tests with linting"
+        echo "  $0 tests   # Run all unit tests"
         echo "  $0 lint    # Check for code style issues"
         echo "  $0 fix-lint # Auto-fix code style issues"
         echo "  $0 test-category Colony  # Run only Colony tests"

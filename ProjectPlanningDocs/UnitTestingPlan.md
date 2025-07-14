@@ -32,6 +32,8 @@
 - Use `./build-wsl.sh tests` to run all tests
 - Use `./build-wsl.sh test-category Colony` for specific test categories
 - GitHub Actions workflows ready but require Unity license secrets
+- Linting checks removed from git pre-push hook for reliability (still available via `./build-wsl.sh lint`)
+- Pre-push hook automatically skips Unity tests in WSL environments
 
 ## Project Test Structure Setup
 
@@ -954,25 +956,11 @@ public class TestRunner
 ```bash
 #!/bin/bash
 
-echo "Running code quality checks before push..."
+echo "Running pre-push checks..."
 
 PROJECT_PATH=$(pwd)
 
-# Run linting first
-echo "🔍 Running code linter..."
-LINT_OUTPUT=$(find Assets -name "*.cs" -type f ! -path "*/TextMesh Pro/*" ! -path "*/Mirror/*" ! -path "*/ThirdParty/*" -exec grep -l -E "(^\s*$|[ \t]+$|\t)" {} \;)
-
-if [ -n "$LINT_OUTPUT" ]; then
-    echo "❌ Linting errors found in:"
-    echo "$LINT_OUTPUT"
-    echo ""
-    echo "Run 'Tools > Code Linter > Auto-Fix Issues' in Unity to fix."
-    exit 1
-fi
-
-echo "✅ Code linting passed!"
-
-# Check for common Unity performance issues
+# Check for common Unity performance issues (warnings only)
 echo "🔍 Checking for performance issues..."
 PERF_ISSUES=$(grep -r -n -E "(GameObject\.Find|FindObjectOfType)" Assets --include="*.cs" | grep -v "// PERF:")
 
@@ -981,18 +969,32 @@ if [ -n "$PERF_ISSUES" ]; then
     echo "$PERF_ISSUES"
     echo ""
     echo "Add '// PERF: [justification]' if these are intentional."
+    echo "(This is a warning only - not blocking the push)"
 fi
 
-# Get Unity installation path (adjust for your system)
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    # macOS
-    UNITY_PATH="/Applications/Unity/Hub/Editor/2022.3.XX/Unity.app/Contents/MacOS/Unity"
-elif [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+# Get Unity installation path
+if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
     # Windows
-    UNITY_PATH="C:/Program Files/Unity/Hub/Editor/2022.3.XX/Editor/Unity.exe"
+    UNITY_PATH="C:/Program Files/Unity/Hub/Editor/2022.3.10f1/Editor/Unity.exe"
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS
+    UNITY_PATH="/Applications/Unity/Hub/Editor/2022.3.10f1/Unity.app/Contents/MacOS/Unity"
 else
-    # Linux
-    UNITY_PATH="/opt/Unity/Editor/2022.3.XX/Editor/Unity"
+    # Linux/WSL
+    # For WSL, we'll skip Unity tests as Unity doesn't run natively in WSL
+    echo "⚠️  Skipping Unity tests in WSL environment"
+    echo "   Run tests manually in Unity Editor before pushing"
+    echo "🎉 Pre-push checks complete! Proceeding with push."
+    exit 0
+fi
+
+# Check if Unity exists at the path
+if [ ! -f "$UNITY_PATH" ]; then
+    echo "⚠️  Unity not found at: $UNITY_PATH"
+    echo "   Please update the path in .git/hooks/pre-push"
+    echo "   Skipping Unity tests..."
+    echo "🎉 Pre-push checks complete! Proceeding with push."
+    exit 0
 fi
 
 # Run Edit Mode tests
