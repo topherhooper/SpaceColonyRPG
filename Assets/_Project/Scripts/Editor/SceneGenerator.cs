@@ -6,11 +6,11 @@ using UnityEngine.SceneManagement;
 using System.IO;
 using UnityEngine.UI;
 using Mirror;
-using kcp2k;
+//using kcp2k; // Not needed for scene generation
 using UnityEngine.EventSystems;
 using SpaceColonyRPG.Colony;
-using UnityEngine.InputSystem.UI;
-using UnityEngine.Rendering.Universal;
+//using UnityEngine.InputSystem.UI; // Optional dependency
+//using UnityEngine.Rendering.Universal; // Optional dependency
 
 public class SceneGenerator : EditorWindow
 {
@@ -877,7 +877,7 @@ public class SceneGenerator : EditorWindow
     {
         GameObject eventSystem = new GameObject("EventSystem");
         eventSystem.AddComponent<EventSystem>();
-        eventSystem.AddComponent<InputSystemUIInputModule>();
+        // eventSystem.AddComponent<InputSystemUIInputModule>(); // Requires Input System package
         return eventSystem;
     }
     
