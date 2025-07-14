@@ -144,7 +144,7 @@ jobs:
         echo "::notice::Code style check complete (informational only)"
         
     - name: Upload Style Report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: code-style-report

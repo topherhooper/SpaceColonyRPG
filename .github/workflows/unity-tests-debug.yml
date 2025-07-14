@@ -1,0 +1,100 @@
+name: Unity Tests Debug
+
+on:
+  workflow_dispatch:
+
+jobs:
+  debug-info:
+    name: Debug Unity Setup
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        lfs: true
+        
+    - name: Check Unity License
+      run: |
+        echo "=== Checking Unity License Setup ==="
+        if [ -z "${{ secrets.UNITY_LICENSE }}" ]; then
+          echo "❌ UNITY_LICENSE secret is not set"
+        else
+          echo "✅ UNITY_LICENSE secret is set (length: ${#UNITY_LICENSE})"
+        fi
+        
+        if [ -z "${{ secrets.UNITY_EMAIL }}" ]; then
+          echo "❌ UNITY_EMAIL secret is not set"
+        else
+          echo "✅ UNITY_EMAIL secret is set"
+        fi
+        
+        if [ -z "${{ secrets.UNITY_PASSWORD }}" ]; then
+          echo "❌ UNITY_PASSWORD secret is not set"
+        else
+          echo "✅ UNITY_PASSWORD secret is set"
+        fi
+        
+    - name: Check Project Structure
+      run: |
+        echo "=== Checking Project Structure ==="
+        echo "Current directory: $(pwd)"
+        echo ""
+        echo "Root files:"
+        ls -la
+        echo ""
+        echo "Assets directory:"
+        ls -la Assets/ || echo "Assets directory not found"
+        echo ""
+        echo "Test directories:"
+        find Assets -name "*Test*" -type d | head -20
+        echo ""
+        echo "Test files:"
+        find Assets -name "*Test*.cs" -type f | head -20
+        
+    - name: Check Assembly Definitions
+      run: |
+        echo "=== Checking Assembly Definition Files ==="
+        find Assets -name "*.asmdef" -type f | while read asmdef; do
+          echo "Found: $asmdef"
+          cat "$asmdef" | head -5
+          echo "---"
+        done
+        
+    - name: Run Simple Unity Test
+      uses: game-ci/unity-test-runner@v4
+      id: simple-test
+      continue-on-error: true
+      env:
+        UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+        UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+      with:
+        unityVersion: 6000.1.11f1
+        testMode: EditMode
+        artifactsPath: debug-test-results
+        githubToken: ${{ secrets.GITHUB_TOKEN }}
+        checkName: Debug Test Results
+        customParameters: "-logFile -"
+        
+    - name: Upload Debug Results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: Debug Test Results
+        path: debug-test-results
+        retention-days: 7
+        
+    - name: Show Test Output
+      if: always()
+      run: |
+        echo "=== Test Runner Exit Code: ${{ steps.simple-test.outcome }} ==="
+        if [ -d "debug-test-results" ]; then
+          echo "=== Test Results Directory Contents ==="
+          find debug-test-results -type f | head -20
+          
+          if [ -f "debug-test-results/test-results.xml" ]; then
+            echo "=== Test Results Summary ==="
+            cat debug-test-results/test-results.xml | head -50
+          fi
+        fi

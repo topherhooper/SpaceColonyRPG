@@ -1,50 +1,50 @@
 # Recent Changes (Auto-generated)
-Generated: 2025-07-13 22:15:03
+Generated: 2025-07-13 22:57:44
 
 ## Modified Files
-.github/workflows/README.md
 .github/workflows/code-quality.yml
+.github/workflows/unity-tests-debug.yml
 .github/workflows/unity-tests.yml
 
 ## Statistics  
- .github/workflows/README.md        |  17 ++-
- .github/workflows/code-quality.yml | 215 +++++++++++++------------------------
- .github/workflows/unity-tests.yml  |  44 +-------
- 3 files changed, 93 insertions(+), 183 deletions(-)
+ .github/workflows/code-quality.yml      |   2 +-
+ .github/workflows/unity-tests-debug.yml | 100 ++++++++++++++++++++++++++++++++
+ .github/workflows/unity-tests.yml       |  15 +++--
+ 3 files changed, 108 insertions(+), 9 deletions(-)
 
 ## Key Changes
---- a/.github/workflows/README.md
-+++ b/.github/workflows/README.md
-@@ -51,0 +52 @@ If you have Unity Teams Advanced:
-+### Unity Tests (`unity-tests.yml`)
-@@ -55 +55,0 @@ If you have Unity Teams Advanced:
-@@ -58,0 +59,5 @@ If you have Unity Teams Advanced:
-+### Code Quality (`code-quality.yml`)
-+- **Security Scanning**: Blocks commits with potential sensitive data
-+- **Performance Warnings**: Identifies potential performance issues (non-blocking)
-+- **Code Style Suggestions**: Optional style checks (informational only)
-@@ -109 +114,9 @@ Before pushing, test locally with:
--This runs the same tests that will run in CI.
-+This runs the same tests that will run in CI.
-+## Note on Code Quality
-+Code linting is available but not enforced in the workflows. You can run linting locally with:
-+```bash
-+./build-wsl.sh lint        # Check for issues
-+./build-wsl.sh fix-lint    # Auto-fix issues
-+```
 --- a/.github/workflows/code-quality.yml
 +++ b/.github/workflows/code-quality.yml
-@@ -11,2 +11,2 @@ jobs:
--  lint:
--    name: Code Linting
-+  performance-check:
-+    name: Performance Check
-@@ -19 +19 @@ jobs:
--    - name: Check C# Files
-+    - name: Check for Performance Issues
-@@ -21 +21 @@ jobs:
+@@ -147 +147 @@ jobs:
+-      uses: actions/upload-artifact@v3
++      uses: actions/upload-artifact@v4
+--- /dev/null
++++ b/.github/workflows/unity-tests-debug.yml
+@@ -0,0 +1,100 @@
++name: Unity Tests Debug
++on:
++  workflow_dispatch:
++jobs:
++  debug-info:
++    name: Debug Unity Setup
++    runs-on: ubuntu-latest
++    
++    steps:
++    - name: Checkout repository
++      uses: actions/checkout@v4
++      with:
++        lfs: true
++        
++    - name: Check Unity License
++      run: |
++        echo "=== Checking Unity License Setup ==="
++        if [ -z "${{ secrets.UNITY_LICENSE }}" ]; then
++          echo "❌ UNITY_LICENSE secret is not set"
++        else
++          echo "✅ UNITY_LICENSE secret is set (length: ${#UNITY_LICENSE})"
++        fi
 
 ## Staged Changes Summary
 - Files changed: 3
-- Insertions: 93 insertion
-- Deletions: 183 deletion
+- Insertions: 108 insertion
+- Deletions: 9 deletion

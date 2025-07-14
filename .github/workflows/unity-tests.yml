@@ -23,7 +23,7 @@ jobs:
         lfs: true
         
     - name: Cache Unity Library
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: Library
         key: Library-${{ matrix.unity-version }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
@@ -62,7 +62,7 @@ jobs:
         coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+SpaceColonyRPG.*'
         
     - name: Upload EditMode Test Results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: EditMode Test Results
@@ -70,7 +70,7 @@ jobs:
         retention-days: 7
         
     - name: Upload PlayMode Test Results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: PlayMode Test Results
@@ -78,7 +78,7 @@ jobs:
         retention-days: 7
         
     - name: Upload Coverage Results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: Coverage Report
@@ -102,7 +102,7 @@ jobs:
         lfs: true
         
     - name: Cache Unity Library
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: Library
         key: Library-build-${{ matrix.targetPlatform }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
@@ -124,12 +124,11 @@ jobs:
         buildPath: build/${{ matrix.targetPlatform }}
         
     - name: Upload Build
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Build-${{ matrix.targetPlatform }}
         path: build/${{ matrix.targetPlatform }}
         retention-days: 7
-
 
   notify:
     name: Notify Results
