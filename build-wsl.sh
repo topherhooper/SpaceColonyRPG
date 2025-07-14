@@ -296,6 +296,135 @@ quick_test() {
     fi
 }
 
+# Function to run all unit tests
+run_all_tests() {
+    echo -e "${YELLOW}Running all unit tests...${NC}"
+    echo "========================================"
+    
+    # Create test results directory
+    mkdir -p TestResults
+    
+    # Run Edit Mode tests
+    echo -e "\n${YELLOW}🧪 Running Edit Mode tests...${NC}"
+    local edit_log="TestResults/editmode-log.txt"
+    local edit_results="TestResults/editmode-results.xml"
+    
+    run_unity -runTests -testPlatform EditMode -testResults "$edit_results" -logFile "$edit_log" 2>&1
+    local edit_exit_code=$?
+    
+    # Check Edit Mode results
+    if [ $edit_exit_code -eq 0 ]; then
+        echo -e "${GREEN}✅ Edit Mode tests passed!${NC}"
+        
+        # Show test summary if available
+        if [ -f "$edit_results" ]; then
+            local total_tests=$(grep -o 'testcasecount="[0-9]*"' "$edit_results" | grep -o '[0-9]*' | head -1)
+            local passed_tests=$(grep -o 'passed="[0-9]*"' "$edit_results" | grep -o '[0-9]*' | head -1)
+            local failed_tests=$(grep -o 'failed="[0-9]*"' "$edit_results" | grep -o '[0-9]*' | head -1)
+            
+            if [ -n "$total_tests" ]; then
+                echo "  Total: $total_tests, Passed: ${passed_tests:-0}, Failed: ${failed_tests:-0}"
+            fi
+        fi
+    else
+        echo -e "${RED}❌ Edit Mode tests failed!${NC}"
+        
+        # Show failed tests from log
+        if [ -f "$edit_log" ]; then
+            grep -A 5 "FAILED:" "$edit_log" | head -20
+        fi
+    fi
+    
+    # Run Play Mode tests
+    echo -e "\n${YELLOW}🧪 Running Play Mode tests...${NC}"
+    local play_log="TestResults/playmode-log.txt"
+    local play_results="TestResults/playmode-results.xml"
+    
+    run_unity -runTests -testPlatform PlayMode -testResults "$play_results" -logFile "$play_log" 2>&1
+    local play_exit_code=$?
+    
+    # Check Play Mode results
+    if [ $play_exit_code -eq 0 ]; then
+        echo -e "${GREEN}✅ Play Mode tests passed!${NC}"
+        
+        # Show test summary if available
+        if [ -f "$play_results" ]; then
+            local total_tests=$(grep -o 'testcasecount="[0-9]*"' "$play_results" | grep -o '[0-9]*' | head -1)
+            local passed_tests=$(grep -o 'passed="[0-9]*"' "$play_results" | grep -o '[0-9]*' | head -1)
+            local failed_tests=$(grep -o 'failed="[0-9]*"' "$play_results" | grep -o '[0-9]*' | head -1)
+            
+            if [ -n "$total_tests" ]; then
+                echo "  Total: $total_tests, Passed: ${passed_tests:-0}, Failed: ${failed_tests:-0}"
+            fi
+        fi
+    else
+        echo -e "${RED}❌ Play Mode tests failed!${NC}"
+        
+        # Show failed tests from log
+        if [ -f "$play_log" ]; then
+            grep -A 5 "FAILED:" "$play_log" | head -20
+        fi
+    fi
+    
+    # Overall summary
+    echo -e "\n========================================"
+    if [ $edit_exit_code -eq 0 ] && [ $play_exit_code -eq 0 ]; then
+        echo -e "${GREEN}✅ All tests passed!${NC}"
+        echo -e "Test results saved in TestResults/"
+        return 0
+    else
+        echo -e "${RED}❌ Some tests failed!${NC}"
+        echo -e "Check TestResults/ for detailed logs"
+        return 1
+    fi
+}
+
+# Function to run specific test category
+run_test_category() {
+    local category=$1
+    echo -e "${YELLOW}Running $category tests...${NC}"
+    
+    local log_file="TestResults/${category,,}-log.txt"
+    local results_file="TestResults/${category,,}-results.xml"
+    
+    mkdir -p TestResults
+    
+    # Determine test filter based on category
+    local test_filter=""
+    case $category in
+        "Colony")
+            test_filter="SpaceColonyRPG.Tests.EditMode.Colony"
+            ;;
+        "Combat")
+            test_filter="SpaceColonyRPG.Tests.EditMode.Combat"
+            ;;
+        "Integration")
+            test_filter="SpaceColonyRPG.Tests.PlayMode.Integration"
+            ;;
+        *)
+            echo -e "${RED}Unknown test category: $category${NC}"
+            echo "Available categories: Colony, Combat, Integration"
+            return 1
+            ;;
+    esac
+    
+    # Run tests with filter
+    run_unity -runTests -testPlatform EditMode -testFilter "$test_filter" -testResults "$results_file" -logFile "$log_file" 2>&1
+    local exit_code=$?
+    
+    if [ $exit_code -eq 0 ]; then
+        echo -e "${GREEN}✅ $category tests passed!${NC}"
+    else
+        echo -e "${RED}❌ $category tests failed!${NC}"
+        # Show failures
+        if [ -f "$log_file" ]; then
+            grep -A 5 "FAILED:" "$log_file" | head -20
+        fi
+    fi
+    
+    return $exit_code
+}
+
 # Function to show recent errors from all logs
 show_errors() {
     echo "Checking all log files for errors..."
@@ -328,6 +457,19 @@ case "$1" in
         quick_test
         exit $?
         ;;
+    tests|test-all)
+        run_all_tests
+        exit $?
+        ;;
+    test-category)
+        if [ -z "$2" ]; then
+            echo -e "${RED}Error: Test category required${NC}"
+            echo "Usage: $0 test-category {Colony|Combat|Integration}"
+            exit 1
+        fi
+        run_test_category "$2"
+        exit $?
+        ;;
     errors)
         show_errors
         ;;
@@ -354,13 +496,15 @@ case "$1" in
         echo -e "${GREEN}✅ Force clean complete!${NC}"
         ;;
     *)
-        echo "Usage: $0 {check|setup|build|test|errors|clean|force-clean}"
+        echo "Usage: $0 {check|setup|build|test|tests|test-category|errors|clean|force-clean}"
         echo ""
         echo "Commands:"
         echo "  check        - Quick compilation check"
         echo "  setup        - Generate all scenes and prefabs"
         echo "  build        - Build Windows executable"
         echo "  test         - Run validation tests"
+        echo "  tests        - Run all unit tests (EditMode + PlayMode)"
+        echo "  test-category <name> - Run specific test category (Colony/Combat/Integration)"
         echo "  errors       - Show recent errors from all logs"
         echo "  clean        - Remove build artifacts"
         echo "  force-clean  - Force remove build artifacts (Windows side)"
@@ -369,6 +513,8 @@ case "$1" in
         echo "  $0 check   # Check for compile errors"
         echo "  $0 setup   # First-time setup"
         echo "  $0 build   # Create Windows build"
+        echo "  $0 tests   # Run all unit tests"
+        echo "  $0 test-category Colony  # Run only Colony tests"
         echo "  $0 errors  # Show all recent errors"
         exit 1
         ;;

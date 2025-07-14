@@ -1,0 +1,215 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [ main, develop, feature/* ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: Code Linting
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Check C# Files
+      run: |
+        echo "=== Checking C# Code Quality ==="
+        
+        # Create report file
+        echo "# Code Quality Report" > code-quality-report.md
+        echo "" >> code-quality-report.md
+        echo "Generated at: $(date)" >> code-quality-report.md
+        echo "" >> code-quality-report.md
+        
+        # Initialize counters
+        total_files=0
+        files_with_issues=0
+        total_issues=0
+        
+        # Check all C# files
+        while IFS= read -r -d '' file; do
+          ((total_files++))
+          file_has_issues=false
+          file_issues=""
+          
+          # Check for tabs (should use spaces)
+          if grep -q $'\t' "$file"; then
+            file_has_issues=true
+            ((total_issues++))
+            line_numbers=$(grep -n $'\t' "$file" | cut -d: -f1 | head -5 | tr '\n' ', ' | sed 's/,$//')
+            file_issues+="\n  - Contains tabs (lines: $line_numbers)"
+          fi
+          
+          # Check for trailing whitespace
+          if grep -q '[[:space:]]$' "$file"; then
+            file_has_issues=true
+            ((total_issues++))
+            line_numbers=$(grep -n '[[:space:]]$' "$file" | cut -d: -f1 | head -5 | tr '\n' ', ' | sed 's/,$//')
+            file_issues+="\n  - Trailing whitespace (lines: $line_numbers)"
+          fi
+          
+          # Check for lines over 120 characters
+          long_lines=$(awk 'length > 120 {print NR}' "$file" | head -5 | tr '\n' ', ' | sed 's/,$//')
+          if [ -n "$long_lines" ]; then
+            file_has_issues=true
+            ((total_issues++))
+            file_issues+="\n  - Lines over 120 chars (lines: $long_lines)"
+          fi
+          
+          # Check for multiple blank lines
+          if grep -Pzo '(?s)\n\n\n' "$file" > /dev/null 2>&1; then
+            file_has_issues=true
+            ((total_issues++))
+            file_issues+="\n  - Multiple consecutive blank lines"
+          fi
+          
+          # Check file naming (should be PascalCase)
+          filename=$(basename "$file")
+          if [[ "$filename" =~ ^[a-z] ]] && [[ "$filename" != "packages.config" ]]; then
+            file_has_issues=true
+            ((total_issues++))
+            file_issues+="\n  - Filename should start with uppercase"
+          fi
+          
+          if [ "$file_has_issues" = true ]; then
+            ((files_with_issues++))
+            echo "" >> code-quality-report.md
+            echo "## $file" >> code-quality-report.md
+            echo -e "$file_issues" >> code-quality-report.md
+          fi
+          
+        done < <(find Assets/_Project/Scripts -name "*.cs" -type f -print0)
+        
+        # Generate summary
+        echo "" >> code-quality-report.md
+        echo "---" >> code-quality-report.md
+        echo "## Summary" >> code-quality-report.md
+        echo "- Total files checked: $total_files" >> code-quality-report.md
+        echo "- Files with issues: $files_with_issues" >> code-quality-report.md
+        echo "- Total issues found: $total_issues" >> code-quality-report.md
+        
+        # Display report
+        cat code-quality-report.md
+        
+        # Set exit code based on issues
+        if [ $total_issues -gt 0 ]; then
+          echo ""
+          echo "::warning::Found $total_issues code quality issues in $files_with_issues files"
+          # Don't fail the build for quality issues, just warn
+          exit 0
+        else
+          echo ""
+          echo "::notice::No code quality issues found!"
+          exit 0
+        fi
+        
+    - name: Upload Quality Report
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: code-quality-report
+        path: code-quality-report.md
+        retention-days: 7
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Check for Sensitive Data
+      run: |
+        echo "=== Scanning for sensitive data ==="
+        
+        # Check for potential API keys, passwords, etc.
+        patterns=(
+          "password.*=.*['\"].*['\"]"
+          "api[_-]?key.*=.*['\"].*['\"]"
+          "secret.*=.*['\"].*['\"]"
+          "token.*=.*['\"].*['\"]"
+          "private[_-]?key"
+        )
+        
+        found_issues=false
+        
+        for pattern in "${patterns[@]}"; do
+          echo "Checking for pattern: $pattern"
+          if grep -r -i -E "$pattern" Assets/_Project/Scripts --include="*.cs" 2>/dev/null; then
+            echo "::error::Found potential sensitive data matching pattern: $pattern"
+            found_issues=true
+          fi
+        done
+        
+        if [ "$found_issues" = true ]; then
+          echo "::error::Security scan failed! Found potential sensitive data in code."
+          exit 1
+        else
+          echo "::notice::Security scan passed!"
+        fi
+
+  structure:
+    name: Project Structure
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Verify Required Files
+      run: |
+        echo "=== Verifying project structure ==="
+        
+        required_files=(
+          "Assets/_Project/Scripts/Colony/ColonyManager.cs"
+          "Assets/_Project/Scripts/Colony/ResourceManager.cs"
+          "Assets/_Project/Scripts/Combat/CombatManager.cs"
+          "Assets/_Project/Scripts/Networking/GameNetworkManager.cs"
+          "Assets/_Project/Scripts/UI/UIManager.cs"
+          "Assets/Tests/EditMode/EditModeTests.asmdef"
+          "Assets/Tests/PlayMode/PlayModeTests.asmdef"
+          ".editorconfig"
+        )
+        
+        missing_files=()
+        
+        for file in "${required_files[@]}"; do
+          if [ ! -f "$file" ]; then
+            missing_files+=("$file")
+          fi
+        done
+        
+        if [ ${#missing_files[@]} -eq 0 ]; then
+          echo "::notice::All required files present!"
+        else
+          echo "::error::Missing required files:"
+          printf '%s\n' "${missing_files[@]}"
+          exit 1
+        fi
+        
+    - name: Check Test Coverage
+      run: |
+        echo "=== Checking test coverage ==="
+        
+        # Count test files
+        test_count=$(find Assets/Tests -name "*Tests.cs" -type f | wc -l)
+        
+        # Count main script files (excluding tests and editor)
+        script_count=$(find Assets/_Project/Scripts -name "*.cs" -type f | grep -v -E "(Editor|Tests)" | wc -l)
+        
+        echo "Found $test_count test files"
+        echo "Found $script_count main script files"
+        
+        # Basic coverage check (at least 1 test file per 5 script files)
+        min_tests=$((script_count / 5))
+        if [ $test_count -lt $min_tests ]; then
+          echo "::warning::Low test coverage! Have $test_count tests but recommend at least $min_tests"
+        else
+          echo "::notice::Good test coverage!"
+        fi
