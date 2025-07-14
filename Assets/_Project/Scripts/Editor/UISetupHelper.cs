@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using System.IO;
+using SpaceColonyRPG.Colony;
 
 namespace SpaceColonyRPG.Editor
 {
